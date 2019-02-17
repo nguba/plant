@@ -1,0 +1,11 @@
+pluginManagement {
+	repositories {
+		gradlePluginPortal()
+	}
+}
+rootProject.name = 'plant'
+
+include 'presentation'
+include 'application'
+include 'domain'
+include 'infrastructure'
