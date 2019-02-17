@@ -21,10 +21,7 @@ package me.nguba.plant.ddd;
  * @author <a href="mailto:nguba@mac.com">Nico Guba</a>
  * @param <I>
  */
-public abstract class Aggregate<I> extends Entity<I>
+public interface Aggregate<I>
 {
-    protected Aggregate(final I id)
-    {
-        super(id);
-    }
+    Entity<I> getAggregateRoot();
 }

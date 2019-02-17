@@ -39,49 +39,7 @@ package me.nguba.plant.ddd;
  * @see ValueObject
  * @see Aggregate
  */
-public abstract class Entity<I>
+public interface Entity<I>
 {
-    private final I id;
-
-    protected Entity(final I id)
-    {
-        this.id = id;
-    }
-
-    @Override
-    public boolean equals(final Object obj)
-    {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
-        final Entity<?> other = (Entity<?>) obj;
-        if (id == null) {
-            if (other.id != null)
-                return false;
-        } else if (!id.equals(other.id))
-            return false;
-        return true;
-    }
-
-    /**
-     * Unique identifier to distinguish objects even though they may have the same attributes.
-     *
-     * @return the identity
-     */
-    public I getId()
-    {
-        return id;
-    }
-
-    @Override
-    public int hashCode()
-    {
-        final int prime  = 31;
-        int       result = 1;
-        result = prime * result + (id == null ? 0 : id.hashCode());
-        return result;
-    }
+    I getIdentity();
 }
