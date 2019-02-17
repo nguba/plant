@@ -6,6 +6,7 @@ plugins {
 group = 'me.nguba.plant'
 version = '1.0.0-SNAPSHOT'
 
+
 repositories {
 	mavenCentral()
 	maven { url 'https://repo.spring.io/milestone' }
@@ -19,14 +20,19 @@ ext {
 
 apply plugin: 'org.springframework.boot'
 apply plugin: 'io.spring.dependency-management'
-  
+
+springBoot {
+    mainClassName = 'me.nguba.plant.PlantApplication'
+}
+    
 subprojects {
     apply plugin: 'java'
     apply plugin: 'eclipse'
     apply plugin: 'io.spring.dependency-management'
     
     sourceCompatibility = '1.8'
-    
+    jar.enabled = false
+     
     eclipse {
         project {
             name = "$rootProject.name - $project.name"

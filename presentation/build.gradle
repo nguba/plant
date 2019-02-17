@@ -1,5 +1,7 @@
 apply plugin: "org.springframework.boot"
 
+jar.enabled = true
+ 
 dependencies {
     implementation project(':application')
     implementation project(':infrastructure')
