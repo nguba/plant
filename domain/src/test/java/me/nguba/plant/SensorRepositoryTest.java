@@ -2,29 +2,36 @@ package me.nguba.plant;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 class SensorRepositoryTest
 {
     private final SensorRepository repo = new SensorRepository();
 
-    final Sensor sensor = new Sensor() {
-
-        @Override
-        public Temperature getTemperature()
-        {
-            return null;
-        }
-
-        @Override
-        public SensorId getId()
-        {
-            return null;
-        }
-    };
+    Sensor sensor;
 
     final SensorId id = new SensorId() {
     };
+
+    @BeforeEach
+    void setUp()
+    {
+        sensor = new Sensor() {
+
+            @Override
+            public Temperature getTemperature()
+            {
+                return null;
+            }
+
+            @Override
+            public SensorId getId()
+            {
+                return id;
+            }
+        };
+    }
 
     @Test
     void createAndRead()
