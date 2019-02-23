@@ -1,5 +1,5 @@
 /*
-    Copyright (C) 2018  Nicolai P. Guba
+    Copyright (C) 2019  Nicolai P. Guba
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -14,14 +14,25 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+
 package me.nguba.plant;
+
+import nl.jqno.equalsverifier.EqualsVerifier;
+
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 
 /**
  * @author <a href="mailto:nguba@mac.com">Nico Guba</a>
  */
-public interface EventPublisher
+public interface EqualityContract<T>
 {
-    <E extends DomainEvent> void publish(E event);
+    Class<T> getType();
 
-    void subscribe(Object recipient);
+    @Test
+    @DisplayName("Equality contract is implemented")
+    default void equalityContract()
+    {
+        EqualsVerifier.forClass(getType()).usingGetClass().verify();
+    }
 }

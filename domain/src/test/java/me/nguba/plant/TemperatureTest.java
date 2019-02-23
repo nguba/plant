@@ -166,4 +166,16 @@ class TemperatureTest
     {
         assertThat(Temperature.kelvin(12.3).toString()).isEqualTo("12.3 (K)");
     }
+
+    @Test
+    void isGreaterThan()
+    {
+        assertThat(Temperature.celsius(34.1).isGreaterThan(Temperature.celsius(34.0))).isTrue();
+    }
+
+    @Test
+    void isNotGreaterThan()
+    {
+        assertThat(Temperature.celsius(34.0).isGreaterThan(Temperature.celsius(34.1))).isFalse();
+    }
 }

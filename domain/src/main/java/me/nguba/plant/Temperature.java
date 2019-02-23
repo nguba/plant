@@ -89,16 +89,6 @@ public final class Temperature implements ValueObject
         return true;
     }
 
-    public Scale getScale()
-    {
-        return scale;
-    }
-
-    public double getValue()
-    {
-        return value;
-    }
-
     @Override
     public int hashCode()
     {
@@ -165,5 +155,10 @@ public final class Temperature implements ValueObject
         final StringBuilder builder = new StringBuilder();
         builder.append(value).append(" (").append(scale).append(")");
         return builder.toString();
+    }
+
+    public boolean isGreaterThan(final Temperature temperature)
+    {
+        return value > temperature.value;
     }
 }

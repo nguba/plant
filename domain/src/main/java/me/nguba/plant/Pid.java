@@ -44,7 +44,7 @@ public class Pid
         // `bounded(constrain(0,0,1),0,1)` will return false.
         // This is more helpful for determining edge-case behaviour
         // than <= is.
-        return min < value && value < max;
+        return (min < value) && (value < max);
     }
 
     /**
@@ -206,7 +206,7 @@ public class Pid
      *            The target value for the system
      * @return calculated output value for driving the system
      */
-    public double getOutput(final double actual, @SuppressWarnings("hiding") final double setpoint)
+    public double getOutput(final double actual, final double setpoint)
     {
         double output;
         double Poutput;
@@ -265,9 +265,9 @@ public class Pid
         output = Foutput + Poutput + Ioutput + Doutput;
 
         // Figure out what we're doing with the error.
-        if (minOutput != maxOutput && !bounded(output, minOutput, maxOutput))
+        if ((minOutput != maxOutput) && !bounded(output, minOutput, maxOutput))
             errorSum = error;
-        else if (outputRampRate != 0
+        else if ((outputRampRate != 0)
                 && !bounded(output, lastOutput - outputRampRate, lastOutput + outputRampRate))
             errorSum = error;
         else if (maxIOutput != 0)
@@ -280,7 +280,7 @@ public class Pid
         if (minOutput != maxOutput)
             output = constrain(output, minOutput, maxOutput);
         if (outputFilter != 0)
-            output = lastOutput * outputFilter + output * (1 - outputFilter);
+            output = (lastOutput * outputFilter) + (output * (1 - outputFilter));
 
         // Get a test printline with lots of details about the internal
         // calculations. This can be useful for debugging.
@@ -370,7 +370,7 @@ public class Pid
     public void setI(final double i)
     {
         if (I != 0)
-            errorSum = errorSum * I / i;
+            errorSum = (errorSum * I) / i;
         if (maxIOutput != 0)
             maxError = maxIOutput / i;
         I = i;
@@ -420,7 +420,7 @@ public class Pid
      */
     public void setOutputFilter(final double strength)
     {
-        if (strength == 0 || bounded(strength, 0, 1))
+        if ((strength == 0) || bounded(strength, 0, 1))
             outputFilter = strength;
     }
 
@@ -453,7 +453,7 @@ public class Pid
 
         // Ensure the bounds of the I term are within the bounds of the
         // allowable output swing
-        if (maxIOutput == 0 || maxIOutput > maximum - minimum)
+        if ((maxIOutput == 0) || (maxIOutput > (maximum - minimum)))
             setMaxIOutput(maximum - minimum);
     }
 

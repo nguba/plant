@@ -1,8 +1,6 @@
 package me.nguba.plant;
 
-public interface Sensor
+public interface Sensor extends TemperatureReader
 {
     SensorId getId();
-
-    Temperature getTemperature();
 }

@@ -31,11 +31,14 @@ subprojects {
     apply plugin: 'io.spring.dependency-management'
     
     sourceCompatibility = '1.8'
+    targetCompatibility = '1.8'
+    
     jar.enabled = false
      
     eclipse {
         project {
-            name = "$rootProject.name - $project.name"
+            // we need to do this so it doesn't conflict with other layered projects
+            name = "$rootProject.name-$project.name"
         }
     }
    
