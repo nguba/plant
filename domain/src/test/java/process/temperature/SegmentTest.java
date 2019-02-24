@@ -1,6 +1,5 @@
-package process;
+package process.temperature;
 
-import process.Segment;
 import process.kernel.EntityEqualityContract;
 import process.temperature.Temperature;
 
