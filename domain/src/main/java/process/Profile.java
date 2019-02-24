@@ -19,30 +19,29 @@ package process;
 
 import process.kernel.Entity;
 
-import java.util.UUID;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 /**
  * @author <a href="mailto:nguba@mac.com">Nico Guba</a>
  */
-public final class Profile implements Entity<UUID>
+public final class Profile implements Entity<String>, Iterable<Segment>
 {
+    private final String identity;
 
-    private final UUID identity;
+    private final List<Segment> segments;
 
-    private Profile(final UUID identity)
+    private Profile(final String identity, final List<Segment> segments)
     {
         this.identity = identity;
+        this.segments = segments;
     }
 
     @Override
-    public UUID getIdentity()
+    public String getIdentity()
     {
         return identity;
-    }
-
-    public static Profile with(final UUID identity)
-    {
-        return new Profile(identity);
     }
 
     @Override
@@ -70,6 +69,29 @@ public final class Profile implements Entity<UUID>
         } else if (!identity.equals(other.identity))
             return false;
         return true;
+    }
+
+    public static Profile withSegments(final String name, final Segment... segments)
+    {
+        final List<Segment> schedule = new ArrayList<>(segments.length);
+        for (final Segment segment : segments)
+            schedule.add(segment);
+        return new Profile(name, schedule);
+    }
+
+    @Override
+    public String toString()
+    {
+        final StringBuilder builder = new StringBuilder();
+        builder.append("Profile [identity=").append(identity).append(", segments=").append(segments)
+                .append("]");
+        return builder.toString();
+    }
+
+    @Override
+    public Iterator<Segment> iterator()
+    {
+        return segments.iterator();
     }
 
 }
