@@ -15,12 +15,16 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-package me.nguba.plant;
+package process.temperature;
+
+import process.temperature.Switch;
+import process.temperature.Temperature;
 
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -32,10 +36,21 @@ public class HeaterMock implements Switch
 
     AtomicInteger value = new AtomicInteger();
 
-    private ScheduledFuture<?> on;
+    AtomicBoolean heat = new AtomicBoolean();
+
+    private final ScheduledFuture<?> on;
+
+    public HeaterMock()
+    {
+        on = element.scheduleAtFixedRate(() -> {
+            if (heat.get())
+                value.getAndIncrement();
+        }, 0, 100, TimeUnit.MILLISECONDS);
+    }
 
     public Temperature currentTemperature()
     {
+        // System.out.println(on);
         final double temperature = value.get() / 100.0;
         return Temperature.celsius(temperature);
     }
@@ -43,13 +58,18 @@ public class HeaterMock implements Switch
     @Override
     public void switchOn()
     {
-        on = element.schedule(() -> {
-            value.getAndIncrement();
-        }, 100, TimeUnit.MILLISECONDS);
+        System.out.println("ON");
+        heat.set(true);
     }
 
     @Override
     public void switchOff()
+    {
+        System.out.println("OFF");
+        heat.set(false);
+    }
+
+    public void stop()
     {
         on.cancel(true);
     }

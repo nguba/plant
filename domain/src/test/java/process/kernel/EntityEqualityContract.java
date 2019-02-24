@@ -1,5 +1,5 @@
 /*
-    Copyright (C) 2018  Nicolai P. Guba
+    Copyright (C) 2019  Nicolai P. Guba
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -14,15 +14,24 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-package me.nguba.plant;
+
+package process.kernel;
+
+import nl.jqno.equalsverifier.EqualsVerifier;
+
+import org.junit.jupiter.api.Test;
 
 /**
- *
  * @author <a href="mailto:nguba@mac.com">Nico Guba</a>
  */
-public interface Switch
+public interface EntityEqualityContract<I, T extends Entity<I>> extends EqualityContract<T>
 {
-    void switchOn();
 
-    void switchOff();
+    @Test
+    @Override
+    default void equalityContract()
+    {
+        EqualsVerifier.forClass(getType()).usingGetClass().withOnlyTheseFields("identity").verify();
+    }
+
 }

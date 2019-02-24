@@ -15,11 +15,24 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-package me.nguba.plant;
+package process.kernel;
+
+import nl.jqno.equalsverifier.EqualsVerifier;
+
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 
 /**
  * @author <a href="mailto:nguba@mac.com">Nico Guba</a>
  */
-public interface SensorId
+public interface EqualityContract<T>
 {
+    Class<T> getType();
+
+    @Test
+    @DisplayName("Equality contract is implemented")
+    default void equalityContract()
+    {
+        EqualsVerifier.forClass(getType()).usingGetClass().verify();
+    }
 }

@@ -1,5 +1,5 @@
 /*
-    Copyright (C) 2018  Nicolai P. Guba
+    Copyright (C) 2019  Nicolai P. Guba
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -14,14 +14,19 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-package me.nguba.plant.ddd;
+
+package process.temperature;
 
 /**
  * @author <a href="mailto:nguba@mac.com">Nico Guba</a>
  */
-public interface EventPublisher
+public interface Pid<T>
 {
-    <E extends DomainEvent> void publish(E event);
+    T update(final Temperature sP, final Temperature pV);
 
-    void subscribe(Object recipient);
+    void setD(final double dGain);
+
+    void setI(final double iGain);
+
+    void setP(final double pGain);
 }

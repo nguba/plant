@@ -14,7 +14,7 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-package me.nguba.plant;
+package process.temperature;
 
 import nl.jqno.equalsverifier.EqualsVerifier;
 
@@ -168,14 +168,50 @@ class TemperatureTest
     }
 
     @Test
-    void isGreaterThan()
+    void isAbove()
     {
-        assertThat(Temperature.celsius(34.1).isGreaterThan(Temperature.celsius(34.0))).isTrue();
+        assertThat(Temperature.celsius(34.1).isAbove(Temperature.celsius(34.0))).isTrue();
     }
 
     @Test
-    void isNotGreaterThan()
+    void isNotAbove()
     {
-        assertThat(Temperature.celsius(34.0).isGreaterThan(Temperature.celsius(34.1))).isFalse();
+        assertThat(Temperature.celsius(34.0).isAbove(Temperature.celsius(34.1))).isFalse();
+    }
+
+    @Test
+    void isBelow()
+    {
+        assertThat(Temperature.celsius(34.0).isBelow(Temperature.celsius(34.1))).isTrue();
+    }
+
+    @Test
+    void isNotBelow()
+    {
+        assertThat(Temperature.celsius(34.1).isBelow(Temperature.celsius(34.0))).isFalse();
+    }
+
+    @Test
+    void isBelowOrAt()
+    {
+        assertThat(Temperature.celsius(34.0).isBelowOrAt(Temperature.celsius(34.0))).isTrue();
+    }
+
+    @Test
+    void isNotBelowOrAt()
+    {
+        assertThat(Temperature.celsius(34.1).isBelowOrAt(Temperature.celsius(34.0))).isFalse();
+    }
+
+    @Test
+    void differenceInMagnitude()
+    {
+        assertThat(Temperature.celsius(10.0).difference(Temperature.celsius(4.0))).isEqualTo(6.0);
+    }
+
+    @Test
+    void differenceInMagnitudeOtherIsGreater()
+    {
+        assertThat(Temperature.celsius(4.0).difference(Temperature.celsius(10.0))).isEqualTo(-6.0);
     }
 }

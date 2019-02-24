@@ -14,14 +14,14 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-package me.nguba.plant.ddd;
+package process.kernel;
 
 /**
- *
  * @author <a href="mailto:nguba@mac.com">Nico Guba</a>
- * @param <I>
  */
-public interface Aggregate<I>
+public interface EventPublisher
 {
-    Entity<I> getAggregateRoot();
+    <E extends DomainEvent> void publish(E event);
+
+    void subscribe(Object recipient);
 }

@@ -1,6 +1,6 @@
-package me.nguba.plant.ddd;
+package process.kernel;
 
-import me.nguba.plant.EqualityContract;
+import process.kernel.DomainEvent;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

@@ -14,7 +14,7 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-package me.nguba.plant.ddd;
+package process.kernel;
 
 /**
  * An object defined primarily by its identiy and <em>not</em> by their attributes.

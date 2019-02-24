@@ -1,48 +1,37 @@
-package me.nguba.plant;
+package process.temperature;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
 import java.time.Instant;
 
-class PidStrategyTest
+class AnalogPidStrategyTest
 {
-    private final PidStrategy pid = new PidStrategy();
-
-    @BeforeEach
-    void setUp() throws Exception
-    {
-    }
+    private final AnalogPidStrategy pid = new AnalogPidStrategy();
 
     @Test
     @DisplayName("error is zero when processValue and setPoint are equal")
     void calculateErrorZero()
     {
-        final double sP = 50.0;
-        final double pV = 50.0;
-
-        assertThat(pid.error(sP, pV)).isZero();
+        assertThat(pid.error(Temperature.celsius(50.0), Temperature.celsius(50.0))).isZero();
     }
 
     @Test
     @DisplayName("error is 10.0 when processValue is 10.0 below setPoint ")
     void calculateErrorPositive()
     {
-        final double sP = 50.0;
-        final double pV = 40.0;
-
-        assertThat(pid.error(sP, pV)).isEqualTo(10.0);
+        assertThat(pid.error(Temperature.celsius(50.0), Temperature.celsius(40.0))).isEqualTo(10.0);
     }
 
     @Test
     @DisplayName("error is 10.0 when processValue is 10.0 above setPoint ")
     void calculateErrorNegative()
     {
-        assertThat(pid.error(50.0, 60.0)).isEqualTo(-10.0);
+        assertThat(pid.error(Temperature.celsius(50.0), Temperature.celsius(60.0)))
+                .isEqualTo(-10.0);
     }
 
     @Test
@@ -64,7 +53,7 @@ class PidStrategyTest
     {
         pid.setP(1);
 
-        assertThat(pid.update(50.0, 50.0)).isZero();
+        assertThat(pid.update(Temperature.celsius(50.0), Temperature.celsius(50.0))).isZero();
     }
 
     @Test
@@ -72,7 +61,8 @@ class PidStrategyTest
     {
         pid.setP(1);
 
-        assertThat(pid.update(20.0, 10.0)).isEqualTo(10.0);
+        assertThat(pid.update(Temperature.celsius(20.0), Temperature.celsius(10.0)))
+                .isEqualTo(10.0);
     }
 
     @Test
@@ -116,11 +106,13 @@ class PidStrategyTest
     {
         pid.setI(10);
 
-        pid.update(10.0, 20.0);
+        assertThat(pid.update(Temperature.celsius(20.0), Temperature.celsius((10.0))))
+                .isEqualTo(0.0);
 
         Thread.sleep(2000);
 
-        assertThat(pid.update(20.0, 10.0)).isEqualTo(200.0);
+        assertThat(pid.update(Temperature.celsius(20.0), Temperature.celsius((10.0))))
+                .isEqualTo(200.0);
     }
 
     @Test
@@ -144,7 +136,7 @@ class PidStrategyTest
         assertThat(pid.getLastTime()).isNull();
 
         final Instant start = Instant.now();
-        pid.update(0, 0);
+        pid.update(Temperature.celsius(0), Temperature.celsius(0));
 
         assertThat(pid.getLastTime()).isAfterOrEqualTo(start);
     }
@@ -173,4 +165,27 @@ class PidStrategyTest
         assertThat(pid.dTerm(0.0, 10.0, 1, Duration.ofSeconds(1))).isEqualTo(-10.0);
     }
 
+    // @Test
+    void tryItOut() throws InterruptedException
+    {
+        final HeaterMock heater = new HeaterMock();
+
+        // pid.setP(5000);
+
+        final Temperature setpoint = Temperature.celsius(3.00);
+
+        final DigitalPidStrategy digital = new DigitalPidStrategy(pid, 1500);
+        digital.setI(1000);
+        digital.setP(1.5);
+        digital.setD(0);
+
+        while (true) {
+            if (digital.update(setpoint, heater.currentTemperature()))
+                heater.switchOn();
+            else heater.switchOff();
+
+            Thread.sleep(1000);
+            System.out.println("temp=" + heater.currentTemperature());
+        }
+    }
 }

@@ -14,7 +14,7 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-package me.nguba.plant;
+package process.temperature;
 
 import java.time.Duration;
 import java.time.Instant;
@@ -23,7 +23,7 @@ import java.time.Instant;
  *
  * @author <a href="mailto:nguba@mac.com">Nico Guba</a>
  */
-public class PidStrategy
+public class AnalogPidStrategy implements Pid<Double>
 {
     private double  pGain;
     private double  iGain;
@@ -31,9 +31,9 @@ public class PidStrategy
     private double  lastError;
     private double  dGain;
 
-    protected double error(final double sP, final double pV)
+    protected double error(final Temperature sP, final Temperature pV)
     {
-        return sP - pV;
+        return sP.difference(pV);
     }
 
     /**
@@ -51,12 +51,14 @@ public class PidStrategy
         return error * pGain;
     }
 
-    public void setP(final double proportionalGain)
+    @Override
+    public void setP(final double pGain)
     {
-        this.pGain = proportionalGain;
+        this.pGain = pGain;
     }
 
-    public double update(final double sP, final double pV)
+    @Override
+    public Double update(final Temperature sP, final Temperature pV)
     {
         final double error = error(sP, pV);
 
@@ -66,10 +68,16 @@ public class PidStrategy
         final double   pTerm      = pTerm(error, pGain);
         final double   iTerm      = iTerm(error, iGain, timeChange);
 
+        // TODO move into event
+        // final StringBuilder buf = new StringBuilder();
+        // buf.append("P=").append(pTerm).append(" I=").append(iTerm).append(" D=").append(dTerm)
+        // .append(" Error=").append(error);
+        // System.out.println(buf);
+
         lastTime = now;
         lastError = error;
 
-        return pTerm + iTerm + dTerm;
+        return Double.valueOf(pTerm + iTerm + dTerm);
     }
 
     public Instant getLastTime()
@@ -84,11 +92,13 @@ public class PidStrategy
         return Duration.between(previous, current);
     }
 
+    @Override
     public void setI(final double iGain)
     {
         this.iGain = iGain;
     }
 
+    @Override
     public void setD(final double dGain)
     {
         this.dGain = dGain;
@@ -129,11 +139,10 @@ public class PidStrategy
                            final double dGain,
                            final Duration duration)
     {
-        if (duration.isZero())
+        if (duration.getSeconds() == 0)
             return 0.0;
 
         final double dError = error - lastError;
         return (dError / duration.getSeconds()) * dGain;
     }
-
 }

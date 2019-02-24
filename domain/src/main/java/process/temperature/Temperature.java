@@ -14,9 +14,9 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-package me.nguba.plant;
+package process.temperature;
 
-import me.nguba.plant.ddd.ValueObject;
+import process.kernel.ValueObject;
 
 /**
  *
@@ -70,6 +70,18 @@ public final class Temperature implements ValueObject
     {
         this.value = value;
         this.scale = scale;
+    }
+
+    /**
+     * Returns the difference in magnitude beween this and another temperature.
+     *
+     * @param other
+     *            the temperature to compare with
+     * @return the resulting magnitued. Negative if the other value is greater.
+     */
+    public double difference(final Temperature other)
+    {
+        return value - other.value;
     }
 
     @Override
@@ -157,8 +169,18 @@ public final class Temperature implements ValueObject
         return builder.toString();
     }
 
-    public boolean isGreaterThan(final Temperature temperature)
+    public boolean isAbove(final Temperature temperature)
     {
         return value > temperature.value;
+    }
+
+    public boolean isBelow(final Temperature temperature)
+    {
+        return value < temperature.value;
+    }
+
+    public boolean isBelowOrAt(final Temperature temperature)
+    {
+        return value <= temperature.value;
     }
 }

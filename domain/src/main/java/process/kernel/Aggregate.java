@@ -1,5 +1,5 @@
 /*
-    Copyright (C) 2019  Nicolai P. Guba
+    Copyright (C) 2018  Nicolai P. Guba
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -14,32 +14,14 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-
-package me.nguba.plant;
-
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
+package process.kernel;
 
 /**
+ *
  * @author <a href="mailto:nguba@mac.com">Nico Guba</a>
+ * @param <I>
  */
-public final class SensorRepository
+public interface Aggregate<I>
 {
-    private final Map<SensorId, Sensor> sensors = new ConcurrentHashMap<>();
-
-    public void create(final Sensor sensor)
-    {
-        sensors.put(sensor.getId(), sensor);
-    }
-
-    public Sensor read(final SensorId id)
-    {
-        return sensors.get(id);
-    }
-
-    public void delete(final SensorId id)
-    {
-        sensors.remove(id);
-    }
-
+    Entity<I> getAggregateRoot();
 }

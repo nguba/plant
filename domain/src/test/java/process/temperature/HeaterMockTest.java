@@ -1,4 +1,6 @@
-package me.nguba.plant;
+package process.temperature;
+
+import process.temperature.Temperature;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -22,7 +24,7 @@ class HeaterMockTest
 
         Thread.sleep(1000);
 
-        assertThat(heater.currentTemperature().isGreaterThan(previous));
+        assertThat(heater.currentTemperature().isAbove(previous));
     }
 
     final HeaterMock heater = new HeaterMock();
