@@ -24,12 +24,12 @@ import java.util.UUID;
 /**
  * @author <a href="mailto:nguba@mac.com">Nico Guba</a>
  */
-public final class Schedule implements Entity<UUID>
+public final class Profile implements Entity<UUID>
 {
 
     private final UUID identity;
 
-    private Schedule(final UUID identity)
+    private Profile(final UUID identity)
     {
         this.identity = identity;
     }
@@ -40,9 +40,9 @@ public final class Schedule implements Entity<UUID>
         return identity;
     }
 
-    public static Schedule with(final UUID identity)
+    public static Profile with(final UUID identity)
     {
-        return new Schedule(identity);
+        return new Profile(identity);
     }
 
     @Override
@@ -63,7 +63,7 @@ public final class Schedule implements Entity<UUID>
             return false;
         if (getClass() != obj.getClass())
             return false;
-        final Schedule other = (Schedule) obj;
+        final Profile other = (Profile) obj;
         if (identity == null) {
             if (other.identity != null)
                 return false;

@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.UUID;
 
-class ScheduleTest implements EntityEqualityContract<UUID, Schedule>
+class ProfileTest implements EntityEqualityContract<UUID, Profile>
 {
 
     @BeforeEach
@@ -21,13 +21,13 @@ class ScheduleTest implements EntityEqualityContract<UUID, Schedule>
     void identity()
     {
         final UUID identity = UUID.randomUUID();
-        assertThat(Schedule.with(identity).getIdentity()).isEqualTo(identity);
+        assertThat(Profile.with(identity).getIdentity()).isEqualTo(identity);
     }
 
     @Override
-    public Class<Schedule> getType()
+    public Class<Profile> getType()
     {
-        return Schedule.class;
+        return Profile.class;
     }
 
 }
