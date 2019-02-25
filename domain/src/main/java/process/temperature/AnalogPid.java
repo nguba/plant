@@ -23,7 +23,7 @@ import java.time.Instant;
  *
  * @author <a href="mailto:nguba@mac.com">Nico Guba</a>
  */
-public class AnalogPidStrategy implements Pid<Double>
+public class AnalogPid implements Pid<Double>
 {
     private double  pGain;
     private double  iGain;

@@ -18,9 +18,9 @@
 package process.temperature;
 
 import process.kernel.Entity;
-import process.temperature.Temperature;
 
 import java.time.Duration;
+import java.time.Instant;
 import java.util.UUID;
 
 /**
@@ -32,6 +32,7 @@ public final class Segment implements Entity<UUID>
     private final Duration    duration;
     private final Temperature setPoint;
     private final UUID        identity;
+    private Instant           startedOn;
 
     public Segment(final UUID identity,
                    final String label,
@@ -81,9 +82,15 @@ public final class Segment implements Entity<UUID>
         return builder.toString();
     }
 
-    public boolean isActive(final Temperature processValue)
+    public boolean isComplete(final Temperature processValue)
     {
         return setPoint.isBelowOrAt(processValue);
+    }
+
+    public Instant start()
+    {
+        startedOn = Instant.now();
+        return startedOn;
     }
 
     @Override

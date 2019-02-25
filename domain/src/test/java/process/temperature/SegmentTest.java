@@ -1,7 +1,6 @@
 package process.temperature;
 
 import process.kernel.EntityEqualityContract;
-import process.temperature.Temperature;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -9,6 +8,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
+import java.time.Instant;
 import java.util.UUID;
 
 class SegmentTest implements EntityEqualityContract<UUID, Segment>
@@ -19,20 +19,28 @@ class SegmentTest implements EntityEqualityContract<UUID, Segment>
                                         Temperature.celsius(25.0));
 
     @Test
-    @DisplayName("segment is not active when temperature is below setpoint")
+    @DisplayName("is not complete when temperature is below setpoint")
     void setpointNotReached()
     {
-        assertThat(segment.isActive(Temperature.celsius(22.0))).isFalse();
+        assertThat(segment.isComplete(Temperature.celsius(22.0))).isFalse();
     }
 
     @Test
-    @DisplayName("segment active once setpoint reached")
+    @DisplayName("has completed once setpoint reached")
     void setpointReached()
     {
-        assertThat(segment.isActive(Temperature.celsius(25.0))).isTrue();
+        assertThat(segment.isComplete(Temperature.celsius(25.0))).isTrue();
     }
 
     @Test
+    @DisplayName("start returns the instant")
+    void startSegment()
+    {
+        assertThat(segment.start()).isBeforeOrEqualTo(Instant.now());
+    }
+
+    @Test
+    @DisplayName("toString() won't crash on null values")
     void toStringResillience()
     {
         new Segment(null, null, null, null).toString();
@@ -52,7 +60,6 @@ class SegmentTest implements EntityEqualityContract<UUID, Segment>
                                              "a segment",
                                              Duration.ofSeconds(2),
                                              Temperature.celsius(25.0));
-        System.out.println(segment);
         assertThat(segment.getIdentity()).isEqualTo(identity);
     }
 }

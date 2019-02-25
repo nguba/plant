@@ -19,6 +19,7 @@ package process.kernel;
 
 import nl.jqno.equalsverifier.EqualsVerifier;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -29,6 +30,7 @@ public interface EntityEqualityContract<I, T extends Entity<I>> extends Equality
 
     @Test
     @Override
+    @DisplayName("ensure equality contract is implemented")
     default void equalityContract()
     {
         EqualsVerifier.forClass(getType()).usingGetClass().withOnlyTheseFields("identity").verify();

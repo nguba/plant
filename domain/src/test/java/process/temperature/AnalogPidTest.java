@@ -8,9 +8,9 @@ import org.junit.jupiter.api.Test;
 import java.time.Duration;
 import java.time.Instant;
 
-class AnalogPidStrategyTest
+class AnalogPidTest
 {
-    private final AnalogPidStrategy pid = new AnalogPidStrategy();
+    private final AnalogPid pid = new AnalogPid();
 
     @Test
     @DisplayName("error is zero when processValue and setPoint are equal")
@@ -174,7 +174,7 @@ class AnalogPidStrategyTest
 
         final Temperature setpoint = Temperature.celsius(3.00);
 
-        final DigitalPidStrategy digital = new DigitalPidStrategy(pid, 1500);
+        final DigitalPid digital = new DigitalPid(pid, 1500);
         digital.setI(1000);
         digital.setP(1.5);
         digital.setD(0);

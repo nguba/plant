@@ -32,6 +32,8 @@ public final class Profile implements Entity<String>, Iterable<Segment>
 
     private final List<Segment> segments;
 
+    private boolean running;
+
     private Profile(final String identity, final List<Segment> segments)
     {
         this.identity = identity;
@@ -92,6 +94,16 @@ public final class Profile implements Entity<String>, Iterable<Segment>
     public Iterator<Segment> iterator()
     {
         return segments.iterator();
+    }
+
+    public boolean isRunning()
+    {
+        return running;
+    }
+
+    public void start()
+    {
+        running = true;
     }
 
 }

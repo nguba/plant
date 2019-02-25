@@ -17,7 +17,6 @@
 package process.temperature;
 
 import process.kernel.EntityEqualityContract;
-import process.temperature.Temperature;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -65,6 +64,19 @@ class ProfileTest implements EntityEqualityContract<String, Profile>
     }
 
     @Test
+    @DisplayName("starting the profile sets the state to running")
+    void startProfile()
+    {
+        final Profile profile = Profile.withSegments("A profile");
+
+        assertThat(profile.isRunning()).isFalse();
+
+        profile.start();
+
+        assertThat(profile.isRunning()).isTrue();
+    }
+
+    @Test
     @DisplayName("has no segments when none given")
     void currentSegmentIsInitialisedToEmpty()
     {
@@ -79,4 +91,22 @@ class ProfileTest implements EntityEqualityContract<String, Profile>
         return Profile.class;
     }
 
+    @Test
+    @DisplayName("execute segments")
+    void executeSegments()
+    {
+        final Segment segmentOne = new Segment(UUID.randomUUID(),
+                                               "Segment 1",
+                                               Duration.ofSeconds(3),
+                                               Temperature.celsius(25.3));
+        final Segment segmentTwo = new Segment(UUID.randomUUID(),
+                                               "Segment 2",
+                                               Duration.ofSeconds(3),
+                                               Temperature.celsius(28.0));
+
+        final Profile profile = Profile.withSegments("A profile", segmentOne, segmentTwo);
+
+        for (final Segment segment : profile)
+            System.out.println(segment);
+    }
 }

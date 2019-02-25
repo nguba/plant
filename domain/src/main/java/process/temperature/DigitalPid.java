@@ -20,14 +20,14 @@ package process.temperature;
 /**
  * @author <a href="mailto:nguba@mac.com">Nico Guba</a>
  */
-public final class DigitalPidStrategy implements Pid<Boolean>
+public final class DigitalPid implements Pid<Boolean>
 {
     private final Pid<Double> delegate;
 
     long               startTime;
     private final long windowSize;
 
-    public DigitalPidStrategy(final Pid<Double> delegate, final long windowSize)
+    public DigitalPid(final Pid<Double> delegate, final long windowSize)
     {
         this.delegate = delegate;
         this.windowSize = windowSize;
