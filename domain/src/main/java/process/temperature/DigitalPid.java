@@ -22,15 +22,30 @@ package process.temperature;
  */
 public final class DigitalPid implements Pid<Boolean>
 {
-    private final Pid<Double> delegate;
+    private final AnalogPid delegate;
 
     long               startTime;
     private final long windowSize;
 
-    public DigitalPid(final Pid<Double> delegate, final long windowSize)
+    public DigitalPid(final AnalogPid delegate, final long windowSize)
     {
         this.delegate = delegate;
         this.windowSize = windowSize;
+    }
+
+    public void setP(final Gain pGain)
+    {
+        delegate.setP(pGain);
+    }
+
+    public void setI(final Gain iGain)
+    {
+        delegate.setI(iGain);
+    }
+
+    public void setD(final Gain dGain)
+    {
+        delegate.setD(dGain);
     }
 
     @Override
@@ -44,27 +59,9 @@ public final class DigitalPid implements Pid<Boolean>
         if ((now - startTime) > windowSize)
             startTime += windowSize;
 
-        final Double  pidTerm          = delegate.update(sP, pV);
-        final boolean isAboveThreshold = pidTerm.doubleValue() > (now - startTime);
-        return Boolean.valueOf(isAboveThreshold);
-    }
+        final Output output = delegate.update(sP, pV);
+        return output.isAbove(now - startTime);
 
-    @Override
-    public void setD(final double dGain)
-    {
-        delegate.setD(dGain);
-    }
-
-    @Override
-    public void setI(final double iGain)
-    {
-        delegate.setI(iGain);
-    }
-
-    @Override
-    public void setP(final double pGain)
-    {
-        delegate.setP(pGain);
     }
 
 }

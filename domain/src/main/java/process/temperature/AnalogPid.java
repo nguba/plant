@@ -23,61 +23,34 @@ import java.time.Instant;
  *
  * @author <a href="mailto:nguba@mac.com">Nico Guba</a>
  */
-public class AnalogPid implements Pid<Double>
+public class AnalogPid implements Pid<Output>
 {
-    private double  pGain;
-    private double  iGain;
-    private Instant lastTime;
-    private double  lastError;
-    private double  dGain;
-
-    protected double error(final Temperature sP, final Temperature pV)
-    {
-        return sP.difference(pV);
-    }
-
-    /**
-     * In Proportional Only mode, the controller simply multiplies the Error by the Proportional
-     * Gain (Kp) to get the controller output.
-     *
-     * @param error
-     *            difference between sP and pV
-     * @param pGain
-     *            the proportional gain
-     * @return the proportional term
-     */
-    protected double pTerm(final double error, final double pGain)
-    {
-        return error * pGain;
-    }
+    private Gain      pGain     = Gain.zero();
+    private Gain      iGain     = Gain.zero();
+    private Instant   lastTime  = Instant.now();
+    private Magnitude lastError = Magnitude.zero();
+    private Gain      dGain     = Gain.zero();
 
     @Override
-    public void setP(final double pGain)
+    public void setP(final Gain pGain)
     {
         this.pGain = pGain;
     }
 
     @Override
-    public Double update(final Temperature sP, final Temperature pV)
+    public Output update(final Temperature sP, final Temperature pV)
     {
-        final double error = error(sP, pV);
-
-        final Instant  now        = Instant.now();
-        final Duration timeChange = timeChange(lastTime, now);
-        final double   dTerm      = dTerm(error, lastError, dGain, timeChange);
-        final double   pTerm      = pTerm(error, pGain);
-        final double   iTerm      = iTerm(error, iGain, timeChange);
-
-        // TODO move into event
-        // final StringBuilder buf = new StringBuilder();
-        // buf.append("P=").append(pTerm).append(" I=").append(iTerm).append(" D=").append(dTerm)
-        // .append(" Error=").append(error);
-        // System.out.println(buf);
+        final Magnitude error      = Magnitude.error(sP, pV);
+        final Instant   now        = Instant.now();
+        final Duration  timeChange = timeChange(lastTime, now);
+        final Magnitude dTerm      = Magnitude.dTerm(error, lastError, dGain, timeChange);
+        final Magnitude pTerm      = Magnitude.pTerm(error, pGain);
+        final Magnitude iTerm      = Magnitude.iTerm(error, iGain, timeChange);
 
         lastTime = now;
         lastError = error;
 
-        return Double.valueOf(pTerm + iTerm + dTerm);
+        return Output.valueOf(pTerm, iTerm, dTerm);
     }
 
     public Instant getLastTime()
@@ -93,56 +66,14 @@ public class AnalogPid implements Pid<Double>
     }
 
     @Override
-    public void setI(final double iGain)
+    public void setI(final Gain iGain)
     {
         this.iGain = iGain;
     }
 
     @Override
-    public void setD(final double dGain)
+    public void setD(final Gain dGain)
     {
         this.dGain = dGain;
-    }
-
-    /**
-     * Adds long-term precision to a control loop
-     *
-     * @param error
-     *            difference between sP and pV
-     * @param iGain
-     *            the integral gain
-     * @param duration
-     *            between the last and current sample time
-     * @return the integral term
-     */
-    protected double iTerm(final double error, final double iGain, final Duration duration)
-    {
-        return error * duration.getSeconds() * iGain;
-    }
-
-    /**
-     * This gives a rough estimate of the velocity (delta position/sample time), which predicts
-     * where the position will be in a while.
-     *
-     * @param error
-     *            difference between sP and pV
-     * @param lastError
-     *            difference between sP and pV calculated previously
-     * @param dGain
-     *            the derivative gain
-     * @param duration
-     *            between the last and current sample time
-     * @return the derivative term
-     */
-    protected double dTerm(final double error,
-                           final double lastError,
-                           final double dGain,
-                           final Duration duration)
-    {
-        if (duration.getSeconds() == 0)
-            return 0.0;
-
-        final double dError = error - lastError;
-        return (dError / duration.getSeconds()) * dGain;
     }
 }

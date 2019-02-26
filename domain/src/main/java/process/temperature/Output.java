@@ -20,13 +20,32 @@ package process.temperature;
 /**
  * @author <a href="mailto:nguba@mac.com">Nico Guba</a>
  */
-public interface Pid<T>
+public final class Output extends Magnitude
 {
-    T update(final Temperature sP, final Temperature pV);
+    private Output(final double value)
+    {
+        super(value);
+    }
 
-    void setP(Gain pGain);
+    public static Output valueOf(final Magnitude pTerm,
+                                 final Magnitude iTerm,
+                                 final Magnitude dTerm)
+    {
+        return new Output(pTerm.value + iTerm.value + dTerm.value);
+    }
 
-    void setI(Gain iGain);
+    public static Output valueOf(final double value)
+    {
+        return new Output(value);
+    }
 
-    void setD(Gain dGain);
+    public Boolean isAbove(final long window)
+    {
+        return Boolean.valueOf(value > window);
+    }
+
+    public static Output zero()
+    {
+        return new Output(0);
+    }
 }
