@@ -24,9 +24,9 @@ public interface Pid<T>
 {
     T update(final Temperature sP, final Temperature pV);
 
-    void setP(Gain pGain);
+    void setProportional(Proportional pGain);
 
-    void setI(Gain iGain);
+    void setDerivative(final Derivative derivative);
 
-    void setD(Gain dGain);
+    void setIntegral(final Integral integral);
 }

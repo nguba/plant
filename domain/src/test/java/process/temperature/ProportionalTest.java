@@ -1,0 +1,49 @@
+package process.temperature;
+
+import process.kernel.EqualityContract;
+
+import static org.assertj.core.api.Assertions.assertThat;
+
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+
+class ProportionalTest implements EqualityContract<Proportional>
+{
+    private static final Proportional PROPORTIONAL = Proportional.valueOf(1);
+
+    @Override
+    public Class<Proportional> getType()
+    {
+        return Proportional.class;
+    }
+
+    @Test
+    @DisplayName("proporional term is zero when there is no error")
+    void proportionalTerm()
+    {
+        assertThat(PROPORTIONAL.magnitudeFor(Magnitude.valueOf(0))).isEqualTo(Magnitude.zero());
+    }
+
+    @Test
+    @DisplayName("proporional term is 10 for error of 10 and gain 1")
+    void proportionalTermPositive()
+    {
+        assertThat(PROPORTIONAL.magnitudeFor(Magnitude.valueOf(10)))
+                .isEqualTo(Magnitude.valueOf(10.0));
+    }
+
+    @Test
+    @DisplayName("proporional term is -10 for error of 10 and gain 1")
+    void proportionalTermNegative()
+    {
+        assertThat(PROPORTIONAL.magnitudeFor(Magnitude.valueOf(-10)))
+                .isEqualTo(Magnitude.valueOf(-10.0));
+    }
+
+    @Test
+    @DisplayName("string representation of value is returned")
+    void toStringHasValueOnly()
+    {
+        assertThat(Proportional.valueOf(22.3).toString()).isEqualTo("22.3");
+    }
+}

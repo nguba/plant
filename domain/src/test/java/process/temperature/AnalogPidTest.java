@@ -14,7 +14,7 @@ class AnalogPidTest
     @Test
     void pidOnProporitonalTermOnly()
     {
-        pid.setP(Gain.valueOf(1));
+        pid.setProportional(Proportional.valueOf(1));
 
         assertThat(pid.update(Temperature.celsius(50.0), Temperature.celsius(50.0)))
                 .isEqualTo(Output.zero());
@@ -23,7 +23,7 @@ class AnalogPidTest
     @Test
     void pidPTermOnly()
     {
-        pid.setP(Gain.valueOf(1));
+        pid.setProportional(Proportional.valueOf(1));
 
         assertThat(pid.update(Temperature.celsius(20.0), Temperature.celsius(10.0)))
                 .isEqualTo(Output.valueOf(10.0));
@@ -32,7 +32,7 @@ class AnalogPidTest
     @Test
     void integralOverTwoPeriods() throws Exception
     {
-        pid.setI(Gain.valueOf(10));
+        pid.setIntegral(Integral.valueOf(10));
 
         assertThat(pid.update(Temperature.celsius(20.0), Temperature.celsius((10.0))))
                 .isEqualTo(Output.zero());

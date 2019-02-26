@@ -17,8 +17,6 @@
 
 package process.temperature;
 
-import java.time.Duration;
-
 /**
  * @author <a href="mailto:nguba@mac.com">Nico Guba</a>
  */
@@ -46,65 +44,6 @@ public class Magnitude
     public static Magnitude zero()
     {
         return zero;
-    }
-
-    /**
-     * In Proportional Only mode, the controller simply multiplies the Error by the Proportional
-     * Gain (Kp) to get the controller output.
-     *
-     * @param error
-     *            difference between sP and pV
-     * @param pGain
-     *            the proportional gain
-     * @return the proportional term
-     */
-    public static Magnitude pTerm(final Magnitude error, final Magnitude pGain)
-    {
-        return Magnitude.valueOf(error.value * pGain.value);
-    }
-
-    /**
-     * Adds long-term precision to a control loop
-     *
-     * @param error
-     *            difference between sP and pV
-     * @param iGain
-     *            the integral gain
-     * @param duration
-     *            between the last and current sample time
-     * @return the integral term
-     */
-    public static Magnitude iTerm(final Magnitude error,
-                                  final Magnitude iGain,
-                                  final Duration duration)
-    {
-        return Magnitude.valueOf(error.value * duration.getSeconds() * iGain.value);
-    }
-
-    /**
-     * This gives a rough estimate of the velocity (delta position/sample time), which predicts
-     * where the position will be in a while.
-     *
-     * @param error
-     *            difference between sP and pV
-     * @param lastError
-     *            difference between sP and pV calculated previously
-     * @param dGain
-     *            the derivative gain
-     * @param duration
-     *            between the last and current sample time
-     * @return the derivative term
-     */
-    public static Magnitude dTerm(final Magnitude error,
-                                  final Magnitude lastError,
-                                  final Magnitude dGain,
-                                  final Duration duration)
-    {
-        if (duration.getSeconds() == 0)
-            return Magnitude.zero();
-
-        final double dError = error.value - lastError.value;
-        return Magnitude.valueOf((dError / duration.getSeconds()) * dGain.value);
     }
 
     @Override

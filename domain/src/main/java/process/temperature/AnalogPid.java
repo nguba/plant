@@ -25,16 +25,16 @@ import java.time.Instant;
  */
 public class AnalogPid implements Pid<Output>
 {
-    private Gain      pGain     = Gain.zero();
-    private Gain      iGain     = Gain.zero();
-    private Instant   lastTime  = Instant.now();
-    private Magnitude lastError = Magnitude.zero();
-    private Gain      dGain     = Gain.zero();
+    private Proportional proportional = Proportional.zero();
+    private Integral     integral     = Integral.zero();
+    private Instant      lastTime     = Instant.now();
+    private Magnitude    lastError    = Magnitude.zero();
+    private Derivative   derivative   = Derivative.zero();
 
     @Override
-    public void setP(final Gain pGain)
+    public void setProportional(final Proportional proportional)
     {
-        this.pGain = pGain;
+        this.proportional = proportional;
     }
 
     @Override
@@ -43,9 +43,9 @@ public class AnalogPid implements Pid<Output>
         final Magnitude error      = Magnitude.error(sP, pV);
         final Instant   now        = Instant.now();
         final Duration  timeChange = timeChange(lastTime, now);
-        final Magnitude dTerm      = Magnitude.dTerm(error, lastError, dGain, timeChange);
-        final Magnitude pTerm      = Magnitude.pTerm(error, pGain);
-        final Magnitude iTerm      = Magnitude.iTerm(error, iGain, timeChange);
+        final Magnitude dTerm      = derivative.magnitudeFor(error, lastError, timeChange);
+        final Magnitude pTerm      = proportional.magnitudeFor(error);
+        final Magnitude iTerm      = integral.magnitudeFor(error, timeChange);
 
         lastTime = now;
         lastError = error;
@@ -66,14 +66,14 @@ public class AnalogPid implements Pid<Output>
     }
 
     @Override
-    public void setI(final Gain iGain)
+    public void setIntegral(final Integral integral)
     {
-        this.iGain = iGain;
+        this.integral = integral;
     }
 
     @Override
-    public void setD(final Gain dGain)
+    public void setDerivative(final Derivative derivative)
     {
-        this.dGain = dGain;
+        this.derivative = derivative;
     }
 }

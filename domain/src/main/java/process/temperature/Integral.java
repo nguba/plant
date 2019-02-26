@@ -17,23 +17,40 @@
 
 package process.temperature;
 
+import java.time.Duration;
+
 /**
  * @author <a href="mailto:nguba@mac.com">Nico Guba</a>
  */
-public final class Gain extends Magnitude
+public final class Integral extends Magnitude
 {
-    private Gain(final double value)
+    private Integral(final double value)
     {
         super(value);
     }
 
-    public static Gain valueOf(final double value)
+    public static Integral valueOf(final double value)
     {
-        return new Gain(value);
+        return new Integral(value);
     }
 
-    public static Gain zero()
+    public static Integral zero()
     {
-        return Gain.valueOf(0);
+        return Integral.valueOf(0);
     }
+
+    /**
+     * Adds long-term precision to a control loop
+     *
+     * @param error
+     *            difference between sP and pV
+     * @param duration
+     *            between the last and current sample time
+     * @return the integral term
+     */
+    public Magnitude magnitudeFor(final Magnitude error, final Duration duration)
+    {
+        return Magnitude.valueOf(error.value * duration.getSeconds() * value);
+    }
+
 }

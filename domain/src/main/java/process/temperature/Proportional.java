@@ -20,46 +20,33 @@ package process.temperature;
 /**
  * @author <a href="mailto:nguba@mac.com">Nico Guba</a>
  */
-public final class Output
+public final class Proportional extends Magnitude
 {
-    private final double value;
-
-    private Output(final double value)
+    private Proportional(final double value)
     {
-        this.value = value;
+        super(value);
     }
 
-    public static Output valueOf(final Magnitude pTerm,
-                                 final Magnitude iTerm,
-                                 final Magnitude dTerm)
+    public static Proportional zero()
     {
-        return new Output(pTerm.value + iTerm.value + dTerm.value);
+        return Proportional.valueOf(0);
     }
 
-    public static Output valueOf(final double value)
+    public static Proportional valueOf(final double value)
     {
-        return new Output(value);
-    }
-
-    public Boolean isAbove(final long window)
-    {
-        return Boolean.valueOf(value > window);
-    }
-
-    public static Output zero()
-    {
-        return new Output(0);
+        return new Proportional(value);
     }
 
     @Override
     public int hashCode()
     {
-        final int prime  = 31;
-        int       result = 1;
-        long      temp;
-        temp = Double.doubleToLongBits(value);
-        result = (prime * result) + (int) (temp ^ (temp >>> 32));
-        return result;
+        return super.hashCode();
+    }
+
+    @Override
+    public String toString()
+    {
+        return String.valueOf(value);
     }
 
     @Override
@@ -67,13 +54,24 @@ public final class Output
     {
         if (this == obj)
             return true;
-        if (obj == null)
+        if (!super.equals(obj))
             return false;
         if (getClass() != obj.getClass())
             return false;
-        final Output other = (Output) obj;
-        if (Double.doubleToLongBits(value) != Double.doubleToLongBits(other.value))
-            return false;
         return true;
     }
+
+    /**
+     * In Proportional Only mode, the controller simply multiplies the Error by the Proportional
+     * Gain (Kp) to get the controller output.
+     *
+     * @param error
+     *            difference between sP and pV
+     * @return the magnitude of the proportional term
+     */
+    public Magnitude magnitudeFor(final Magnitude error)
+    {
+        return Magnitude.valueOf(error.value * value);
+    }
+
 }
