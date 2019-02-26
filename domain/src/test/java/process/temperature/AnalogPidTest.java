@@ -3,6 +3,7 @@ package process.temperature;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
@@ -76,27 +77,34 @@ class AnalogPidTest
         assertThat(pid.getLastTime()).isAfterOrEqualTo(start);
     }
 
-    // @Test
-    void tryItOut() throws InterruptedException
+    @Test
+    @DisplayName("toString() resillience")
+    void toStringResillience()
     {
-        // final HeaterMock heater = new HeaterMock();
-        //
-        // // pid.setP(5000);
-        //
-        // final Temperature setpoint = Temperature.celsius(3.00);
-        //
-        // final DigitalPid digital = new DigitalPid(pid, 1500);
-        // digital.setI(1000);
-        // digital.setP(1.5);
-        // digital.setD(0);
-        //
-        // while (true) {
-        // if (digital.update(setpoint, heater.currentTemperature()))
-        // heater.switchOn();
-        // else heater.switchOff();
-        //
-        // Thread.sleep(1000);
-        // System.out.println("temp=" + heater.currentTemperature());
-        // }
+        new AnalogPid().toString();
     }
+
+    // @Test
+    // void tryItOut() throws InterruptedException
+    // {
+    // final HeaterMock heater = new HeaterMock();
+    //
+    // // pid.setP(5000);
+    //
+    // final Temperature setpoint = Temperature.celsius(3.00);
+    //
+    // final DigitalPid digital = new DigitalPid(pid, 1500);
+    // digital.setI(1000);
+    // digital.setP(1.5);
+    // digital.setD(0);
+    //
+    // while (true) {
+    // if (digital.update(setpoint, heater.currentTemperature()))
+    // heater.switchOn();
+    // else heater.switchOff();
+    //
+    // Thread.sleep(1000);
+    // System.out.println("temp=" + heater.currentTemperature());
+    // }
+    // }
 }

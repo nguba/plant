@@ -35,13 +35,13 @@ public final class DigitalPid implements Pid<Boolean>
     @Override
     public Boolean update(final Temperature sP, final Temperature pV)
     {
-        final long now = System.currentTimeMillis();
-
-        if ((now - startTime) > windowSize)
+        final long window = System.currentTimeMillis() - startTime;
+        System.out.println(window);
+        if (window > windowSize)
             startTime += windowSize;
 
         final Output pidTerm = delegate.update(sP, pV);
-        return Output.valueOf(now - startTime).isBelow(pidTerm);
+        return Output.valueOf(window).isBelow(pidTerm);
     }
 
     public void setProportional(final Proportional proportional)

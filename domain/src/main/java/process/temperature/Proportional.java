@@ -43,24 +43,6 @@ public final class Proportional extends Gain
         return super.hashCode();
     }
 
-    @Override
-    public String toString()
-    {
-        return String.valueOf(value);
-    }
-
-    @Override
-    public boolean equals(final Object obj)
-    {
-        if (this == obj)
-            return true;
-        if (!super.equals(obj))
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
-        return true;
-    }
-
     /**
      * In Proportional Only mode, the controller simply multiplies the Error by the Proportional
      * Gain (Kp) to get the controller output.

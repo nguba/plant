@@ -17,12 +17,8 @@
 
 package process.temperature;
 
-import process.temperature.Switch;
-import process.temperature.Temperature;
-
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -38,11 +34,11 @@ public class HeaterMock implements Switch
 
     AtomicBoolean heat = new AtomicBoolean();
 
-    private final ScheduledFuture<?> on;
+    // private final ScheduledFuture<?> on;
 
     public HeaterMock()
     {
-        on = element.scheduleAtFixedRate(() -> {
+        element.scheduleAtFixedRate(() -> {
             if (heat.get())
                 value.getAndIncrement();
         }, 0, 100, TimeUnit.MILLISECONDS);
@@ -67,10 +63,5 @@ public class HeaterMock implements Switch
     {
         System.out.println("OFF");
         heat.set(false);
-    }
-
-    public void stop()
-    {
-        on.cancel(true);
     }
 }

@@ -39,6 +39,7 @@ public final class Output extends Term
 
     public Boolean isBelow(final Output other)
     {
+        System.out.println(value + " < " + other.value);
         return Boolean.valueOf(value < other.value);
     }
 
