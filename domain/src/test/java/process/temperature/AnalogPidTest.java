@@ -2,6 +2,7 @@ package process.temperature;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
@@ -10,6 +11,14 @@ import java.time.Instant;
 class AnalogPidTest
 {
     private final AnalogPid pid = new AnalogPid();
+
+    @BeforeEach
+    void setUp()
+    {
+        pid.setDerivative(Derivative.zero());
+        pid.setIntegral(Integral.zero());
+        pid.setProportional(Proportional.zero());
+    }
 
     @Test
     void pidOnProporitonalTermOnly()

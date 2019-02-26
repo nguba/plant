@@ -69,9 +69,9 @@ public final class Proportional extends Magnitude
      *            difference between sP and pV
      * @return the magnitude of the proportional term
      */
-    public Magnitude magnitudeFor(final Magnitude error)
+    public Term termFor(final Error error)
     {
-        return Magnitude.valueOf(error.value * value);
+        return Term.valueOf(error.value * value);
     }
 
 }

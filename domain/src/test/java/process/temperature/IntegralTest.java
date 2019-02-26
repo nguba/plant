@@ -28,36 +28,35 @@ class IntegralTest implements EqualityContract<Integral>
     @Test
     void integralForNoTimeChange()
     {
-        assertThat(INTEGRAL.magnitudeFor(Magnitude.valueOf(1000), Duration.ZERO))
-                .isEqualTo(Magnitude.zero());
+        assertThat(INTEGRAL.termFor(Error.valueOf(1000), Duration.ZERO)).isEqualTo(Term.zero());
     }
 
     @Test
     void integralForNoError()
     {
-        assertThat(INTEGRAL.magnitudeFor(Magnitude.valueOf(0), Duration.ofSeconds(5)))
-                .isEqualTo(Magnitude.zero());
+        assertThat(INTEGRAL.termFor(Error.valueOf(0), Duration.ofSeconds(5)))
+                .isEqualTo(Term.zero());
     }
 
     @Test
     void integralForOneSecond()
     {
-        assertThat(INTEGRAL.magnitudeFor(Magnitude.valueOf(1), Duration.ofSeconds(1)))
-                .isEqualTo(Magnitude.valueOf(1));
+        assertThat(INTEGRAL.termFor(Error.valueOf(1), Duration.ofSeconds(1)))
+                .isEqualTo(Term.valueOf(1));
     }
 
     @Test
     void integralForOneSecondAndErrorOf10()
     {
-        assertThat(INTEGRAL.magnitudeFor(Magnitude.valueOf(10), Duration.ofSeconds(1)))
-                .isEqualTo(Magnitude.valueOf(10.0));
+        assertThat(INTEGRAL.termFor(Error.valueOf(10), Duration.ofSeconds(1)))
+                .isEqualTo(Term.valueOf(10.0));
     }
 
     @Test
     void integralOverTimePeriod()
     {
-        assertThat(INTEGRAL.magnitudeFor(Magnitude.valueOf(10), Duration.ofSeconds(2)))
-                .isEqualTo(Magnitude.valueOf(20.0));
+        assertThat(INTEGRAL.termFor(Error.valueOf(10), Duration.ofSeconds(2)))
+                .isEqualTo(Term.valueOf(20.0));
     }
 
     @Test

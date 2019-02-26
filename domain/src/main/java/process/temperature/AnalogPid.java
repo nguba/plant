@@ -28,7 +28,7 @@ public class AnalogPid implements Pid<Output>
     private Proportional proportional = Proportional.zero();
     private Integral     integral     = Integral.zero();
     private Instant      lastTime     = Instant.now();
-    private Magnitude    lastError    = Magnitude.zero();
+    private Error        lastError    = Error.zero();
     private Derivative   derivative   = Derivative.zero();
 
     @Override
@@ -40,12 +40,12 @@ public class AnalogPid implements Pid<Output>
     @Override
     public Output update(final Temperature sP, final Temperature pV)
     {
-        final Magnitude error      = Magnitude.error(sP, pV);
-        final Instant   now        = Instant.now();
-        final Duration  timeChange = timeChange(lastTime, now);
-        final Magnitude dTerm      = derivative.magnitudeFor(error, lastError, timeChange);
-        final Magnitude pTerm      = proportional.magnitudeFor(error);
-        final Magnitude iTerm      = integral.magnitudeFor(error, timeChange);
+        final Error    error      = Error.from(sP, pV);
+        final Instant  now        = Instant.now();
+        final Duration timeChange = timeChange(lastTime, now);
+        final Term     dTerm      = derivative.termFor(error, lastError, timeChange);
+        final Term     pTerm      = proportional.termFor(error);
+        final Term     iTerm      = integral.termFor(error, timeChange);
 
         lastTime = now;
         lastError = error;

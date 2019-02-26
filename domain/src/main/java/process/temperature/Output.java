@@ -20,18 +20,14 @@ package process.temperature;
 /**
  * @author <a href="mailto:nguba@mac.com">Nico Guba</a>
  */
-public final class Output
+public final class Output extends Term
 {
-    private final double value;
-
     private Output(final double value)
     {
-        this.value = value;
+        super(value);
     }
 
-    public static Output valueOf(final Magnitude pTerm,
-                                 final Magnitude iTerm,
-                                 final Magnitude dTerm)
+    public static Output valueOf(final Term pTerm, final Term iTerm, final Term dTerm)
     {
         return new Output(pTerm.value + iTerm.value + dTerm.value);
     }

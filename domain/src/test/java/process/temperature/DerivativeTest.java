@@ -26,33 +26,31 @@ class DerivativeTest implements EqualityContract<Derivative>
     @Test
     void dTermZeroDuration()
     {
-        assertThat(Derivative.zero()
-                .magnitudeFor(Magnitude.zero(), Magnitude.zero(), Duration.ZERO))
-                        .isEqualTo(Magnitude.zero());
+        assertThat(Derivative.zero().termFor(Error.zero(), Error.zero(), Duration.ZERO))
+                .isEqualTo(Term.zero());
     }
 
     @Test
     void dTermZeroError()
     {
-        assertThat(Derivative.zero()
-                .magnitudeFor(Magnitude.zero(), Magnitude.zero(), Duration.ofSeconds(2)))
-                        .isEqualTo(Magnitude.zero());
+        assertThat(Derivative.zero().termFor(Error.zero(), Error.zero(), Duration.ofSeconds(2)))
+                .isEqualTo(Term.zero());
     }
 
     @Test
     void dTermPreviousErrorIsLess()
     {
         assertThat(Derivative.valueOf(1)
-                .magnitudeFor(Magnitude.valueOf(10), Magnitude.zero(), Duration.ofSeconds(1)))
-                        .isEqualTo(Magnitude.valueOf(10));
+                .termFor(Error.valueOf(10), Error.zero(), Duration.ofSeconds(1)))
+                        .isEqualTo(Term.valueOf(10));
     }
 
     @Test
     void dTermPreviousErrorIsBigger()
     {
         assertThat(Derivative.valueOf(1)
-                .magnitudeFor(Magnitude.zero(), Magnitude.valueOf(10), Duration.ofSeconds(1)))
-                        .isEqualTo(Magnitude.valueOf(-10));
+                .termFor(Error.zero(), Error.valueOf(10), Duration.ofSeconds(1)))
+                        .isEqualTo(Term.valueOf(-10));
     }
 
     @Test

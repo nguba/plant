@@ -17,40 +17,35 @@
 
 package process.temperature;
 
-import java.time.Duration;
+import process.kernel.EqualityContract;
+
+import static org.assertj.core.api.Assertions.assertThat;
+
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 
 /**
+ *
  * @author <a href="mailto:nguba@mac.com">Nico Guba</a>
  */
-public final class Integral extends Magnitude
+class TermTest implements EqualityContract<Term>
 {
-    private Integral(final double value)
+    @Override
+    public Class<Term> getType()
     {
-        super(value);
+        return Term.class;
     }
 
-    public static Integral valueOf(final double value)
+    @Test
+    void zero()
     {
-        return new Integral(value);
+        assertThat(Term.zero()).isEqualTo(Term.valueOf(0));
     }
 
-    public static Integral zero()
+    @Test
+    @DisplayName("string representation of value is returned")
+    void toStringHasValueOnly()
     {
-        return Integral.valueOf(0);
+        assertThat(Term.valueOf(22.3).toString()).isEqualTo("22.3");
     }
-
-    /**
-     * Adds long-term precision to a control loop
-     *
-     * @param error
-     *            difference between sP and pV
-     * @param duration
-     *            between the last and current sample time
-     * @return the integral termMa
-     */
-    public Term termFor(final Error error, final Duration duration)
-    {
-        return Term.valueOf(error.value * duration.getSeconds() * value);
-    }
-
 }

@@ -18,26 +18,30 @@ class ProportionalTest implements EqualityContract<Proportional>
     }
 
     @Test
+    void zero()
+    {
+        assertThat(Proportional.zero()).isEqualTo(Proportional.valueOf(0));
+    }
+
+    @Test
     @DisplayName("proporional term is zero when there is no error")
     void proportionalTerm()
     {
-        assertThat(PROPORTIONAL.magnitudeFor(Magnitude.valueOf(0))).isEqualTo(Magnitude.zero());
+        assertThat(PROPORTIONAL.termFor(Error.valueOf(0))).isEqualTo(Term.zero());
     }
 
     @Test
     @DisplayName("proporional term is 10 for error of 10 and gain 1")
     void proportionalTermPositive()
     {
-        assertThat(PROPORTIONAL.magnitudeFor(Magnitude.valueOf(10)))
-                .isEqualTo(Magnitude.valueOf(10.0));
+        assertThat(PROPORTIONAL.termFor(Error.valueOf(10))).isEqualTo(Term.valueOf(10.0));
     }
 
     @Test
     @DisplayName("proporional term is -10 for error of 10 and gain 1")
     void proportionalTermNegative()
     {
-        assertThat(PROPORTIONAL.magnitudeFor(Magnitude.valueOf(-10)))
-                .isEqualTo(Magnitude.valueOf(-10.0));
+        assertThat(PROPORTIONAL.termFor(Error.valueOf(-10))).isEqualTo(Term.valueOf(-10.0));
     }
 
     @Test

@@ -9,8 +9,7 @@ import org.junit.jupiter.api.Test;
 class OutputTest implements EqualityContract<Output>
 {
 
-    private static final Output PID_TERM = Output
-            .valueOf(Magnitude.zero(), Magnitude.zero(), Magnitude.zero());
+    private static final Output PID_TERM = Output.valueOf(Term.zero(), Term.zero(), Term.zero());
 
     @Test
     void isAboveLowerThreshold()

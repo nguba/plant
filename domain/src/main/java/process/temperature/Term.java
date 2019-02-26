@@ -20,13 +20,24 @@ package process.temperature;
 /**
  * @author <a href="mailto:nguba@mac.com">Nico Guba</a>
  */
-public abstract class Magnitude
+public class Term
 {
     protected final double value;
 
-    protected Magnitude(final double value)
+    protected Term(final double value)
     {
         this.value = value;
+    }
+
+    public static Term valueOf(final double value)
+    {
+        return new Term(value);
+    }
+
+    @Override
+    public String toString()
+    {
+        return String.valueOf(value);
     }
 
     @Override
@@ -49,15 +60,15 @@ public abstract class Magnitude
             return false;
         if (getClass() != obj.getClass())
             return false;
-        final Magnitude other = (Magnitude) obj;
+        final Term other = (Term) obj;
         if (Double.doubleToLongBits(value) != Double.doubleToLongBits(other.value))
             return false;
         return true;
     }
 
-    @Override
-    public String toString()
+    public static Term zero()
     {
-        return String.valueOf(value);
+        return Term.valueOf(0);
     }
+
 }
