@@ -27,12 +27,12 @@ import org.junit.jupiter.api.Test;
  */
 public interface EqualityContract<T>
 {
-    Class<T> getType();
-
     @Test
     @DisplayName("Equality contract is implemented")
     default void equalityContract()
     {
         EqualsVerifier.forClass(getType()).usingGetClass().verify();
     }
+
+    Class<T> getType();
 }

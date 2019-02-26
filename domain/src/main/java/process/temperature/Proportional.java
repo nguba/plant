@@ -22,9 +22,9 @@ package process.temperature;
  */
 public final class Proportional extends Gain
 {
-    private Proportional(final double value)
+    public static Proportional valueOf(final double value)
     {
-        super(value);
+        return new Proportional(value);
     }
 
     public static Proportional zero()
@@ -32,9 +32,9 @@ public final class Proportional extends Gain
         return Proportional.valueOf(0);
     }
 
-    public static Proportional valueOf(final double value)
+    private Proportional(final double value)
     {
-        return new Proportional(value);
+        super(value);
     }
 
     @Override

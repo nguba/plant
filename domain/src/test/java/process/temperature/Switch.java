@@ -22,7 +22,7 @@ package process.temperature;
  */
 public interface Switch
 {
-    void switchOn();
-
     void switchOff();
+
+    void switchOn();
 }

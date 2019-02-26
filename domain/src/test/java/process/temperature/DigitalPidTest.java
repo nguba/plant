@@ -9,6 +9,12 @@ class DigitalPidTest
 {
     DigitalPid pid = new DigitalPid(new AnalogPid(), 1000);
 
+    @Test
+    void falseWhenNoHeatingNeeded() throws Exception
+    {
+        assertThat(pid.update(Temperature.celsius(10), Temperature.celsius(10.01))).isFalse();
+    }
+
     @BeforeEach
     void setUp() throws Exception
     {
@@ -22,12 +28,6 @@ class DigitalPidTest
     void trueWhenHeatingIsNeeded() throws Exception
     {
         assertThat(pid.update(Temperature.celsius(10), Temperature.celsius(0))).isTrue();
-    }
-
-    @Test
-    void falseWhenNoHeatingNeeded() throws Exception
-    {
-        assertThat(pid.update(Temperature.celsius(10), Temperature.celsius(10.01))).isFalse();
     }
 
 }

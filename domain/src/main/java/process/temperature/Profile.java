@@ -28,31 +28,24 @@ import java.util.List;
  */
 public final class Profile implements Entity<String>, Iterable<Segment>
 {
+    public static Profile withSegments(final String name, final Segment... segments)
+    {
+        final List<Segment> schedule = new ArrayList<>(segments.length);
+        for (final Segment segment : segments)
+            schedule.add(segment);
+        return new Profile(name, schedule);
+    }
+
     private final String identity;
 
-    private final List<Segment> segments;
-
     private boolean running;
+
+    private final List<Segment> segments;
 
     private Profile(final String identity, final List<Segment> segments)
     {
         this.identity = identity;
         this.segments = segments;
-    }
-
-    @Override
-    public String getIdentity()
-    {
-        return identity;
-    }
-
-    @Override
-    public int hashCode()
-    {
-        final int prime  = 31;
-        int       result = 1;
-        result = (prime * result) + ((identity == null) ? 0 : identity.hashCode());
-        return result;
     }
 
     @Override
@@ -73,12 +66,35 @@ public final class Profile implements Entity<String>, Iterable<Segment>
         return true;
     }
 
-    public static Profile withSegments(final String name, final Segment... segments)
+    @Override
+    public String getIdentity()
     {
-        final List<Segment> schedule = new ArrayList<>(segments.length);
-        for (final Segment segment : segments)
-            schedule.add(segment);
-        return new Profile(name, schedule);
+        return identity;
+    }
+
+    @Override
+    public int hashCode()
+    {
+        final int prime  = 31;
+        int       result = 1;
+        result = prime * result + (identity == null ? 0 : identity.hashCode());
+        return result;
+    }
+
+    public boolean isRunning()
+    {
+        return running;
+    }
+
+    @Override
+    public Iterator<Segment> iterator()
+    {
+        return segments.iterator();
+    }
+
+    public void start()
+    {
+        running = true;
     }
 
     @Override
@@ -88,22 +104,6 @@ public final class Profile implements Entity<String>, Iterable<Segment>
         builder.append("Profile [identity=").append(identity).append(", segments=").append(segments)
                 .append("]");
         return builder.toString();
-    }
-
-    @Override
-    public Iterator<Segment> iterator()
-    {
-        return segments.iterator();
-    }
-
-    public boolean isRunning()
-    {
-        return running;
-    }
-
-    public void start()
-    {
-        running = true;
     }
 
 }

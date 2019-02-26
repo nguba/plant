@@ -20,22 +20,16 @@ class IntegralTest implements EqualityContract<Integral>
     }
 
     @Test
-    void zero()
+    void integralForNoError()
     {
-        assertThat(Integral.zero()).isEqualTo(Integral.valueOf(0));
+        assertThat(INTEGRAL.termFor(Error.valueOf(0), Duration.ofSeconds(5)))
+                .isEqualTo(Term.zero());
     }
 
     @Test
     void integralForNoTimeChange()
     {
         assertThat(INTEGRAL.termFor(Error.valueOf(1000), Duration.ZERO)).isEqualTo(Term.zero());
-    }
-
-    @Test
-    void integralForNoError()
-    {
-        assertThat(INTEGRAL.termFor(Error.valueOf(0), Duration.ofSeconds(5)))
-                .isEqualTo(Term.zero());
     }
 
     @Test
@@ -64,6 +58,12 @@ class IntegralTest implements EqualityContract<Integral>
     void toStringHasValueOnly()
     {
         assertThat(Integral.valueOf(22.3).toString()).isEqualTo("22.3");
+    }
+
+    @Test
+    void zero()
+    {
+        assertThat(Integral.zero()).isEqualTo(Integral.valueOf(0));
     }
 
 }

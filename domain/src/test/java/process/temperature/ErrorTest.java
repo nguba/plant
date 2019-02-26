@@ -31,23 +31,11 @@ class ErrorTest implements EqualityContract<Error>
 {
     private static final Temperature SETPOINT = Temperature.celsius(50.0);
 
-    @Override
-    public Class<Error> getType()
-    {
-        return Error.class;
-    }
-
     @Test
-    void zero()
+    @DisplayName("error is 10.0 when processValue is 10.0 above setPoint ")
+    void calculateErrorNegative()
     {
-        assertThat(Error.zero()).isEqualTo(Error.valueOf(0));
-    }
-
-    @Test
-    @DisplayName("error is zero when processValue and setPoint are equal")
-    void calculateErrorZero()
-    {
-        assertThat(Error.from(SETPOINT, Temperature.celsius(50.0))).isEqualTo(Error.zero());
+        assertThat(Error.from(SETPOINT, Temperature.celsius(60.0))).isEqualTo(Error.valueOf(-10.0));
     }
 
     @Test
@@ -58,10 +46,16 @@ class ErrorTest implements EqualityContract<Error>
     }
 
     @Test
-    @DisplayName("error is 10.0 when processValue is 10.0 above setPoint ")
-    void calculateErrorNegative()
+    @DisplayName("error is zero when processValue and setPoint are equal")
+    void calculateErrorZero()
     {
-        assertThat(Error.from(SETPOINT, Temperature.celsius(60.0))).isEqualTo(Error.valueOf(-10.0));
+        assertThat(Error.from(SETPOINT, Temperature.celsius(50.0))).isEqualTo(Error.zero());
+    }
+
+    @Override
+    public Class<Error> getType()
+    {
+        return Error.class;
     }
 
     @Test
@@ -69,5 +63,11 @@ class ErrorTest implements EqualityContract<Error>
     void toStringHasValueOnly()
     {
         assertThat(Error.valueOf(22.3).toString()).isEqualTo("22.3");
+    }
+
+    @Test
+    void zero()
+    {
+        assertThat(Error.zero()).isEqualTo(Error.valueOf(0));
     }
 }

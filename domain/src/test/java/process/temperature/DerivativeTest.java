@@ -11,16 +11,20 @@ import java.time.Duration;
 
 class DerivativeTest implements EqualityContract<Derivative>
 {
-    @Override
-    public Class<Derivative> getType()
+    @Test
+    void dTermPreviousErrorIsBigger()
     {
-        return Derivative.class;
+        assertThat(Derivative.valueOf(1)
+                .termFor(Error.zero(), Error.valueOf(10), Duration.ofSeconds(1)))
+                        .isEqualTo(Term.valueOf(-10));
     }
 
     @Test
-    void zero()
+    void dTermPreviousErrorIsLess()
     {
-        assertThat(Derivative.zero()).isEqualTo(Derivative.valueOf(0));
+        assertThat(Derivative.valueOf(1)
+                .termFor(Error.valueOf(10), Error.zero(), Duration.ofSeconds(1)))
+                        .isEqualTo(Term.valueOf(10));
     }
 
     @Test
@@ -37,20 +41,10 @@ class DerivativeTest implements EqualityContract<Derivative>
                 .isEqualTo(Term.zero());
     }
 
-    @Test
-    void dTermPreviousErrorIsLess()
+    @Override
+    public Class<Derivative> getType()
     {
-        assertThat(Derivative.valueOf(1)
-                .termFor(Error.valueOf(10), Error.zero(), Duration.ofSeconds(1)))
-                        .isEqualTo(Term.valueOf(10));
-    }
-
-    @Test
-    void dTermPreviousErrorIsBigger()
-    {
-        assertThat(Derivative.valueOf(1)
-                .termFor(Error.zero(), Error.valueOf(10), Duration.ofSeconds(1)))
-                        .isEqualTo(Term.valueOf(-10));
+        return Derivative.class;
     }
 
     @Test
@@ -58,5 +52,11 @@ class DerivativeTest implements EqualityContract<Derivative>
     void toStringHasValueOnly()
     {
         assertThat(Derivative.valueOf(22.3).toString()).isEqualTo("22.3");
+    }
+
+    @Test
+    void zero()
+    {
+        assertThat(Derivative.zero()).isEqualTo(Derivative.valueOf(0));
     }
 }

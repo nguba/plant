@@ -28,10 +28,10 @@ import java.util.UUID;
  */
 public final class Segment implements Entity<UUID>
 {
-    private final String      label;
     private final Duration    duration;
-    private final Temperature setPoint;
     private final UUID        identity;
+    private final String      label;
+    private final Temperature setPoint;
     private Instant           startedOn;
 
     public Segment(final UUID identity,
@@ -43,15 +43,6 @@ public final class Segment implements Entity<UUID>
         this.label = label;
         this.duration = duration;
         this.setPoint = setPoint;
-    }
-
-    @Override
-    public int hashCode()
-    {
-        final int prime  = 31;
-        int       result = 1;
-        result = (prime * result) + ((identity == null) ? 0 : identity.hashCode());
-        return result;
     }
 
     @Override
@@ -73,13 +64,18 @@ public final class Segment implements Entity<UUID>
     }
 
     @Override
-    public String toString()
+    public UUID getIdentity()
     {
-        final StringBuilder builder = new StringBuilder();
-        builder.append("Segment [label=").append(label).append(", duration=").append(duration)
-                .append(", setPoint=").append(setPoint).append(", identity=").append(identity)
-                .append("]");
-        return builder.toString();
+        return identity;
+    }
+
+    @Override
+    public int hashCode()
+    {
+        final int prime  = 31;
+        int       result = 1;
+        result = prime * result + (identity == null ? 0 : identity.hashCode());
+        return result;
     }
 
     public boolean isComplete(final Temperature processValue)
@@ -94,8 +90,12 @@ public final class Segment implements Entity<UUID>
     }
 
     @Override
-    public UUID getIdentity()
+    public String toString()
     {
-        return identity;
+        final StringBuilder builder = new StringBuilder();
+        builder.append("Segment [label=").append(label).append(", duration=").append(duration)
+                .append(", setPoint=").append(setPoint).append(", identity=").append(identity)
+                .append("]");
+        return builder.toString();
     }
 }

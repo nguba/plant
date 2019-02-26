@@ -37,15 +37,15 @@ class TermTest implements EqualityContract<Term>
     }
 
     @Test
-    void zero()
-    {
-        assertThat(Term.zero()).isEqualTo(Term.valueOf(0));
-    }
-
-    @Test
     @DisplayName("string representation of value is returned")
     void toStringHasValueOnly()
     {
         assertThat(Term.valueOf(22.3).toString()).isEqualTo("22.3");
+    }
+
+    @Test
+    void zero()
+    {
+        assertThat(Term.zero()).isEqualTo(Term.valueOf(0));
     }
 }

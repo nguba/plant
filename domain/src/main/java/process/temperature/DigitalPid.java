@@ -33,6 +33,24 @@ public final class DigitalPid implements Pid<Boolean>
     }
 
     @Override
+    public void setDerivative(final Derivative derivative)
+    {
+        delegate.setDerivative(derivative);
+    }
+
+    @Override
+    public void setIntegral(final Integral integral)
+    {
+        delegate.setIntegral(integral);
+    }
+
+    @Override
+    public void setProportional(final Proportional proportional)
+    {
+        delegate.setProportional(proportional);
+    }
+
+    @Override
     public Boolean update(final Temperature sP, final Temperature pV)
     {
         final long window = System.currentTimeMillis() - startTime;
@@ -42,21 +60,6 @@ public final class DigitalPid implements Pid<Boolean>
 
         final Output pidTerm = delegate.update(sP, pV);
         return Output.valueOf(window).isBelow(pidTerm);
-    }
-
-    public void setProportional(final Proportional proportional)
-    {
-        delegate.setProportional(proportional);
-    }
-
-    public void setIntegral(final Integral integral)
-    {
-        delegate.setIntegral(integral);
-    }
-
-    public void setDerivative(final Derivative derivative)
-    {
-        delegate.setDerivative(derivative);
     }
 
 }

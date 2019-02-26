@@ -22,9 +22,9 @@ package process.temperature;
  */
 public final class Error extends Gain
 {
-    private Error(final double value)
+    public static Error from(final Temperature sP, final Temperature pV)
     {
-        super(value);
+        return Error.valueOf(sP.difference(pV));
     }
 
     public static Error valueOf(final double value)
@@ -37,8 +37,8 @@ public final class Error extends Gain
         return Error.valueOf(0);
     }
 
-    public static Error from(final Temperature sP, final Temperature pV)
+    private Error(final double value)
     {
-        return Error.valueOf(sP.difference(pV));
+        super(value);
     }
 }

@@ -24,11 +24,6 @@ import java.time.Duration;
  */
 public final class Integral extends Gain
 {
-    private Integral(final double value)
-    {
-        super(value);
-    }
-
     public static Integral valueOf(final double value)
     {
         return new Integral(value);
@@ -37,6 +32,11 @@ public final class Integral extends Gain
     public static Integral zero()
     {
         return Integral.valueOf(0);
+    }
+
+    private Integral(final double value)
+    {
+        super(value);
     }
 
     /**

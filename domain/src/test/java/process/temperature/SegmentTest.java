@@ -18,6 +18,23 @@ class SegmentTest implements EntityEqualityContract<UUID, Segment>
                                         Duration.ofSeconds(2),
                                         Temperature.celsius(25.0));
 
+    @Override
+    public Class<Segment> getType()
+    {
+        return Segment.class;
+    }
+
+    @Test
+    void identity()
+    {
+        final UUID    identity = UUID.randomUUID();
+        final Segment segment  = new Segment(identity,
+                                             "a segment",
+                                             Duration.ofSeconds(2),
+                                             Temperature.celsius(25.0));
+        assertThat(segment.getIdentity()).isEqualTo(identity);
+    }
+
     @Test
     @DisplayName("is not complete when temperature is below setpoint")
     void setpointNotReached()
@@ -44,22 +61,5 @@ class SegmentTest implements EntityEqualityContract<UUID, Segment>
     void toStringResillience()
     {
         new Segment(null, null, null, null).toString();
-    }
-
-    @Override
-    public Class<Segment> getType()
-    {
-        return Segment.class;
-    }
-
-    @Test
-    void identity()
-    {
-        final UUID    identity = UUID.randomUUID();
-        final Segment segment  = new Segment(identity,
-                                             "a segment",
-                                             Duration.ofSeconds(2),
-                                             Temperature.celsius(25.0));
-        assertThat(segment.getIdentity()).isEqualTo(identity);
     }
 }

@@ -25,16 +25,50 @@ import java.time.Instant;
  */
 public class AnalogPid implements Pid<Output>
 {
-    private Proportional proportional = Proportional.zero();
-    private Integral     integral     = Integral.zero();
-    private Instant      lastTime     = Instant.now();
-    private Error        lastError    = Error.zero();
     private Derivative   derivative   = Derivative.zero();
+    private Integral     integral     = Integral.zero();
+    private Error        lastError    = Error.zero();
+    private Instant      lastTime     = Instant.now();
+    private Proportional proportional = Proportional.zero();
+
+    public Instant getLastTime()
+    {
+        return lastTime;
+    }
+
+    @Override
+    public void setDerivative(final Derivative derivative)
+    {
+        this.derivative = derivative;
+    }
+
+    @Override
+    public void setIntegral(final Integral integral)
+    {
+        this.integral = integral;
+    }
 
     @Override
     public void setProportional(final Proportional proportional)
     {
         this.proportional = proportional;
+    }
+
+    protected Duration timeChange(final Instant previous, final Instant current)
+    {
+        if (previous == null)
+            return Duration.ZERO;
+        return Duration.between(previous, current);
+    }
+
+    @Override
+    public String toString()
+    {
+        final StringBuilder builder = new StringBuilder();
+        builder.append("AnalogPid [proportional=").append(proportional).append(", integral=")
+                .append(integral).append(", lastTime=").append(lastTime).append(", lastError=")
+                .append(lastError).append(", derivative=").append(derivative).append("]");
+        return builder.toString();
     }
 
     @Override
@@ -51,39 +85,5 @@ public class AnalogPid implements Pid<Output>
         lastError = error;
 
         return Output.valueOf(pTerm, iTerm, dTerm);
-    }
-
-    public Instant getLastTime()
-    {
-        return lastTime;
-    }
-
-    protected Duration timeChange(final Instant previous, final Instant current)
-    {
-        if (previous == null)
-            return Duration.ZERO;
-        return Duration.between(previous, current);
-    }
-
-    @Override
-    public void setIntegral(final Integral integral)
-    {
-        this.integral = integral;
-    }
-
-    @Override
-    public void setDerivative(final Derivative derivative)
-    {
-        this.derivative = derivative;
-    }
-
-    @Override
-    public String toString()
-    {
-        final StringBuilder builder = new StringBuilder();
-        builder.append("AnalogPid [proportional=").append(proportional).append(", integral=")
-                .append(integral).append(", lastTime=").append(lastTime).append(", lastError=")
-                .append(lastError).append(", derivative=").append(derivative).append("]");
-        return builder.toString();
     }
 }

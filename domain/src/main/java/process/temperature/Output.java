@@ -22,9 +22,9 @@ package process.temperature;
  */
 public final class Output extends Term
 {
-    private Output(final double value)
+    public static Output valueOf(final double value)
     {
-        super(value);
+        return new Output(value);
     }
 
     public static Output valueOf(final Term pTerm, final Term iTerm, final Term dTerm)
@@ -32,31 +32,14 @@ public final class Output extends Term
         return new Output(pTerm.value + iTerm.value + dTerm.value);
     }
 
-    public static Output valueOf(final double value)
-    {
-        return new Output(value);
-    }
-
-    public Boolean isBelow(final Output other)
-    {
-        System.out.println(value + " < " + other.value);
-        return Boolean.valueOf(value < other.value);
-    }
-
     public static Output zero()
     {
         return new Output(0);
     }
 
-    @Override
-    public int hashCode()
+    private Output(final double value)
     {
-        final int prime  = 31;
-        int       result = 1;
-        long      temp;
-        temp = Double.doubleToLongBits(value);
-        result = (prime * result) + (int) (temp ^ (temp >>> 32));
-        return result;
+        super(value);
     }
 
     @Override
@@ -72,5 +55,22 @@ public final class Output extends Term
         if (Double.doubleToLongBits(value) != Double.doubleToLongBits(other.value))
             return false;
         return true;
+    }
+
+    @Override
+    public int hashCode()
+    {
+        final int prime  = 31;
+        int       result = 1;
+        long      temp;
+        temp = Double.doubleToLongBits(value);
+        result = prime * result + (int) (temp ^ temp >>> 32);
+        return result;
+    }
+
+    public Boolean isBelow(final Output other)
+    {
+        System.out.println(value + " < " + other.value);
+        return Boolean.valueOf(value < other.value);
     }
 }

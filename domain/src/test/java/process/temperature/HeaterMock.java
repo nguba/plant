@@ -30,9 +30,9 @@ public class HeaterMock implements Switch
 {
     ScheduledExecutorService element = Executors.newScheduledThreadPool(2);
 
-    AtomicInteger value = new AtomicInteger();
-
     AtomicBoolean heat = new AtomicBoolean();
+
+    AtomicInteger value = new AtomicInteger();
 
     // private final ScheduledFuture<?> on;
 
@@ -52,16 +52,16 @@ public class HeaterMock implements Switch
     }
 
     @Override
-    public void switchOn()
-    {
-        System.out.println("ON");
-        heat.set(true);
-    }
-
-    @Override
     public void switchOff()
     {
         System.out.println("OFF");
         heat.set(false);
+    }
+
+    @Override
+    public void switchOn()
+    {
+        System.out.println("ON");
+        heat.set(true);
     }
 }

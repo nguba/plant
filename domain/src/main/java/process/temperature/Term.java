@@ -22,33 +22,21 @@ package process.temperature;
  */
 public class Term
 {
-    protected final double value;
-
-    protected Term(final double value)
-    {
-        this.value = value;
-    }
-
     public static Term valueOf(final double value)
     {
         return new Term(value);
     }
 
-    @Override
-    public String toString()
+    public static Term zero()
     {
-        return String.valueOf(value);
+        return Term.valueOf(0);
     }
 
-    @Override
-    public int hashCode()
+    protected final double value;
+
+    protected Term(final double value)
     {
-        final int prime  = 31;
-        int       result = 1;
-        long      temp;
-        temp = Double.doubleToLongBits(value);
-        result = (prime * result) + (int) (temp ^ (temp >>> 32));
-        return result;
+        this.value = value;
     }
 
     @Override
@@ -66,9 +54,21 @@ public class Term
         return true;
     }
 
-    public static Term zero()
+    @Override
+    public int hashCode()
     {
-        return Term.valueOf(0);
+        final int prime  = 31;
+        int       result = 1;
+        long      temp;
+        temp = Double.doubleToLongBits(value);
+        result = prime * result + (int) (temp ^ temp >>> 32);
+        return result;
+    }
+
+    @Override
+    public String toString()
+    {
+        return String.valueOf(value);
     }
 
 }

@@ -141,9 +141,57 @@ class TemperatureTest
     }
 
     @Test
+    void differenceInMagnitude()
+    {
+        assertThat(Temperature.celsius(10.0).difference(Temperature.celsius(4.0))).isEqualTo(6.0);
+    }
+
+    @Test
+    void differenceInMagnitudeOtherIsGreater()
+    {
+        assertThat(Temperature.celsius(4.0).difference(Temperature.celsius(10.0))).isEqualTo(-6.0);
+    }
+
+    @Test
     void equalsContract()
     {
         EqualsVerifier.forClass(Temperature.class).verify();
+    }
+
+    @Test
+    void isAbove()
+    {
+        assertThat(Temperature.celsius(34.1).isAbove(Temperature.celsius(34.0))).isTrue();
+    }
+
+    @Test
+    void isBelow()
+    {
+        assertThat(Temperature.celsius(34.0).isBelow(Temperature.celsius(34.1))).isTrue();
+    }
+
+    @Test
+    void isBelowOrAt()
+    {
+        assertThat(Temperature.celsius(34.0).isBelowOrAt(Temperature.celsius(34.0))).isTrue();
+    }
+
+    @Test
+    void isNotAbove()
+    {
+        assertThat(Temperature.celsius(34.0).isAbove(Temperature.celsius(34.1))).isFalse();
+    }
+
+    @Test
+    void isNotBelow()
+    {
+        assertThat(Temperature.celsius(34.1).isBelow(Temperature.celsius(34.0))).isFalse();
+    }
+
+    @Test
+    void isNotBelowOrAt()
+    {
+        assertThat(Temperature.celsius(34.1).isBelowOrAt(Temperature.celsius(34.0))).isFalse();
     }
 
     @Test
@@ -165,53 +213,5 @@ class TemperatureTest
     void toString_Kelvin()
     {
         assertThat(Temperature.kelvin(12.3).toString()).isEqualTo("12.3 (K)");
-    }
-
-    @Test
-    void isAbove()
-    {
-        assertThat(Temperature.celsius(34.1).isAbove(Temperature.celsius(34.0))).isTrue();
-    }
-
-    @Test
-    void isNotAbove()
-    {
-        assertThat(Temperature.celsius(34.0).isAbove(Temperature.celsius(34.1))).isFalse();
-    }
-
-    @Test
-    void isBelow()
-    {
-        assertThat(Temperature.celsius(34.0).isBelow(Temperature.celsius(34.1))).isTrue();
-    }
-
-    @Test
-    void isNotBelow()
-    {
-        assertThat(Temperature.celsius(34.1).isBelow(Temperature.celsius(34.0))).isFalse();
-    }
-
-    @Test
-    void isBelowOrAt()
-    {
-        assertThat(Temperature.celsius(34.0).isBelowOrAt(Temperature.celsius(34.0))).isTrue();
-    }
-
-    @Test
-    void isNotBelowOrAt()
-    {
-        assertThat(Temperature.celsius(34.1).isBelowOrAt(Temperature.celsius(34.0))).isFalse();
-    }
-
-    @Test
-    void differenceInMagnitude()
-    {
-        assertThat(Temperature.celsius(10.0).difference(Temperature.celsius(4.0))).isEqualTo(6.0);
-    }
-
-    @Test
-    void differenceInMagnitudeOtherIsGreater()
-    {
-        assertThat(Temperature.celsius(4.0).difference(Temperature.celsius(10.0))).isEqualTo(-6.0);
     }
 }

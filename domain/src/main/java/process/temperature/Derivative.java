@@ -24,11 +24,6 @@ import java.time.Duration;
  */
 public final class Derivative extends Gain
 {
-    private Derivative(final double value)
-    {
-        super(value);
-    }
-
     public static Derivative valueOf(final double value)
     {
         return new Derivative(value);
@@ -37,6 +32,11 @@ public final class Derivative extends Gain
     public static Derivative zero()
     {
         return Derivative.valueOf(0);
+    }
+
+    private Derivative(final double value)
+    {
+        super(value);
     }
 
     /**
@@ -57,7 +57,7 @@ public final class Derivative extends Gain
             return Term.zero();
 
         final double dError = error.value - lastError.value;
-        return Term.valueOf((dError / duration.getSeconds()) * value);
+        return Term.valueOf(dError / duration.getSeconds() * value);
     }
 
 }

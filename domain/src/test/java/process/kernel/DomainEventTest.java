@@ -1,7 +1,5 @@
 package process.kernel;
 
-import process.kernel.DomainEvent;
-
 import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.jupiter.api.DisplayName;
@@ -18,16 +16,6 @@ class DomainEventTest implements EqualityContract<DomainEvent>
     }
 
     @Test
-    @DisplayName("toString includes timestamp")
-    void toStringContainsTimestamp()
-    {
-        final DomainEvent event = new DomainEvent() {
-        };
-
-        assertThat(event.toString()).contains("timestamp=");
-    }
-
-    @Test
     @DisplayName("timestamp is accessed")
     void timestampAccess()
     {
@@ -36,5 +24,15 @@ class DomainEventTest implements EqualityContract<DomainEvent>
                                      };
 
         assertThat(event.getTimestamp()).isEqualTo(expected);
+    }
+
+    @Test
+    @DisplayName("toString includes timestamp")
+    void toStringContainsTimestamp()
+    {
+        final DomainEvent event = new DomainEvent() {
+        };
+
+        assertThat(event.toString()).contains("timestamp=");
     }
 }

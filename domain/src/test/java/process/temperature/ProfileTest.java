@@ -33,9 +33,37 @@ import java.util.UUID;
 class ProfileTest implements EntityEqualityContract<String, Profile>
 {
     @Test
-    void toStringResillience()
+    @DisplayName("has no segments when none given")
+    void currentSegmentIsInitialisedToEmpty()
     {
-        System.out.println(Profile.withSegments(null).toString());
+        final Profile profile = Profile.withSegments("A profile");
+
+        assertThat(profile).isEmpty();
+    }
+
+    @Test
+    @DisplayName("execute segments")
+    void executeSegments()
+    {
+        final Segment segmentOne = new Segment(UUID.randomUUID(),
+                                               "Segment 1",
+                                               Duration.ofSeconds(3),
+                                               Temperature.celsius(25.3));
+        final Segment segmentTwo = new Segment(UUID.randomUUID(),
+                                               "Segment 2",
+                                               Duration.ofSeconds(3),
+                                               Temperature.celsius(28.0));
+
+        final Profile profile = Profile.withSegments("A profile", segmentOne, segmentTwo);
+
+        for (final Segment segment : profile)
+            System.out.println(segment);
+    }
+
+    @Override
+    public Class<Profile> getType()
+    {
+        return Profile.class;
     }
 
     @Test
@@ -77,36 +105,8 @@ class ProfileTest implements EntityEqualityContract<String, Profile>
     }
 
     @Test
-    @DisplayName("has no segments when none given")
-    void currentSegmentIsInitialisedToEmpty()
+    void toStringResillience()
     {
-        final Profile profile = Profile.withSegments("A profile");
-
-        assertThat(profile).isEmpty();
-    }
-
-    @Override
-    public Class<Profile> getType()
-    {
-        return Profile.class;
-    }
-
-    @Test
-    @DisplayName("execute segments")
-    void executeSegments()
-    {
-        final Segment segmentOne = new Segment(UUID.randomUUID(),
-                                               "Segment 1",
-                                               Duration.ofSeconds(3),
-                                               Temperature.celsius(25.3));
-        final Segment segmentTwo = new Segment(UUID.randomUUID(),
-                                               "Segment 2",
-                                               Duration.ofSeconds(3),
-                                               Temperature.celsius(28.0));
-
-        final Profile profile = Profile.withSegments("A profile", segmentOne, segmentTwo);
-
-        for (final Segment segment : profile)
-            System.out.println(segment);
+        System.out.println(Profile.withSegments(null).toString());
     }
 }

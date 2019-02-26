@@ -22,11 +22,11 @@ package process.temperature;
  */
 public interface Pid<T>
 {
-    T update(final Temperature sP, final Temperature pV);
-
-    void setProportional(Proportional pGain);
-
     void setDerivative(final Derivative derivative);
 
     void setIntegral(final Integral integral);
+
+    void setProportional(Proportional pGain);
+
+    T update(final Temperature sP, final Temperature pV);
 }

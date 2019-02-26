@@ -106,11 +106,26 @@ public final class Temperature implements ValueObject
     {
         final int prime  = 31;
         int       result = 1;
-        result = (prime * result) + (scale == null ? 0 : scale.hashCode());
+        result = prime * result + (scale == null ? 0 : scale.hashCode());
         long temp;
         temp = Double.doubleToLongBits(value);
-        result = (prime * result) + (int) (temp ^ (temp >>> 32));
+        result = prime * result + (int) (temp ^ temp >>> 32);
         return result;
+    }
+
+    public boolean isAbove(final Temperature temperature)
+    {
+        return value > temperature.value;
+    }
+
+    public boolean isBelow(final Temperature temperature)
+    {
+        return value < temperature.value;
+    }
+
+    public boolean isBelowOrAt(final Temperature temperature)
+    {
+        return value <= temperature.value;
     }
 
     public Temperature toCelsius()
@@ -133,11 +148,11 @@ public final class Temperature implements ValueObject
     {
         switch (scale) {
             case CELSIUS: {
-                final double f = ((9.0 / 5.0) * value) + 32;
+                final double f = 9.0 / 5.0 * value + 32;
                 return Temperature.farenheit(truncate(f));
             }
             case KELVIN: {
-                final double f = (((value - 273.15) * 9.0) / 5.0) + 32;
+                final double f = (value - 273.15) * 9.0 / 5.0 + 32;
                 return Temperature.farenheit(truncate(f));
             }
             default:
@@ -167,20 +182,5 @@ public final class Temperature implements ValueObject
         final StringBuilder builder = new StringBuilder();
         builder.append(value).append(" (").append(scale).append(")");
         return builder.toString();
-    }
-
-    public boolean isAbove(final Temperature temperature)
-    {
-        return value > temperature.value;
-    }
-
-    public boolean isBelow(final Temperature temperature)
-    {
-        return value < temperature.value;
-    }
-
-    public boolean isBelowOrAt(final Temperature temperature)
-    {
-        return value <= temperature.value;
     }
 }

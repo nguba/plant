@@ -1,7 +1,5 @@
 package process.temperature;
 
-import process.temperature.Temperature;
-
 import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -10,10 +8,7 @@ import org.junit.jupiter.api.Test;
 class HeaterMockTest
 {
 
-    @BeforeEach
-    void setUp() throws Exception
-    {
-    }
+    final HeaterMock heater = new HeaterMock();
 
     @Test
     void increaseTempeature() throws Exception
@@ -27,7 +22,10 @@ class HeaterMockTest
         assertThat(heater.currentTemperature().isAbove(previous));
     }
 
-    final HeaterMock heater = new HeaterMock();
+    @BeforeEach
+    void setUp() throws Exception
+    {
+    }
 
     @Test
     void switchOff() throws Exception

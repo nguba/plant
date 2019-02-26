@@ -13,12 +13,18 @@ class AnalogPidTest
 {
     private final AnalogPid pid = new AnalogPid();
 
-    @BeforeEach
-    void setUp()
+    @Test
+    void integralOverTwoPeriods() throws Exception
     {
-        pid.setDerivative(Derivative.zero());
-        pid.setIntegral(Integral.zero());
-        pid.setProportional(Proportional.zero());
+        pid.setIntegral(Integral.valueOf(10));
+
+        assertThat(pid.update(Temperature.celsius(20.0), Temperature.celsius(10.0)))
+                .isEqualTo(Output.zero());
+
+        Thread.sleep(2000);
+
+        assertThat(pid.update(Temperature.celsius(20.0), Temperature.celsius(10.0)))
+                .isEqualTo(Output.valueOf(200.0));
     }
 
     @Test
@@ -40,24 +46,20 @@ class AnalogPidTest
     }
 
     @Test
-    void integralOverTwoPeriods() throws Exception
+    void pidUpdatesLastTime() throws Exception
     {
-        pid.setIntegral(Integral.valueOf(10));
+        final Instant start = Instant.now();
+        pid.update(Temperature.celsius(0), Temperature.celsius(0));
 
-        assertThat(pid.update(Temperature.celsius(20.0), Temperature.celsius((10.0))))
-                .isEqualTo(Output.zero());
-
-        Thread.sleep(2000);
-
-        assertThat(pid.update(Temperature.celsius(20.0), Temperature.celsius((10.0))))
-                .isEqualTo(Output.valueOf(200.0));
+        assertThat(pid.getLastTime()).isAfterOrEqualTo(start);
     }
 
-    @Test
-    void timeChangeFromNull()
+    @BeforeEach
+    void setUp()
     {
-        final Duration duration = pid.timeChange(null, Instant.now());
-        assertThat(duration).isEqualTo(Duration.ZERO);
+        pid.setDerivative(Derivative.zero());
+        pid.setIntegral(Integral.zero());
+        pid.setProportional(Proportional.zero());
     }
 
     @Test
@@ -69,12 +71,10 @@ class AnalogPidTest
     }
 
     @Test
-    void pidUpdatesLastTime() throws Exception
+    void timeChangeFromNull()
     {
-        final Instant start = Instant.now();
-        pid.update(Temperature.celsius(0), Temperature.celsius(0));
-
-        assertThat(pid.getLastTime()).isAfterOrEqualTo(start);
+        final Duration duration = pid.timeChange(null, Instant.now());
+        assertThat(duration).isEqualTo(Duration.ZERO);
     }
 
     @Test
