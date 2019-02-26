@@ -76,4 +76,14 @@ public class AnalogPid implements Pid<Output>
     {
         this.derivative = derivative;
     }
+
+    @Override
+    public String toString()
+    {
+        final StringBuilder builder = new StringBuilder();
+        builder.append("AnalogPid [proportional=").append(proportional).append(", integral=")
+                .append(integral).append(", lastTime=").append(lastTime).append(", lastError=")
+                .append(lastError).append(", derivative=").append(derivative).append("]");
+        return builder.toString();
+    }
 }

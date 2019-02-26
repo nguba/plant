@@ -12,21 +12,21 @@ class OutputTest implements EqualityContract<Output>
     private static final Output PID_TERM = Output.valueOf(Term.zero(), Term.zero(), Term.zero());
 
     @Test
-    void isAboveLowerThreshold()
+    void isBelowThreshold()
     {
-        assertThat(PID_TERM.isAbove(-1)).isTrue();
+        assertThat(PID_TERM.isBelow(Output.valueOf(1))).isTrue();
     }
 
     @Test
-    void isAboveEqualThreshold()
+    void isEqualThreshold()
     {
-        assertThat(PID_TERM.isAbove(0)).isFalse();
+        assertThat(PID_TERM.isBelow(Output.zero())).isFalse();
     }
 
     @Test
-    void isAboveHigherThreshold()
+    void isNotBelowThreshold()
     {
-        assertThat(PID_TERM.isAbove(1)).isFalse();
+        assertThat(PID_TERM.isBelow(Output.valueOf(-1))).isFalse();
     }
 
     @Override

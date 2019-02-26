@@ -22,12 +22,11 @@ package process.temperature;
  */
 public final class DigitalPid implements Pid<Boolean>
 {
-    private final Pid<Output> delegate;
+    private final AnalogPid delegate;
+    private long            startTime = System.currentTimeMillis();
+    private final long      windowSize;
 
-    long               startTime;
-    private final long windowSize;
-
-    public DigitalPid(final Pid<Output> delegate, final long windowSize)
+    public DigitalPid(final AnalogPid delegate, final long windowSize)
     {
         this.delegate = delegate;
         this.windowSize = windowSize;
@@ -36,35 +35,28 @@ public final class DigitalPid implements Pid<Boolean>
     @Override
     public Boolean update(final Temperature sP, final Temperature pV)
     {
-        if (startTime == 0)
-            startTime = System.currentTimeMillis();
-
         final long now = System.currentTimeMillis();
 
         if ((now - startTime) > windowSize)
             startTime += windowSize;
 
-        final Output output = delegate.update(sP, pV);
-        return output.isAbove(now - startTime);
-
+        final Output pidTerm = delegate.update(sP, pV);
+        return Output.valueOf(now - startTime).isBelow(pidTerm);
     }
 
-    @Override
-    public void setProportional(final Proportional pGain)
+    public void setProportional(final Proportional proportional)
     {
-        delegate.setProportional(pGain);
+        delegate.setProportional(proportional);
     }
 
-    @Override
-    public void setDerivative(final Derivative derivative)
-    {
-        delegate.setDerivative(derivative);
-    }
-
-    @Override
     public void setIntegral(final Integral integral)
     {
         delegate.setIntegral(integral);
+    }
+
+    public void setDerivative(final Derivative derivative)
+    {
+        delegate.setDerivative(derivative);
     }
 
 }

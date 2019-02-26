@@ -22,7 +22,7 @@ import java.time.Duration;
 /**
  * @author <a href="mailto:nguba@mac.com">Nico Guba</a>
  */
-public final class Integral extends Magnitude
+public final class Integral extends Gain
 {
     private Integral(final double value)
     {

@@ -22,7 +22,7 @@ import java.time.Duration;
  *
  * @author <a href="mailto:nguba@mac.com">Nico Guba</a>
  */
-public final class Derivative extends Magnitude
+public final class Derivative extends Gain
 {
     private Derivative(final double value)
     {

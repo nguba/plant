@@ -20,7 +20,7 @@ package process.temperature;
 /**
  * @author <a href="mailto:nguba@mac.com">Nico Guba</a>
  */
-public final class Error extends Magnitude
+public final class Error extends Gain
 {
     private Error(final double value)
     {

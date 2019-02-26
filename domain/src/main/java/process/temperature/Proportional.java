@@ -20,7 +20,7 @@ package process.temperature;
 /**
  * @author <a href="mailto:nguba@mac.com">Nico Guba</a>
  */
-public final class Proportional extends Magnitude
+public final class Proportional extends Gain
 {
     private Proportional(final double value)
     {

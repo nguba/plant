@@ -37,9 +37,9 @@ public final class Output extends Term
         return new Output(value);
     }
 
-    public Boolean isAbove(final long window)
+    public Boolean isBelow(final Output other)
     {
-        return Boolean.valueOf(value > window);
+        return Boolean.valueOf(value < other.value);
     }
 
     public static Output zero()

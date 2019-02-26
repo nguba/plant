@@ -20,11 +20,11 @@ package process.temperature;
 /**
  * @author <a href="mailto:nguba@mac.com">Nico Guba</a>
  */
-public abstract class Magnitude
+public abstract class Gain
 {
     protected final double value;
 
-    protected Magnitude(final double value)
+    protected Gain(final double value)
     {
         this.value = value;
     }
@@ -49,7 +49,7 @@ public abstract class Magnitude
             return false;
         if (getClass() != obj.getClass())
             return false;
-        final Magnitude other = (Magnitude) obj;
+        final Gain other = (Gain) obj;
         if (Double.doubleToLongBits(value) != Double.doubleToLongBits(other.value))
             return false;
         return true;
