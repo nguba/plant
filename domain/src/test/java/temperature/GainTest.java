@@ -6,7 +6,7 @@ import temperature.Gain;
 class GainTest implements EqualityContract<Gain>
 {
     @Override
-    public Class<Gain> getType()
+    public Class<Gain> getTypeClass()
     {
         return Gain.class;
     }

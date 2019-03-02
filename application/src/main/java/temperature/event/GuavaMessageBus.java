@@ -1,5 +1,5 @@
 /*
-    Copyright (C) 2018  Nicolai P. Guba
+    Copyright (C) 2019  Nicolai P. Guba
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -14,14 +14,38 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-package kernel;
+
+package temperature.event;
+
+import com.google.common.eventbus.EventBus;
 
 /**
  * @author <a href="mailto:nguba@mac.com">Nico Guba</a>
  */
-public interface EventPublisher
+public class GuavaMessageBus implements MessageBus
 {
-    <E extends DomainEvent> void publish(E event);
+    private final EventBus bus;
 
-    void subscribe(Object recipient);
+    public GuavaMessageBus()
+    {
+        bus = new EventBus("Temperature controller events");
+    }
+
+    @Override
+    public <E extends DomainEvent> void publish(final E event)
+    {
+        bus.post(event);
+    }
+
+    @Override
+    public void subscribe(final Object recipient)
+    {
+        bus.register(recipient);
+    }
+
+    @Override
+    public void unsubscribe(final Object recipient)
+    {
+        bus.unregister(recipient);
+    }
 }

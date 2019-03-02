@@ -1,16 +1,22 @@
 package temperature;
 
-import temperature.Temperature;
+import temperature.event.DomainEvent;
+import temperature.event.GuavaMessageBus;
+import temperature.event.MessageBus;
+
+import com.google.common.eventbus.Subscribe;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 class HeaterMockTest
 {
+    private static final MessageBus BUS = new GuavaMessageBus();
 
-    final HeaterMock heater = new HeaterMock();
+    final HeaterMock heater = new HeaterMock(BUS);
 
     @Test
     void increaseTempeature() throws Exception
@@ -27,6 +33,15 @@ class HeaterMockTest
     @BeforeEach
     void setUp() throws Exception
     {
+        BUS.subscribe(heater);
+        BUS.subscribe(this);
+    }
+
+    @AfterEach
+    void tearDown() throws Exception
+    {
+        BUS.unsubscribe(heater);
+        BUS.unsubscribe(this);
     }
 
     @Test
@@ -44,4 +59,9 @@ class HeaterMockTest
         assertThat(heater.currentTemperature().equals(previous));
     }
 
+    @Subscribe
+    void onEvent(final DomainEvent event)
+    {
+        System.out.println(event);
+    }
 }

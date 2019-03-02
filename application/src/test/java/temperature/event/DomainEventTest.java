@@ -1,6 +1,6 @@
-package kernel;
+package temperature.event;
 
-import kernel.DomainEvent;
+import kernel.EqualityContract;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 class DomainEventTest implements EqualityContract<DomainEvent>
 {
     @Override
-    public Class<DomainEvent> getType()
+    public Class<DomainEvent> getTypeClass()
     {
         return DomainEvent.class;
     }

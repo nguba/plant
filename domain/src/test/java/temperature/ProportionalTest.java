@@ -15,7 +15,7 @@ class ProportionalTest implements EqualityContract<Proportional>
     private static final Proportional PROPORTIONAL = Proportional.valueOf(1);
 
     @Override
-    public Class<Proportional> getType()
+    public Class<Proportional> getTypeClass()
     {
         return Proportional.class;
     }

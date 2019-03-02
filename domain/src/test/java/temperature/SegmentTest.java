@@ -21,7 +21,7 @@ class SegmentTest implements EntityEqualityContract<UUID, Segment>
                                         Temperature.celsius(25.0));
 
     @Override
-    public Class<Segment> getType()
+    public Class<Segment> getTypeClass()
     {
         return Segment.class;
     }

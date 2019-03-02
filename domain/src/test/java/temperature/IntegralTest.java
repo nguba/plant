@@ -17,7 +17,7 @@ class IntegralTest implements EqualityContract<Integral>
     private static final Integral INTEGRAL = Integral.valueOf(1);
 
     @Override
-    public Class<Integral> getType()
+    public Class<Integral> getTypeClass()
     {
         return Integral.class;
     }

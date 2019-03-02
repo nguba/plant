@@ -15,26 +15,16 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-package kernel;
+package temperature;
 
-import nl.jqno.equalsverifier.EqualsVerifier;
-
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import kernel.Service;
 
 /**
  * @author <a href="mailto:nguba@mac.com">Nico Guba</a>
  */
-public interface EntityEqualityContract<I, T extends Entity<I>> extends EqualityContract<T>
+public final class Controller implements Service
 {
-
-    @Test
-    @Override
-    @DisplayName("ensure equality contract is implemented")
-    default void equalityContract()
+    public Controller()
     {
-        EqualsVerifier.forClass(getTypeClass()).usingGetClass().withOnlyTheseFields("identity")
-                .verify();
     }
-
 }

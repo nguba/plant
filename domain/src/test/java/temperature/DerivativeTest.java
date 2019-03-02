@@ -45,7 +45,7 @@ class DerivativeTest implements EqualityContract<Derivative>
     }
 
     @Override
-    public Class<Derivative> getType()
+    public Class<Derivative> getTypeClass()
     {
         return Derivative.class;
     }

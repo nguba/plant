@@ -17,7 +17,11 @@
 
 package temperature;
 
-import temperature.Temperature;
+import temperature.event.DomainEvent;
+import temperature.event.HeaterSwitchedOff;
+import temperature.event.HeaterSwitchedOn;
+import temperature.event.MessageBus;
+import temperature.event.TemperatureUpdated;
 
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -28,7 +32,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 /**
  * @author <a href="mailto:nguba@mac.com">Nico Guba</a>
  */
-public class HeaterMock implements Switch
+public class HeaterMock implements Switch, Sensor
 {
     ScheduledExecutorService element = Executors.newScheduledThreadPool(2);
 
@@ -36,34 +40,41 @@ public class HeaterMock implements Switch
 
     AtomicInteger value = new AtomicInteger();
 
-    // private final ScheduledFuture<?> on;
+    private final MessageBus bus;
 
-    public HeaterMock()
+    public HeaterMock(final MessageBus bus)
     {
+        this.bus = bus;
         element.scheduleAtFixedRate(() -> {
             if (heat.get())
                 value.getAndIncrement();
         }, 0, 100, TimeUnit.MILLISECONDS);
     }
 
+    @Override
     public Temperature currentTemperature()
     {
-        // System.out.println(on);
-        final double temperature = value.get() / 100.0;
-        return Temperature.celsius(temperature);
+        final Temperature temperature = Temperature.celsius(value.get() / 100.0);
+        raise(TemperatureUpdated.with(temperature));
+        return temperature;
+    }
+
+    private void raise(final DomainEvent event)
+    {
+        bus.publish(event);
     }
 
     @Override
     public void switchOff()
     {
-        System.out.println("OFF");
         heat.set(false);
+        raise(HeaterSwitchedOff.with("Mock Heater"));
     }
 
     @Override
     public void switchOn()
     {
-        System.out.println("ON");
         heat.set(true);
+        raise(HeaterSwitchedOn.with("Mock Heater"));
     }
 }

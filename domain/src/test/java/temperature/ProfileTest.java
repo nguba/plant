@@ -64,7 +64,7 @@ class ProfileTest implements EntityEqualityContract<String, Profile>
     }
 
     @Override
-    public Class<Profile> getType()
+    public Class<Profile> getTypeClass()
     {
         return Profile.class;
     }

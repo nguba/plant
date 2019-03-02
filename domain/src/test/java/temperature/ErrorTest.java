@@ -55,7 +55,7 @@ class ErrorTest implements EqualityContract<Error>
     }
 
     @Override
-    public Class<Error> getType()
+    public Class<Error> getTypeClass()
     {
         return Error.class;
     }

@@ -32,7 +32,7 @@ import org.junit.jupiter.api.Test;
 class TermTest implements EqualityContract<Term>
 {
     @Override
-    public Class<Term> getType()
+    public Class<Term> getTypeClass()
     {
         return Term.class;
     }

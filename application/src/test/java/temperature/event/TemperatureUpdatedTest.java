@@ -15,26 +15,40 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-package kernel;
+package temperature.event;
 
-import nl.jqno.equalsverifier.EqualsVerifier;
+import kernel.EqualityContract;
+import temperature.Temperature;
 
-import org.junit.jupiter.api.DisplayName;
+import static org.assertj.core.api.Assertions.assertThat;
+
 import org.junit.jupiter.api.Test;
 
 /**
  * @author <a href="mailto:nguba@mac.com">Nico Guba</a>
  */
-public interface EntityEqualityContract<I, T extends Entity<I>> extends EqualityContract<T>
+class TemperatureUpdatedTest implements EqualityContract<TemperatureUpdated>
 {
+    Temperature temperature = Temperature.celsius(55.3);
 
     @Test
-    @Override
-    @DisplayName("ensure equality contract is implemented")
-    default void equalityContract()
+    void toStringContainsEssentials()
     {
-        EqualsVerifier.forClass(getTypeClass()).usingGetClass().withOnlyTheseFields("identity")
-                .verify();
+        assertThat(TemperatureUpdated.with(temperature).toString()).contains("timestamp=",
+                                                                             "temperature=");
+    }
+
+    @Test
+    void testAccesssToTemperatureValue()
+    {
+        assertThat(TemperatureUpdated.with(temperature).getTemperature())
+                .isEqualTo(Temperature.celsius(55.3));
+    }
+
+    @Override
+    public Class<TemperatureUpdated> getTypeClass()
+    {
+        return TemperatureUpdated.class;
     }
 
 }

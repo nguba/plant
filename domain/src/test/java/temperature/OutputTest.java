@@ -14,7 +14,7 @@ class OutputTest implements EqualityContract<Output>
     private static final Output PID_TERM = Output.valueOf(Term.zero(), Term.zero(), Term.zero());
 
     @Override
-    public Class<Output> getType()
+    public Class<Output> getTypeClass()
     {
         return Output.class;
     }

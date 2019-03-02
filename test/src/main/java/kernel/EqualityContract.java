@@ -25,16 +25,14 @@ import org.junit.jupiter.api.Test;
 /**
  * @author <a href="mailto:nguba@mac.com">Nico Guba</a>
  */
-public interface EntityEqualityContract<I, T extends Entity<I>> extends EqualityContract<T>
+public interface EqualityContract<T>
 {
-
     @Test
-    @Override
-    @DisplayName("ensure equality contract is implemented")
+    @DisplayName("Equality contract is implemented")
     default void equalityContract()
     {
-        EqualsVerifier.forClass(getTypeClass()).usingGetClass().withOnlyTheseFields("identity")
-                .verify();
+        EqualsVerifier.forClass(getTypeClass()).usingGetClass().verify();
     }
 
+    Class<T> getTypeClass();
 }

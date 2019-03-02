@@ -53,11 +53,7 @@ subprojects {
     }
     
     dependencies {
-        testImplementation "org.junit.jupiter:junit-jupiter-api:5.${junit5Version}"
-        testImplementation "org.junit.jupiter:junit-jupiter-engine:5.${junit5Version}"
-        testImplementation "org.junit.platform:junit-platform-commons:1.${junit5Version}"
-        testImplementation "org.junit.platform:junit-platform-engine:1.${junit5Version}"
-        testImplementation "nl.jqno.equalsverifier:equalsverifier:3.+"
+        testImplementation project(':test')
     }
     
     configurations {
