@@ -1,11 +1,11 @@
-package temperature;
+package temperature.pid;
 
-import temperature.AnalogPid;
-import temperature.Derivative;
-import temperature.DigitalPid;
-import temperature.Integral;
-import temperature.Proportional;
 import temperature.Temperature;
+import temperature.pid.AnalogPid;
+import temperature.pid.Derivative;
+import temperature.pid.DigitalPid;
+import temperature.pid.Integral;
+import temperature.pid.Proportional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

@@ -15,11 +15,10 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-package temperature;
+package temperature.pid;
 
 import kernel.EqualityContract;
-import temperature.Error;
-import temperature.Temperature;
+import temperature.pid.Term;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -27,49 +26,27 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 /**
+ *
  * @author <a href="mailto:nguba@mac.com">Nico Guba</a>
  */
-class ErrorTest implements EqualityContract<Error>
+class TermTest implements EqualityContract<Term>
 {
-    private static final Temperature SETPOINT = Temperature.celsius(50.0);
-
-    @Test
-    @DisplayName("error is 10.0 when processValue is 10.0 above setPoint ")
-    void calculateErrorNegative()
-    {
-        assertThat(Error.from(SETPOINT, Temperature.celsius(60.0))).isEqualTo(Error.valueOf(-10.0));
-    }
-
-    @Test
-    @DisplayName("error is 10.0 when processValue is 10.0 below setPoint ")
-    void calculateErrorPositive()
-    {
-        assertThat(Error.from(SETPOINT, Temperature.celsius(40.0))).isEqualTo(Error.valueOf(10.0));
-    }
-
-    @Test
-    @DisplayName("error is zero when processValue and setPoint are equal")
-    void calculateErrorZero()
-    {
-        assertThat(Error.from(SETPOINT, Temperature.celsius(50.0))).isEqualTo(Error.zero());
-    }
-
     @Override
-    public Class<Error> getTypeClass()
+    public Class<Term> getTypeClass()
     {
-        return Error.class;
+        return Term.class;
     }
 
     @Test
     @DisplayName("string representation of value is returned")
     void toStringHasValueOnly()
     {
-        assertThat(Error.valueOf(22.3).toString()).isEqualTo("22.3");
+        assertThat(Term.valueOf(22.3).toString()).isEqualTo("22.3");
     }
 
     @Test
     void zero()
     {
-        assertThat(Error.zero()).isEqualTo(Error.valueOf(0));
+        assertThat(Term.zero()).isEqualTo(Term.valueOf(0));
     }
 }

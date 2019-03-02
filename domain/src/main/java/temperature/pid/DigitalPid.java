@@ -15,7 +15,9 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-package temperature;
+package temperature.pid;
+
+import temperature.Temperature;
 
 /**
  * @author <a href="mailto:nguba@mac.com">Nico Guba</a>

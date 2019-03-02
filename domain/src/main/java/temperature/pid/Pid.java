@@ -15,38 +15,20 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-package temperature;
+package temperature.pid;
 
-import kernel.EqualityContract;
-import temperature.Term;
-
-import static org.assertj.core.api.Assertions.assertThat;
-
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import temperature.Temperature;
 
 /**
- *
  * @author <a href="mailto:nguba@mac.com">Nico Guba</a>
  */
-class TermTest implements EqualityContract<Term>
+public interface Pid<T>
 {
-    @Override
-    public Class<Term> getTypeClass()
-    {
-        return Term.class;
-    }
+    void setDerivative(final Derivative derivative);
 
-    @Test
-    @DisplayName("string representation of value is returned")
-    void toStringHasValueOnly()
-    {
-        assertThat(Term.valueOf(22.3).toString()).isEqualTo("22.3");
-    }
+    void setIntegral(final Integral integral);
 
-    @Test
-    void zero()
-    {
-        assertThat(Term.zero()).isEqualTo(Term.valueOf(0));
-    }
+    void setProportional(Proportional pGain);
+
+    T update(final Temperature sP, final Temperature pV);
 }

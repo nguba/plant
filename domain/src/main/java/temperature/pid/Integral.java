@@ -15,18 +15,42 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-package temperature;
+package temperature.pid;
+
+import java.time.Duration;
 
 /**
  * @author <a href="mailto:nguba@mac.com">Nico Guba</a>
  */
-public interface Pid<T>
+public final class Integral extends Gain
 {
-    void setDerivative(final Derivative derivative);
+    public static Integral valueOf(final double value)
+    {
+        return new Integral(value);
+    }
 
-    void setIntegral(final Integral integral);
+    public static Integral zero()
+    {
+        return Integral.valueOf(0);
+    }
 
-    void setProportional(Proportional pGain);
+    private Integral(final double value)
+    {
+        super(value);
+    }
 
-    T update(final Temperature sP, final Temperature pV);
+    /**
+     * Adds long-term precision to a control loop
+     *
+     * @param error
+     *            difference between sP and pV
+     * @param duration
+     *            between the last and current sample time
+     * @return the integral termMa
+     */
+    public Term termFor(final Error error, final Duration duration)
+    {
+        return Term.valueOf(error.value * duration.getSeconds() * value);
+    }
+
 }

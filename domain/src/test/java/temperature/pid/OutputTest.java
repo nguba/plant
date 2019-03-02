@@ -1,8 +1,8 @@
-package temperature;
+package temperature.pid;
 
 import kernel.EqualityContract;
-import temperature.Output;
-import temperature.Term;
+import temperature.pid.Output;
+import temperature.pid.Term;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

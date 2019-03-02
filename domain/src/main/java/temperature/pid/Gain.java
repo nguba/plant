@@ -15,26 +15,16 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-package temperature;
+package temperature.pid;
 
 /**
  * @author <a href="mailto:nguba@mac.com">Nico Guba</a>
  */
-public class Term
+public abstract class Gain
 {
-    public static Term valueOf(final double value)
-    {
-        return new Term(value);
-    }
-
-    public static Term zero()
-    {
-        return Term.valueOf(0);
-    }
-
     protected final double value;
 
-    protected Term(final double value)
+    protected Gain(final double value)
     {
         this.value = value;
     }
@@ -48,7 +38,7 @@ public class Term
             return false;
         if (getClass() != obj.getClass())
             return false;
-        final Term other = (Term) obj;
+        final Gain other = (Gain) obj;
         if (Double.doubleToLongBits(value) != Double.doubleToLongBits(other.value))
             return false;
         return true;
@@ -70,5 +60,4 @@ public class Term
     {
         return String.valueOf(value);
     }
-
 }

@@ -15,31 +15,28 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-package temperature;
+package temperature.pid;
 
 /**
  * @author <a href="mailto:nguba@mac.com">Nico Guba</a>
  */
-public final class Output extends Term
+public class Term
 {
-    public static Output valueOf(final double value)
+    public static Term valueOf(final double value)
     {
-        return new Output(value);
+        return new Term(value);
     }
 
-    public static Output valueOf(final Term pTerm, final Term iTerm, final Term dTerm)
+    public static Term zero()
     {
-        return new Output(pTerm.value + iTerm.value + dTerm.value);
+        return Term.valueOf(0);
     }
 
-    public static Output zero()
-    {
-        return new Output(0);
-    }
+    protected final double value;
 
-    private Output(final double value)
+    protected Term(final double value)
     {
-        super(value);
+        this.value = value;
     }
 
     @Override
@@ -51,7 +48,7 @@ public final class Output extends Term
             return false;
         if (getClass() != obj.getClass())
             return false;
-        final Output other = (Output) obj;
+        final Term other = (Term) obj;
         if (Double.doubleToLongBits(value) != Double.doubleToLongBits(other.value))
             return false;
         return true;
@@ -68,9 +65,10 @@ public final class Output extends Term
         return result;
     }
 
-    public Boolean isBelow(final Output other)
+    @Override
+    public String toString()
     {
-        System.out.println(value + " < " + other.value);
-        return Boolean.valueOf(value < other.value);
+        return String.valueOf(value);
     }
+
 }
