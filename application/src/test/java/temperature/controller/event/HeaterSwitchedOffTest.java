@@ -15,37 +15,38 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-package temperature.event;
+package temperature.controller.event;
 
-import com.google.common.eventbus.EventBus;
+import kernel.EqualityContract;
+import temperature.controller.event.HeaterSwitchedOff;
+
+import static org.assertj.core.api.Assertions.assertThat;
+
+import org.junit.jupiter.api.Test;
 
 /**
  * @author <a href="mailto:nguba@mac.com">Nico Guba</a>
  */
-public class GuavaMessageBus implements MessageBus
+class HeaterSwitchedOffTest implements EqualityContract<HeaterSwitchedOff>
 {
-    private final EventBus bus;
+    HeaterSwitchedOff event = HeaterSwitchedOff.with("Mash Tun 1");
 
-    public GuavaMessageBus()
+    @Test
+    void toStringContains()
     {
-        bus = new EventBus("Temperature controller events");
+        assertThat(event.toString()).contains("timestamp=", "label=");
+    }
+
+    @Test
+    void accessToLabel()
+    {
+        assertThat(event.getLabel()).isEqualTo("Mash Tun 1");
     }
 
     @Override
-    public <E extends DomainEvent> void publish(final E event)
+    public Class<HeaterSwitchedOff> getTypeClass()
     {
-        bus.post(event);
+        return HeaterSwitchedOff.class;
     }
 
-    @Override
-    public void subscribe(final Object recipient)
-    {
-        bus.register(recipient);
-    }
-
-    @Override
-    public void unsubscribe(final Object recipient)
-    {
-        bus.unregister(recipient);
-    }
 }

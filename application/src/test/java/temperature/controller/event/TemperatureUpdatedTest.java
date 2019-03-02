@@ -15,10 +15,11 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-package temperature.event;
+package temperature.controller.event;
 
 import kernel.EqualityContract;
 import temperature.Temperature;
+import temperature.controller.event.TemperatureUpdated;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

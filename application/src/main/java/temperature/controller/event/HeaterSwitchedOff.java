@@ -15,30 +15,28 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-package temperature.event;
-
-import temperature.Temperature;
+package temperature.controller.event;
 
 /**
  * @author <a href="mailto:nguba@mac.com">Nico Guba</a>
  */
-public final class TemperatureUpdated extends DomainEvent
+public final class HeaterSwitchedOff extends DomainEvent
 {
-    private final Temperature temperature;
+    private final String label;
 
-    private TemperatureUpdated(final Temperature temperature)
+    private HeaterSwitchedOff(final String label)
     {
-        this.temperature = temperature;
+        this.label = label;
     }
 
-    public static TemperatureUpdated with(final Temperature temperature)
+    public static HeaterSwitchedOff with(final String label)
     {
-        return new TemperatureUpdated(temperature);
+        return new HeaterSwitchedOff(label);
     }
 
-    public Temperature getTemperature()
+    public String getLabel()
     {
-        return temperature;
+        return label;
     }
 
     @Override
@@ -46,7 +44,7 @@ public final class TemperatureUpdated extends DomainEvent
     {
         final int prime  = 31;
         int       result = super.hashCode();
-        result = (prime * result) + ((temperature == null) ? 0 : temperature.hashCode());
+        result = (prime * result) + ((label == null) ? 0 : label.hashCode());
         return result;
     }
 
@@ -59,11 +57,11 @@ public final class TemperatureUpdated extends DomainEvent
             return false;
         if (getClass() != obj.getClass())
             return false;
-        final TemperatureUpdated other = (TemperatureUpdated) obj;
-        if (temperature == null) {
-            if (other.temperature != null)
+        final HeaterSwitchedOff other = (HeaterSwitchedOff) obj;
+        if (label == null) {
+            if (other.label != null)
                 return false;
-        } else if (!temperature.equals(other.temperature))
+        } else if (!label.equals(other.label))
             return false;
         return true;
     }
@@ -72,9 +70,8 @@ public final class TemperatureUpdated extends DomainEvent
     public String toString()
     {
         final StringBuilder builder = new StringBuilder();
-        builder.append("TemperatureUpdated [temperature=").append(temperature)
-                .append(", timestamp=").append(timestamp).append("]");
+        builder.append("HeaterSwitchedOff [label=").append(label).append(", timestamp=")
+                .append(timestamp).append("]");
         return builder.toString();
     }
-
 }

@@ -33,9 +33,7 @@ subprojects {
     
     sourceCompatibility = '1.8'
     targetCompatibility = '1.8'
-    
-    jar.enabled = false
-     
+       
     eclipse {
         project {
             // we need to do this so it doesn't conflict with other layered projects
@@ -54,6 +52,12 @@ subprojects {
     
     dependencies {
         testImplementation project(':test')
+        testImplementation ("org.junit.jupiter:junit-jupiter-api:5.${junit5Version}")
+        testImplementation ("org.junit.jupiter:junit-jupiter-engine:5.${junit5Version}")
+        testImplementation ("org.junit.platform:junit-platform-commons:1.${junit5Version}")
+        testImplementation ("org.junit.platform:junit-platform-engine:1.${junit5Version}")
+        testImplementation ("nl.jqno.equalsverifier:equalsverifier:3.+")
+        testImplementation ("org.assertj:assertj-core:3.11.+")
     }
     
     configurations {

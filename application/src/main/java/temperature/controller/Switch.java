@@ -1,5 +1,5 @@
 /*
-    Copyright (C) 2019  Nicolai P. Guba
+    Copyright (C) 2018  Nicolai P. Guba
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -14,38 +14,15 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-
-package temperature.event;
-
-import kernel.EqualityContract;
-
-import static org.assertj.core.api.Assertions.assertThat;
-
-import org.junit.jupiter.api.Test;
+package temperature.controller;
 
 /**
+ *
  * @author <a href="mailto:nguba@mac.com">Nico Guba</a>
  */
-class HeaterSwitchedOffTest implements EqualityContract<HeaterSwitchedOff>
+public interface Switch
 {
-    HeaterSwitchedOff event = HeaterSwitchedOff.with("Mash Tun 1");
+    void switchOff();
 
-    @Test
-    void toStringContains()
-    {
-        assertThat(event.toString()).contains("timestamp=", "label=");
-    }
-
-    @Test
-    void accessToLabel()
-    {
-        assertThat(event.getLabel()).isEqualTo("Mash Tun 1");
-    }
-
-    @Override
-    public Class<HeaterSwitchedOff> getTypeClass()
-    {
-        return HeaterSwitchedOff.class;
-    }
-
+    void switchOn();
 }

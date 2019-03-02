@@ -15,16 +15,38 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-package temperature;
+package temperature.controller.event;
 
-import kernel.Service;
+import kernel.EqualityContract;
+import temperature.controller.event.HeaterSwitchedOn;
+
+import static org.assertj.core.api.Assertions.assertThat;
+
+import org.junit.jupiter.api.Test;
 
 /**
  * @author <a href="mailto:nguba@mac.com">Nico Guba</a>
  */
-public final class Controller implements Service
+class HeaterSwitchedOnTest implements EqualityContract<HeaterSwitchedOn>
 {
-    public Controller()
+    HeaterSwitchedOn event = HeaterSwitchedOn.with("Mash Tun 1");
+
+    @Test
+    void toStringContains()
     {
+        assertThat(event.toString()).contains("timestamp=", "label=");
     }
+
+    @Test
+    void accessToLabel()
+    {
+        assertThat(event.getLabel()).isEqualTo("Mash Tun 1");
+    }
+
+    @Override
+    public Class<HeaterSwitchedOn> getTypeClass()
+    {
+        return HeaterSwitchedOn.class;
+    }
+
 }

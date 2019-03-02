@@ -1,5 +1,5 @@
 /*
-    Copyright (C) 2019  Nicolai P. Guba
+    Copyright (C) 2018  Nicolai P. Guba
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -14,38 +14,25 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+package temperature.controller.event;
 
-package temperature.event;
+import java.time.LocalDateTime;
 
 /**
  * @author <a href="mailto:nguba@mac.com">Nico Guba</a>
  */
-public final class HeaterSwitchedOff extends DomainEvent
+public abstract class DomainEvent
 {
-    private final String label;
+    protected final LocalDateTime timestamp;
 
-    private HeaterSwitchedOff(final String label)
+    protected DomainEvent()
     {
-        this.label = label;
+        this(LocalDateTime.now());
     }
 
-    public static HeaterSwitchedOff with(final String label)
+    protected DomainEvent(final LocalDateTime timestamp)
     {
-        return new HeaterSwitchedOff(label);
-    }
-
-    public String getLabel()
-    {
-        return label;
-    }
-
-    @Override
-    public int hashCode()
-    {
-        final int prime  = 31;
-        int       result = super.hashCode();
-        result = (prime * result) + ((label == null) ? 0 : label.hashCode());
-        return result;
+        this.timestamp = timestamp;
     }
 
     @Override
@@ -53,25 +40,38 @@ public final class HeaterSwitchedOff extends DomainEvent
     {
         if (this == obj)
             return true;
-        if (!super.equals(obj))
+        if (obj == null)
             return false;
         if (getClass() != obj.getClass())
             return false;
-        final HeaterSwitchedOff other = (HeaterSwitchedOff) obj;
-        if (label == null) {
-            if (other.label != null)
+        final DomainEvent other = (DomainEvent) obj;
+        if (timestamp == null) {
+            if (other.timestamp != null)
                 return false;
-        } else if (!label.equals(other.label))
+        } else if (!timestamp.equals(other.timestamp))
             return false;
         return true;
+    }
+
+    public LocalDateTime getTimestamp()
+    {
+        return timestamp;
+    }
+
+    @Override
+    public int hashCode()
+    {
+        final int prime  = 31;
+        int       result = 1;
+        result = prime * result + (timestamp == null ? 0 : timestamp.hashCode());
+        return result;
     }
 
     @Override
     public String toString()
     {
         final StringBuilder builder = new StringBuilder();
-        builder.append("HeaterSwitchedOff [label=").append(label).append(", timestamp=")
-                .append(timestamp).append("]");
+        builder.append("DomainEvent [timestamp=").append(timestamp).append("]");
         return builder.toString();
     }
 }

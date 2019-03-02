@@ -1,4 +1,6 @@
-package temperature;
+package temperature.controller;
+
+import temperature.controller.Controller;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

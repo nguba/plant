@@ -15,13 +15,16 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-package temperature;
+package temperature.controller;
 
-import temperature.event.DomainEvent;
-import temperature.event.HeaterSwitchedOff;
-import temperature.event.HeaterSwitchedOn;
-import temperature.event.MessageBus;
-import temperature.event.TemperatureUpdated;
+import temperature.Temperature;
+import temperature.controller.Sensor;
+import temperature.controller.Switch;
+import temperature.controller.event.DomainEvent;
+import temperature.controller.event.HeaterSwitchedOff;
+import temperature.controller.event.HeaterSwitchedOn;
+import temperature.controller.event.MessageBus;
+import temperature.controller.event.TemperatureUpdated;
 
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;

@@ -1,5 +1,5 @@
 /*
-    Copyright (C) 2018  Nicolai P. Guba
+    Copyright (C) 2019  Nicolai P. Guba
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -14,25 +14,40 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-package temperature.event;
 
-import java.time.LocalDateTime;
+package temperature.controller.event;
+
+import temperature.Temperature;
 
 /**
  * @author <a href="mailto:nguba@mac.com">Nico Guba</a>
  */
-public abstract class DomainEvent
+public final class TemperatureUpdated extends DomainEvent
 {
-    protected final LocalDateTime timestamp;
+    private final Temperature temperature;
 
-    protected DomainEvent()
+    private TemperatureUpdated(final Temperature temperature)
     {
-        this(LocalDateTime.now());
+        this.temperature = temperature;
     }
 
-    protected DomainEvent(final LocalDateTime timestamp)
+    public static TemperatureUpdated with(final Temperature temperature)
     {
-        this.timestamp = timestamp;
+        return new TemperatureUpdated(temperature);
+    }
+
+    public Temperature getTemperature()
+    {
+        return temperature;
+    }
+
+    @Override
+    public int hashCode()
+    {
+        final int prime  = 31;
+        int       result = super.hashCode();
+        result = (prime * result) + ((temperature == null) ? 0 : temperature.hashCode());
+        return result;
     }
 
     @Override
@@ -40,38 +55,26 @@ public abstract class DomainEvent
     {
         if (this == obj)
             return true;
-        if (obj == null)
+        if (!super.equals(obj))
             return false;
         if (getClass() != obj.getClass())
             return false;
-        final DomainEvent other = (DomainEvent) obj;
-        if (timestamp == null) {
-            if (other.timestamp != null)
+        final TemperatureUpdated other = (TemperatureUpdated) obj;
+        if (temperature == null) {
+            if (other.temperature != null)
                 return false;
-        } else if (!timestamp.equals(other.timestamp))
+        } else if (!temperature.equals(other.temperature))
             return false;
         return true;
-    }
-
-    public LocalDateTime getTimestamp()
-    {
-        return timestamp;
-    }
-
-    @Override
-    public int hashCode()
-    {
-        final int prime  = 31;
-        int       result = 1;
-        result = prime * result + (timestamp == null ? 0 : timestamp.hashCode());
-        return result;
     }
 
     @Override
     public String toString()
     {
         final StringBuilder builder = new StringBuilder();
-        builder.append("DomainEvent [timestamp=").append(timestamp).append("]");
+        builder.append("TemperatureUpdated [temperature=").append(temperature)
+                .append(", timestamp=").append(timestamp).append("]");
         return builder.toString();
     }
+
 }
