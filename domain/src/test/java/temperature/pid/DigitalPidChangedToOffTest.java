@@ -18,8 +18,6 @@
 package temperature.pid;
 
 import kernel.EqualityContract;
-import temperature.pid.DigitalPidChangedToOff;
-import temperature.pid.Output;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -40,7 +38,7 @@ class DigitalPidChangedToOffTest implements EqualityContract<DigitalPidChangedTo
     @Test
     void toStringContains()
     {
-        final Output        pidTerm = Output.valueOf(2342.22);
+        final Output                 pidTerm = Output.valueOf(2342.22);
         final DigitalPidChangedToOff event   = DigitalPidChangedToOff.with(pidTerm, 5000);
 
         assertThat(event.toString()).contains("timestamp=", "output=", "window=");

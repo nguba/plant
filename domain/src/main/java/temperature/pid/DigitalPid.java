@@ -40,8 +40,7 @@ public final class DigitalPid implements Pid<Boolean>, Entity<UUID>
     private final UUID      identity;
     private MessageBus      messageBus;
     private long            startTime = System.currentTimeMillis();
-
-    private final long windowSize;
+    private final long      windowSize;
 
     private DigitalPid(final UUID identity, final AnalogPid delegate, final long windowSize)
     {
