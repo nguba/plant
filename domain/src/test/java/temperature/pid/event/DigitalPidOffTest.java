@@ -15,37 +15,34 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-package temperature.pid;
+package temperature.pid.event;
 
 import kernel.EqualityContract;
+import temperature.pid.Output;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 /**
  *
  * @author <a href="mailto:nguba@mac.com">Nico Guba</a>
  */
-class TermTest implements EqualityContract<Term>
+class DigitalPidOffTest implements EqualityContract<DigitalPidOff>
 {
     @Override
-    public Class<Term> getTypeClass()
+    public Class<DigitalPidOff> getTypeClass()
     {
-        return Term.class;
+        return DigitalPidOff.class;
     }
 
     @Test
-    @DisplayName("string representation of value is returned")
-    void toStringHasValueOnly()
+    void toStringContains()
     {
-        assertThat(Term.valueOf(22.3).toString()).isEqualTo("22.3");
+        final Output        pidTerm = Output.valueOf(2342.22);
+        final DigitalPidOff event   = DigitalPidOff.with(pidTerm, 5000);
+
+        assertThat(event.toString()).contains("timestamp=", "output=", "window=");
     }
 
-    @Test
-    void zero()
-    {
-        assertThat(Term.zero()).isEqualTo(Term.valueOf(0));
-    }
 }

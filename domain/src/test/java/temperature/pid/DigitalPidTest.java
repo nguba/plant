@@ -36,29 +36,14 @@ import java.util.UUID;
  */
 class DigitalPidTest implements MessageBus, EntityEqualityContract<UUID, DigitalPid>
 {
+    DomainEvent event;
     DigitalPid  pid = DigitalPid
             .with(UUID.randomUUID(), AnalogPid.withIdentityOf(UUID.randomUUID()), 1000);
-    DomainEvent event;
 
     @Test
     void falseWhenNoHeatingNeeded() throws Exception
     {
         assertThat(pid.update(Temperature.celsius(10), Temperature.celsius(10.01))).isFalse();
-    }
-
-    @BeforeEach
-    void setUp() throws Exception
-    {
-        Thread.sleep(1000);
-        pid.setIntegral(Integral.valueOf(1020));
-        pid.setProportional(Proportional.zero());
-        pid.setDerivative(Derivative.zero());
-    }
-
-    @Test
-    void trueWhenHeatingIsNeeded() throws Exception
-    {
-        assertThat(pid.update(Temperature.celsius(10), Temperature.celsius(0))).isTrue();
     }
 
     @Test
@@ -70,10 +55,25 @@ class DigitalPidTest implements MessageBus, EntityEqualityContract<UUID, Digital
     }
 
     @Override
+    public Class<DigitalPid> getTypeClass()
+    {
+        return DigitalPid.class;
+    }
+
+    @Override
     public <E extends DomainEvent> void publish(final E event)
     {
         this.event = event;
         System.out.println(event);
+    }
+
+    @BeforeEach
+    void setUp() throws Exception
+    {
+        Thread.sleep(1000);
+        pid.setIntegral(Integral.valueOf(1020));
+        pid.setProportional(Proportional.zero());
+        pid.setDerivative(Derivative.zero());
     }
 
     @Override
@@ -81,14 +81,14 @@ class DigitalPidTest implements MessageBus, EntityEqualityContract<UUID, Digital
     {
     }
 
-    @Override
-    public void unsubscribe(final Object recipient)
+    @Test
+    void trueWhenHeatingIsNeeded() throws Exception
     {
+        assertThat(pid.update(Temperature.celsius(10), Temperature.celsius(0))).isTrue();
     }
 
     @Override
-    public Class<DigitalPid> getTypeClass()
+    public void unsubscribe(final Object recipient)
     {
-        return DigitalPid.class;
     }
 }

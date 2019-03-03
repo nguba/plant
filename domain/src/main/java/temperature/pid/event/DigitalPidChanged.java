@@ -23,38 +23,15 @@ import temperature.pid.Output;
 /**
  * @author <a href="mailto:nguba@mac.com">Nico Guba</a>
  */
-public class DigitalPidChanged extends DomainEvent
+public abstract class DigitalPidChanged extends DomainEvent
 {
-    private final Output output;
-    private final long   window;
+    protected final Output output;
+    protected final long   window;
 
-    private DigitalPidChanged(final Output output, final long window)
+    protected DigitalPidChanged(final Output output, final long window)
     {
         this.output = output;
         this.window = window;
-    }
-
-    public static DigitalPidChanged with(final Output output, final long window)
-    {
-        return new DigitalPidChanged(output, window);
-    }
-
-    @Override
-    public String toString()
-    {
-        final StringBuilder builder = new StringBuilder();
-        builder.append("DigitalPidChanged [output=").append(output).append(", window=")
-                .append(window).append(", timestamp=").append(timestamp).append("]");
-        return builder.toString();
-    }
-
-    @Override
-    public int hashCode()
-    {
-        final int prime  = 31;
-        int       result = super.hashCode();
-        result = (prime * result) + ((output == null) ? 0 : output.hashCode());
-        return result;
     }
 
     @Override
@@ -72,6 +49,27 @@ public class DigitalPidChanged extends DomainEvent
                 return false;
         } else if (!output.equals(other.output))
             return false;
+        if (window != other.window)
+            return false;
         return true;
+    }
+
+    @Override
+    public int hashCode()
+    {
+        final int prime  = 31;
+        int       result = super.hashCode();
+        result = prime * result + (output == null ? 0 : output.hashCode());
+        result = prime * result + (int) (window ^ window >>> 32);
+        return result;
+    }
+
+    @Override
+    public String toString()
+    {
+        final StringBuilder builder = new StringBuilder();
+        builder.append("DigitalPidChanged [output=").append(output).append(", window=")
+                .append(window).append(", timestamp=").append(timestamp).append("]");
+        return builder.toString();
     }
 }

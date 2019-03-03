@@ -17,10 +17,12 @@
 
 package temperature.pid;
 
+import kernel.DomainEvent;
 import kernel.Entity;
 import kernel.MessageBus;
 import temperature.Temperature;
-import temperature.pid.event.DigitalPidChanged;
+import temperature.pid.event.DigitalPidOff;
+import temperature.pid.event.DigitalPidOn;
 
 import java.util.UUID;
 
@@ -29,61 +31,6 @@ import java.util.UUID;
  */
 public final class DigitalPid implements Pid<Boolean>, Entity<UUID>
 {
-    private final AnalogPid delegate;
-    private long            startTime = System.currentTimeMillis();
-    private final long      windowSize;
-    private MessageBus      messageBus;
-    private final UUID      identity;
-
-    private DigitalPid(final UUID identity, final AnalogPid delegate, final long windowSize)
-    {
-        this.identity = identity;
-        this.delegate = delegate;
-        this.windowSize = windowSize;
-    }
-
-    @Override
-    public void setDerivative(final Derivative derivative)
-    {
-        delegate.setDerivative(derivative);
-    }
-
-    @Override
-    public void setIntegral(final Integral integral)
-    {
-        delegate.setIntegral(integral);
-    }
-
-    @Override
-    public void setProportional(final Proportional proportional)
-    {
-        delegate.setProportional(proportional);
-    }
-
-    @Override
-    public Boolean update(final Temperature sP, final Temperature pV)
-    {
-        final long window = System.currentTimeMillis() - startTime;
-        if (window > windowSize)
-            startTime += windowSize;
-
-        final Output pidTerm = delegate.update(sP, pV);
-        if (messageBus != null)
-            messageBus.publish(DigitalPidChanged.with(pidTerm, window));
-        return Output.valueOf(window).isBelow(pidTerm);
-    }
-
-    public void setMessageBus(final MessageBus messageBus)
-    {
-        this.messageBus = messageBus;
-    }
-
-    @Override
-    public UUID getIdentity()
-    {
-        return identity;
-    }
-
     public static DigitalPid with(final UUID identity,
                                   final AnalogPid analogPid,
                                   final int windowSize)
@@ -91,13 +38,18 @@ public final class DigitalPid implements Pid<Boolean>, Entity<UUID>
         return new DigitalPid(identity, analogPid, windowSize);
     }
 
-    @Override
-    public int hashCode()
+    private final AnalogPid delegate;
+    private final UUID      identity;
+    private MessageBus      messageBus;
+    private long            startTime = System.currentTimeMillis();
+
+    private final long windowSize;
+
+    private DigitalPid(final UUID identity, final AnalogPid delegate, final long windowSize)
     {
-        final int prime  = 31;
-        int       result = 1;
-        result = (prime * result) + ((identity == null) ? 0 : identity.hashCode());
-        return result;
+        this.identity = identity;
+        this.delegate = delegate;
+        this.windowSize = windowSize;
     }
 
     @Override
@@ -116,5 +68,79 @@ public final class DigitalPid implements Pid<Boolean>, Entity<UUID>
         } else if (!identity.equals(other.identity))
             return false;
         return true;
+    }
+
+    private void fireEvent(final long window, final Output pidTerm, final Boolean below)
+    {
+        if (below.booleanValue())
+            raise(DigitalPidOn.with(pidTerm, window));
+        else raise(DigitalPidOff.with(pidTerm, window));
+    }
+
+    @Override
+    public UUID getIdentity()
+    {
+        return identity;
+    }
+
+    @Override
+    public int hashCode()
+    {
+        final int prime  = 31;
+        int       result = 1;
+        result = prime * result + (identity == null ? 0 : identity.hashCode());
+        return result;
+    }
+
+    private void raise(final DomainEvent event)
+    {
+        if (messageBus != null)
+            messageBus.publish(event);
+    }
+
+    @Override
+    public void setDerivative(final Derivative derivative)
+    {
+        delegate.setDerivative(derivative);
+    }
+
+    @Override
+    public void setIntegral(final Integral integral)
+    {
+        delegate.setIntegral(integral);
+    }
+
+    public void setMessageBus(final MessageBus messageBus)
+    {
+        this.messageBus = messageBus;
+    }
+
+    @Override
+    public void setProportional(final Proportional proportional)
+    {
+        delegate.setProportional(proportional);
+    }
+
+    @Override
+    public String toString()
+    {
+        final StringBuilder builder = new StringBuilder();
+        builder.append("DigitalPid [identity=").append(identity).append(", delegate=")
+                .append(delegate).append(", startTime=").append(startTime).append(", windowSize=")
+                .append(windowSize).append(", messageBus=").append(messageBus).append("]");
+        return builder.toString();
+    }
+
+    @Override
+    public Boolean update(final Temperature sP, final Temperature pV)
+    {
+        final long window = System.currentTimeMillis() - startTime;
+        if (window > windowSize)
+            startTime += windowSize;
+
+        final Output  pidTerm = delegate.update(sP, pV);
+        final Boolean output  = Output.valueOf(window).isBelow(pidTerm);
+        fireEvent(window, pidTerm, output);
+        return output;
     }
 }

@@ -17,6 +17,12 @@ class AnalogPidTest implements EntityEqualityContract<UUID, AnalogPid>
 {
     private final AnalogPid pid = AnalogPid.withIdentityOf(UUID.randomUUID());
 
+    @Override
+    public Class<AnalogPid> getTypeClass()
+    {
+        return AnalogPid.class;
+    }
+
     @Test
     void integralOverTwoPeriods() throws Exception
     {
@@ -86,12 +92,6 @@ class AnalogPidTest implements EntityEqualityContract<UUID, AnalogPid>
     void toStringResillience()
     {
         AnalogPid.withIdentityOf(null).toString();
-    }
-
-    @Override
-    public Class<AnalogPid> getTypeClass()
-    {
-        return AnalogPid.class;
     }
 
     // @Test

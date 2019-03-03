@@ -1,8 +1,6 @@
 package temperature;
 
 import kernel.EntityEqualityContract;
-import temperature.Segment;
-import temperature.Temperature;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

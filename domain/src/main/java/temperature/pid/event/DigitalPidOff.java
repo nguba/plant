@@ -17,32 +17,30 @@
 
 package temperature.pid.event;
 
-import kernel.EqualityContract;
 import temperature.pid.Output;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
-import org.junit.jupiter.api.Test;
-
 /**
- *
  * @author <a href="mailto:nguba@mac.com">Nico Guba</a>
  */
-class DigitalPidChangedTest implements EqualityContract<DigitalPidChanged>
+public final class DigitalPidOff extends DigitalPidChanged
 {
-    @Test
-    void toStringContains()
+    public static DigitalPidOff with(final Output pidTerm, final long window)
     {
-        final Output            pidTerm = Output.valueOf(2342.22);
-        final DigitalPidChanged event   = DigitalPidChanged.with(pidTerm, 5000);
+        return new DigitalPidOff(pidTerm, window);
+    }
 
-        assertThat(event.toString()).contains("timestamp=", "output=", "window=");
+    private DigitalPidOff(final Output output, final long window)
+    {
+        super(output, window);
     }
 
     @Override
-    public Class<DigitalPidChanged> getTypeClass()
+    public String toString()
     {
-        return DigitalPidChanged.class;
+        final StringBuilder builder = new StringBuilder();
+        builder.append("DigitalPidOff [output=").append(output).append(", window=").append(window)
+                .append(", timestamp=").append(timestamp).append("]");
+        return builder.toString();
     }
 
 }

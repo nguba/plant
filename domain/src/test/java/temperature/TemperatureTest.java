@@ -17,7 +17,6 @@
 package temperature;
 
 import nl.jqno.equalsverifier.EqualsVerifier;
-import temperature.Temperature;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

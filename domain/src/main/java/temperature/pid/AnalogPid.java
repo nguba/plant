@@ -29,26 +29,60 @@ import java.util.UUID;
  */
 public final class AnalogPid implements Pid<Output>, Entity<UUID>
 {
-    private Derivative   derivative   = Derivative.zero();
-    private Integral     integral     = Integral.zero();
-    private Error        lastError    = Error.zero();
-    private Instant      lastTime     = Instant.now();
+    public static AnalogPid withIdentityOf(final UUID id)
+    {
+        return new AnalogPid(id);
+    }
+
+    private Derivative derivative = Derivative.zero();
+    private final UUID identity;
+    private Integral   integral   = Integral.zero();
+    private Error      lastError  = Error.zero();
+    private Instant    lastTime   = Instant.now();
+
     private Proportional proportional = Proportional.zero();
-    private final UUID   identity;
 
     private AnalogPid(final UUID identity)
     {
         this.identity = identity;
     }
 
-    public static AnalogPid withIdentityOf(final UUID id)
+    @Override
+    public boolean equals(final Object obj)
     {
-        return new AnalogPid(id);
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        final AnalogPid other = (AnalogPid) obj;
+        if (identity == null) {
+            if (other.identity != null)
+                return false;
+        } else if (!identity.equals(other.identity))
+            return false;
+        return true;
+    }
+
+    @Override
+    public UUID getIdentity()
+    {
+        return identity;
     }
 
     public Instant getLastTime()
     {
         return lastTime;
+    }
+
+    @Override
+    public int hashCode()
+    {
+        final int prime  = 31;
+        int       result = 1;
+        result = prime * result + (identity == null ? 0 : identity.hashCode());
+        return result;
     }
 
     @Override
@@ -88,33 +122,6 @@ public final class AnalogPid implements Pid<Output>, Entity<UUID>
     }
 
     @Override
-    public int hashCode()
-    {
-        final int prime  = 31;
-        int       result = 1;
-        result = (prime * result) + ((identity == null) ? 0 : identity.hashCode());
-        return result;
-    }
-
-    @Override
-    public boolean equals(final Object obj)
-    {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
-        final AnalogPid other = (AnalogPid) obj;
-        if (identity == null) {
-            if (other.identity != null)
-                return false;
-        } else if (!identity.equals(other.identity))
-            return false;
-        return true;
-    }
-
-    @Override
     public Output update(final Temperature sP, final Temperature pV)
     {
         final Error    error      = Error.from(sP, pV);
@@ -128,11 +135,5 @@ public final class AnalogPid implements Pid<Output>, Entity<UUID>
         lastError = error;
 
         return Output.valueOf(pTerm, iTerm, dTerm);
-    }
-
-    @Override
-    public UUID getIdentity()
-    {
-        return identity;
     }
 }
