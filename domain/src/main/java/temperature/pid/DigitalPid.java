@@ -21,8 +21,6 @@ import kernel.DomainEvent;
 import kernel.Entity;
 import kernel.MessageBus;
 import temperature.Temperature;
-import temperature.pid.event.DigitalPidOff;
-import temperature.pid.event.DigitalPidOn;
 
 import java.util.UUID;
 
@@ -73,8 +71,8 @@ public final class DigitalPid implements Pid<Boolean>, Entity<UUID>
     private void fireEvent(final long window, final Output pidTerm, final Boolean below)
     {
         if (below.booleanValue())
-            raise(DigitalPidOn.with(pidTerm, window));
-        else raise(DigitalPidOff.with(pidTerm, window));
+            raise(DigitalPidChangedToOn.with(pidTerm, window));
+        else raise(DigitalPidChangedToOff.with(pidTerm, window));
     }
 
     @Override

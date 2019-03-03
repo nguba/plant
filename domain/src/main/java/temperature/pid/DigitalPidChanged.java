@@ -15,10 +15,9 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-package temperature.pid.event;
+package temperature.pid;
 
 import kernel.DomainEvent;
-import temperature.pid.Output;
 
 /**
  * @author <a href="mailto:nguba@mac.com">Nico Guba</a>

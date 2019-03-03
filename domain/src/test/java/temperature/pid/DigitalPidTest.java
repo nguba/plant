@@ -21,7 +21,6 @@ import kernel.DomainEvent;
 import kernel.EntityEqualityContract;
 import kernel.MessageBus;
 import temperature.Temperature;
-import temperature.pid.event.DigitalPidChanged;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
