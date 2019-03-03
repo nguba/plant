@@ -18,8 +18,6 @@ package kernel.validation;
 
 import kernel.ValueObject;
 
-import org.assertj.core.util.Streams;
-
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.Set;
@@ -82,7 +80,7 @@ public final class Notifications implements Iterable<Failure>, ValueObject
     @Override
     public String toString()
     {
-        return Streams.stream(errors).map(Failure::toString).collect(Collectors.joining(", "));
+        return errors.stream().map(e -> e.toString()).collect(Collectors.joining(", "));
     }
 
     @Override
