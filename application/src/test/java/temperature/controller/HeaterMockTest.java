@@ -31,18 +31,17 @@ class HeaterMockTest
         assertThat(heater.currentTemperature().isAbove(previous));
     }
 
+    @Subscribe
+    void onEvent(final DomainEvent event)
+    {
+        System.out.println(event);
+    }
+
     @BeforeEach
     void setUp() throws Exception
     {
         BUS.subscribe(heater);
         BUS.subscribe(this);
-    }
-
-    @AfterEach
-    void tearDown() throws Exception
-    {
-        BUS.unsubscribe(heater);
-        BUS.unsubscribe(this);
     }
 
     @Test
@@ -60,9 +59,10 @@ class HeaterMockTest
         assertThat(heater.currentTemperature().equals(previous));
     }
 
-    @Subscribe
-    void onEvent(final DomainEvent event)
+    @AfterEach
+    void tearDown() throws Exception
     {
-        System.out.println(event);
+        BUS.unsubscribe(heater);
+        BUS.unsubscribe(this);
     }
 }

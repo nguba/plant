@@ -18,7 +18,6 @@
 package temperature.controller.event;
 
 import kernel.EqualityContract;
-import temperature.controller.event.HeaterSwitchedOn;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -32,12 +31,6 @@ class HeaterSwitchedOnTest implements EqualityContract<HeaterSwitchedOn>
     HeaterSwitchedOn event = HeaterSwitchedOn.with("Mash Tun 1");
 
     @Test
-    void toStringContains()
-    {
-        assertThat(event.toString()).contains("timestamp=", "label=");
-    }
-
-    @Test
     void accessToLabel()
     {
         assertThat(event.getLabel()).isEqualTo("Mash Tun 1");
@@ -47,6 +40,12 @@ class HeaterSwitchedOnTest implements EqualityContract<HeaterSwitchedOn>
     public Class<HeaterSwitchedOn> getTypeClass()
     {
         return HeaterSwitchedOn.class;
+    }
+
+    @Test
+    void toStringContains()
+    {
+        assertThat(event.toString()).contains("timestamp=", "label=");
     }
 
 }

@@ -1,7 +1,5 @@
 package temperature.controller;
 
-import temperature.controller.Controller;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -15,7 +13,7 @@ class ControllerTest
     @Test
     void test()
     {
-        final Controller controller = new Controller();
+        new Controller();
     }
 
 }

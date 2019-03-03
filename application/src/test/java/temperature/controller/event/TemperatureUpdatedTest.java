@@ -19,7 +19,6 @@ package temperature.controller.event;
 
 import kernel.EqualityContract;
 import temperature.Temperature;
-import temperature.controller.event.TemperatureUpdated;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -32,11 +31,10 @@ class TemperatureUpdatedTest implements EqualityContract<TemperatureUpdated>
 {
     Temperature temperature = Temperature.celsius(55.3);
 
-    @Test
-    void toStringContainsEssentials()
+    @Override
+    public Class<TemperatureUpdated> getTypeClass()
     {
-        assertThat(TemperatureUpdated.with(temperature).toString()).contains("timestamp=",
-                                                                             "temperature=");
+        return TemperatureUpdated.class;
     }
 
     @Test
@@ -46,10 +44,11 @@ class TemperatureUpdatedTest implements EqualityContract<TemperatureUpdated>
                 .isEqualTo(Temperature.celsius(55.3));
     }
 
-    @Override
-    public Class<TemperatureUpdated> getTypeClass()
+    @Test
+    void toStringContainsEssentials()
     {
-        return TemperatureUpdated.class;
+        assertThat(TemperatureUpdated.with(temperature).toString()).contains("timestamp=",
+                                                                             "temperature=");
     }
 
 }

@@ -25,30 +25,16 @@ import temperature.Temperature;
  */
 public final class TemperatureUpdated extends DomainEvent
 {
-    private final Temperature temperature;
-
-    private TemperatureUpdated(final Temperature temperature)
-    {
-        this.temperature = temperature;
-    }
-
     public static TemperatureUpdated with(final Temperature temperature)
     {
         return new TemperatureUpdated(temperature);
     }
 
-    public Temperature getTemperature()
-    {
-        return temperature;
-    }
+    private final Temperature temperature;
 
-    @Override
-    public int hashCode()
+    private TemperatureUpdated(final Temperature temperature)
     {
-        final int prime  = 31;
-        int       result = super.hashCode();
-        result = (prime * result) + ((temperature == null) ? 0 : temperature.hashCode());
-        return result;
+        this.temperature = temperature;
     }
 
     @Override
@@ -67,6 +53,20 @@ public final class TemperatureUpdated extends DomainEvent
         } else if (!temperature.equals(other.temperature))
             return false;
         return true;
+    }
+
+    public Temperature getTemperature()
+    {
+        return temperature;
+    }
+
+    @Override
+    public int hashCode()
+    {
+        final int prime  = 31;
+        int       result = super.hashCode();
+        result = prime * result + (temperature == null ? 0 : temperature.hashCode());
+        return result;
     }
 
     @Override

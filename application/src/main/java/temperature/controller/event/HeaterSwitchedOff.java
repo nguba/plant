@@ -24,30 +24,16 @@ import kernel.DomainEvent;
  */
 public final class HeaterSwitchedOff extends DomainEvent
 {
-    private final String label;
-
-    private HeaterSwitchedOff(final String label)
-    {
-        this.label = label;
-    }
-
     public static HeaterSwitchedOff with(final String label)
     {
         return new HeaterSwitchedOff(label);
     }
 
-    public String getLabel()
-    {
-        return label;
-    }
+    private final String label;
 
-    @Override
-    public int hashCode()
+    private HeaterSwitchedOff(final String label)
     {
-        final int prime  = 31;
-        int       result = super.hashCode();
-        result = (prime * result) + ((label == null) ? 0 : label.hashCode());
-        return result;
+        this.label = label;
     }
 
     @Override
@@ -66,6 +52,20 @@ public final class HeaterSwitchedOff extends DomainEvent
         } else if (!label.equals(other.label))
             return false;
         return true;
+    }
+
+    public String getLabel()
+    {
+        return label;
+    }
+
+    @Override
+    public int hashCode()
+    {
+        final int prime  = 31;
+        int       result = super.hashCode();
+        result = prime * result + (label == null ? 0 : label.hashCode());
+        return result;
     }
 
     @Override

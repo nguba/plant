@@ -20,8 +20,6 @@ package temperature.controller;
 import kernel.DomainEvent;
 import kernel.MessageBus;
 import temperature.Temperature;
-import temperature.controller.Sensor;
-import temperature.controller.Switch;
 import temperature.controller.event.HeaterSwitchedOff;
 import temperature.controller.event.HeaterSwitchedOn;
 import temperature.controller.event.TemperatureUpdated;
@@ -37,13 +35,13 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 public class HeaterMock implements Switch, Sensor
 {
+    private final MessageBus bus;
+
     ScheduledExecutorService element = Executors.newScheduledThreadPool(2);
 
     AtomicBoolean heat = new AtomicBoolean();
 
     AtomicInteger value = new AtomicInteger();
-
-    private final MessageBus bus;
 
     public HeaterMock(final MessageBus bus)
     {
