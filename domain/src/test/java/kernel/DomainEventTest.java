@@ -1,7 +1,7 @@
-package temperature.controller.event;
+package kernel;
 
+import kernel.DomainEvent;
 import kernel.EqualityContract;
-import temperature.controller.event.DomainEvent;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

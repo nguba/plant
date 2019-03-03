@@ -1,11 +1,7 @@
 package temperature.pid;
 
+import kernel.EntityEqualityContract;
 import temperature.Temperature;
-import temperature.pid.AnalogPid;
-import temperature.pid.Derivative;
-import temperature.pid.Integral;
-import temperature.pid.Output;
-import temperature.pid.Proportional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -15,10 +11,11 @@ import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
 import java.time.Instant;
+import java.util.UUID;
 
-class AnalogPidTest
+class AnalogPidTest implements EntityEqualityContract<UUID, AnalogPid>
 {
-    private final AnalogPid pid = new AnalogPid();
+    private final AnalogPid pid = AnalogPid.withIdentityOf(UUID.randomUUID());
 
     @Test
     void integralOverTwoPeriods() throws Exception
@@ -88,7 +85,13 @@ class AnalogPidTest
     @DisplayName("toString() resillience")
     void toStringResillience()
     {
-        new AnalogPid().toString();
+        AnalogPid.withIdentityOf(null).toString();
+    }
+
+    @Override
+    public Class<AnalogPid> getTypeClass()
+    {
+        return AnalogPid.class;
     }
 
     // @Test

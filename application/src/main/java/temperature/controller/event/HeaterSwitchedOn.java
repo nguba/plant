@@ -17,6 +17,8 @@
 
 package temperature.controller.event;
 
+import kernel.DomainEvent;
+
 /**
  * @author <a href="mailto:nguba@mac.com">Nico Guba</a>
  */

@@ -15,30 +15,37 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-package temperature.controller.event;
+package temperature.pid.event;
 
 import kernel.DomainEvent;
+import temperature.pid.Output;
 
 /**
  * @author <a href="mailto:nguba@mac.com">Nico Guba</a>
  */
-public final class HeaterSwitchedOff extends DomainEvent
+public class DigitalPidChanged extends DomainEvent
 {
-    private final String label;
+    private final Output output;
+    private final long   window;
 
-    private HeaterSwitchedOff(final String label)
+    private DigitalPidChanged(final Output output, final long window)
     {
-        this.label = label;
+        this.output = output;
+        this.window = window;
     }
 
-    public static HeaterSwitchedOff with(final String label)
+    public static DigitalPidChanged with(final Output output, final long window)
     {
-        return new HeaterSwitchedOff(label);
+        return new DigitalPidChanged(output, window);
     }
 
-    public String getLabel()
+    @Override
+    public String toString()
     {
-        return label;
+        final StringBuilder builder = new StringBuilder();
+        builder.append("DigitalPidChanged [output=").append(output).append(", window=")
+                .append(window).append(", timestamp=").append(timestamp).append("]");
+        return builder.toString();
     }
 
     @Override
@@ -46,7 +53,7 @@ public final class HeaterSwitchedOff extends DomainEvent
     {
         final int prime  = 31;
         int       result = super.hashCode();
-        result = (prime * result) + ((label == null) ? 0 : label.hashCode());
+        result = (prime * result) + ((output == null) ? 0 : output.hashCode());
         return result;
     }
 
@@ -59,21 +66,12 @@ public final class HeaterSwitchedOff extends DomainEvent
             return false;
         if (getClass() != obj.getClass())
             return false;
-        final HeaterSwitchedOff other = (HeaterSwitchedOff) obj;
-        if (label == null) {
-            if (other.label != null)
+        final DigitalPidChanged other = (DigitalPidChanged) obj;
+        if (output == null) {
+            if (other.output != null)
                 return false;
-        } else if (!label.equals(other.label))
+        } else if (!output.equals(other.output))
             return false;
         return true;
-    }
-
-    @Override
-    public String toString()
-    {
-        final StringBuilder builder = new StringBuilder();
-        builder.append("HeaterSwitchedOff [label=").append(label).append(", timestamp=")
-                .append(timestamp).append("]");
-        return builder.toString();
     }
 }

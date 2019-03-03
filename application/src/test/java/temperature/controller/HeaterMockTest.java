@@ -1,9 +1,9 @@
 package temperature.controller;
 
+import kernel.DomainEvent;
+import kernel.MessageBus;
 import temperature.Temperature;
-import temperature.controller.event.DomainEvent;
 import temperature.controller.event.GuavaMessageBus;
-import temperature.controller.event.MessageBus;
 
 import com.google.common.eventbus.Subscribe;
 

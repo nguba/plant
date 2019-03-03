@@ -17,19 +17,27 @@
 
 package temperature.pid;
 
+import kernel.Entity;
+import kernel.MessageBus;
 import temperature.Temperature;
+import temperature.pid.event.DigitalPidChanged;
+
+import java.util.UUID;
 
 /**
  * @author <a href="mailto:nguba@mac.com">Nico Guba</a>
  */
-public final class DigitalPid implements Pid<Boolean>
+public final class DigitalPid implements Pid<Boolean>, Entity<UUID>
 {
     private final AnalogPid delegate;
     private long            startTime = System.currentTimeMillis();
     private final long      windowSize;
+    private MessageBus      messageBus;
+    private final UUID      identity;
 
-    public DigitalPid(final AnalogPid delegate, final long windowSize)
+    private DigitalPid(final UUID identity, final AnalogPid delegate, final long windowSize)
     {
+        this.identity = identity;
         this.delegate = delegate;
         this.windowSize = windowSize;
     }
@@ -56,12 +64,57 @@ public final class DigitalPid implements Pid<Boolean>
     public Boolean update(final Temperature sP, final Temperature pV)
     {
         final long window = System.currentTimeMillis() - startTime;
-        System.out.println(window);
         if (window > windowSize)
             startTime += windowSize;
 
         final Output pidTerm = delegate.update(sP, pV);
+        if (messageBus != null)
+            messageBus.publish(DigitalPidChanged.with(pidTerm, window));
         return Output.valueOf(window).isBelow(pidTerm);
     }
 
+    public void setMessageBus(final MessageBus messageBus)
+    {
+        this.messageBus = messageBus;
+    }
+
+    @Override
+    public UUID getIdentity()
+    {
+        return identity;
+    }
+
+    public static DigitalPid with(final UUID identity,
+                                  final AnalogPid analogPid,
+                                  final int windowSize)
+    {
+        return new DigitalPid(identity, analogPid, windowSize);
+    }
+
+    @Override
+    public int hashCode()
+    {
+        final int prime  = 31;
+        int       result = 1;
+        result = (prime * result) + ((identity == null) ? 0 : identity.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(final Object obj)
+    {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        final DigitalPid other = (DigitalPid) obj;
+        if (identity == null) {
+            if (other.identity != null)
+                return false;
+        } else if (!identity.equals(other.identity))
+            return false;
+        return true;
+    }
 }

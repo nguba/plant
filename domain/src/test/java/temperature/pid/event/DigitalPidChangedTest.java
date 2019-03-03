@@ -1,5 +1,5 @@
 /*
-    Copyright (C) 2018  Nicolai P. Guba
+    Copyright (C) 2019  Nicolai P. Guba
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -14,16 +14,35 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-package temperature.controller.event;
+
+package temperature.pid.event;
+
+import kernel.EqualityContract;
+import temperature.pid.Output;
+
+import static org.assertj.core.api.Assertions.assertThat;
+
+import org.junit.jupiter.api.Test;
 
 /**
+ *
  * @author <a href="mailto:nguba@mac.com">Nico Guba</a>
  */
-public interface MessageBus
+class DigitalPidChangedTest implements EqualityContract<DigitalPidChanged>
 {
-    <E extends DomainEvent> void publish(E event);
+    @Test
+    void toStringContains()
+    {
+        final Output            pidTerm = Output.valueOf(2342.22);
+        final DigitalPidChanged event   = DigitalPidChanged.with(pidTerm, 5000);
 
-    void subscribe(Object recipient);
+        assertThat(event.toString()).contains("timestamp=", "output=", "window=");
+    }
 
-    void unsubscribe(Object recipient);
+    @Override
+    public Class<DigitalPidChanged> getTypeClass()
+    {
+        return DigitalPidChanged.class;
+    }
+
 }

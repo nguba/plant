@@ -17,13 +17,13 @@
 
 package temperature.controller;
 
+import kernel.DomainEvent;
+import kernel.MessageBus;
 import temperature.Temperature;
 import temperature.controller.Sensor;
 import temperature.controller.Switch;
-import temperature.controller.event.DomainEvent;
 import temperature.controller.event.HeaterSwitchedOff;
 import temperature.controller.event.HeaterSwitchedOn;
-import temperature.controller.event.MessageBus;
 import temperature.controller.event.TemperatureUpdated;
 
 import java.util.concurrent.Executors;

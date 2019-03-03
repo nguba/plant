@@ -17,6 +17,7 @@
 
 package temperature.controller.event;
 
+import kernel.DomainEvent;
 import temperature.Temperature;
 
 /**

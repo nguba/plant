@@ -16,22 +16,35 @@
 */
 package temperature.pid;
 
+import kernel.Entity;
 import temperature.Temperature;
 
 import java.time.Duration;
 import java.time.Instant;
+import java.util.UUID;
 
 /**
  *
  * @author <a href="mailto:nguba@mac.com">Nico Guba</a>
  */
-public class AnalogPid implements Pid<Output>
+public final class AnalogPid implements Pid<Output>, Entity<UUID>
 {
     private Derivative   derivative   = Derivative.zero();
     private Integral     integral     = Integral.zero();
     private Error        lastError    = Error.zero();
     private Instant      lastTime     = Instant.now();
     private Proportional proportional = Proportional.zero();
+    private final UUID   identity;
+
+    private AnalogPid(final UUID identity)
+    {
+        this.identity = identity;
+    }
+
+    public static AnalogPid withIdentityOf(final UUID id)
+    {
+        return new AnalogPid(id);
+    }
 
     public Instant getLastTime()
     {
@@ -67,10 +80,38 @@ public class AnalogPid implements Pid<Output>
     public String toString()
     {
         final StringBuilder builder = new StringBuilder();
-        builder.append("AnalogPid [proportional=").append(proportional).append(", integral=")
-                .append(integral).append(", lastTime=").append(lastTime).append(", lastError=")
-                .append(lastError).append(", derivative=").append(derivative).append("]");
+        builder.append("AnalogPid [id=").append(identity).append(", derivative=").append(derivative)
+                .append(", integral=").append(integral).append(", lastError=").append(lastError)
+                .append(", lastTime=").append(lastTime).append(", proportional=")
+                .append(proportional).append("]");
         return builder.toString();
+    }
+
+    @Override
+    public int hashCode()
+    {
+        final int prime  = 31;
+        int       result = 1;
+        result = (prime * result) + ((identity == null) ? 0 : identity.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(final Object obj)
+    {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        final AnalogPid other = (AnalogPid) obj;
+        if (identity == null) {
+            if (other.identity != null)
+                return false;
+        } else if (!identity.equals(other.identity))
+            return false;
+        return true;
     }
 
     @Override
@@ -87,5 +128,11 @@ public class AnalogPid implements Pid<Output>
         lastError = error;
 
         return Output.valueOf(pTerm, iTerm, dTerm);
+    }
+
+    @Override
+    public UUID getIdentity()
+    {
+        return identity;
     }
 }
