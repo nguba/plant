@@ -18,21 +18,26 @@
 package temperature;
 
 import kernel.Entity;
+import kernel.validation.Failure;
+import kernel.validation.Notifications;
+import kernel.validation.Validatable;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * @author <a href="mailto:nguba@mac.com">Nico Guba</a>
  */
-public final class Profile implements Entity<String>, Iterable<Segment>
+public final class Profile implements Entity<String>, Iterable<Segment>, Validatable
 {
     public static Profile withSegments(final String name, final Segment... segments)
     {
-        final List<Segment> schedule = new ArrayList<>(segments.length);
-        for (final Segment segment : segments)
-            schedule.add(segment);
+        final List<Segment> schedule = new ArrayList<>();
+        if (Objects.nonNull(segments))
+            for (final Segment segment : segments)
+                schedule.add(segment);
         return new Profile(name, schedule);
     }
 
@@ -77,7 +82,7 @@ public final class Profile implements Entity<String>, Iterable<Segment>
     {
         final int prime  = 31;
         int       result = 1;
-        result = prime * result + (identity == null ? 0 : identity.hashCode());
+        result = (prime * result) + (identity == null ? 0 : identity.hashCode());
         return result;
     }
 
@@ -104,6 +109,14 @@ public final class Profile implements Entity<String>, Iterable<Segment>
         builder.append("Profile [identity=").append(identity).append(", segments=").append(segments)
                 .append("]");
         return builder.toString();
+    }
+
+    @Override
+    public void validate(final Notifications notifications)
+    {
+        if (segments.isEmpty())
+            notifications.add(Failure
+                    .from("Profile is empty.  You need to define at least one segment for the profile to execute."));
     }
 
 }
