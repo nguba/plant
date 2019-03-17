@@ -19,8 +19,12 @@ package temperature;
 
 import kernel.Entity;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.time.Duration;
 import java.time.Instant;
+import java.util.Objects;
 import java.util.UUID;
 
 /**
@@ -28,11 +32,13 @@ import java.util.UUID;
  */
 public final class Segment implements Entity<UUID>
 {
+    private static final Logger LOGGER = LoggerFactory.getLogger(Segment.class);
+
     private final Duration    duration;
     private final UUID        identity;
     private final String      label;
     private final Temperature setPoint;
-    private Instant           startedOn;
+    private Instant           expiresOn;
 
     public Segment(final UUID identity,
                    final String label,
@@ -55,12 +61,7 @@ public final class Segment implements Entity<UUID>
         if (getClass() != obj.getClass())
             return false;
         final Segment other = (Segment) obj;
-        if (identity == null) {
-            if (other.identity != null)
-                return false;
-        } else if (!identity.equals(other.identity))
-            return false;
-        return true;
+        return Objects.equals(identity, other.identity);
     }
 
     @Override
@@ -72,21 +73,29 @@ public final class Segment implements Entity<UUID>
     @Override
     public int hashCode()
     {
-        final int prime  = 31;
-        int       result = 1;
-        result = prime * result + (identity == null ? 0 : identity.hashCode());
-        return result;
+        return Objects.hash(identity);
     }
 
     public boolean isComplete(final Temperature processValue)
     {
-        return setPoint.isBelowOrAt(processValue);
+        final Instant now = Instant.now();
+
+        if (processValue.isBelow(setPoint) && (expiresOn == null))
+            return false;
+
+        if (expiresOn == null)
+            expiresOn = now.plus(duration);
+
+        LOGGER.debug("{}: duration={}, now={}, expiresOn={}",
+                     new Object[] { duration, label, now, expiresOn });
+
+        return now.isAfter(expiresOn);
     }
 
     public Instant start()
     {
-        startedOn = Instant.now();
-        return startedOn;
+        expiresOn = Instant.now();
+        return expiresOn;
     }
 
     @Override

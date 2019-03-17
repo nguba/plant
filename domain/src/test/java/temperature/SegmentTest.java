@@ -13,9 +13,11 @@ import java.util.UUID;
 
 class SegmentTest implements EntityEqualityContract<UUID, Segment>
 {
-    final Segment segment = new Segment(UUID.randomUUID(),
+    static final UUID identity = UUID.randomUUID();
+
+    final Segment segment = new Segment(identity,
                                         "first segment",
-                                        Duration.ofSeconds(2),
+                                        Duration.ofMillis(1),
                                         Temperature.celsius(25.0));
 
     @Override
@@ -27,11 +29,6 @@ class SegmentTest implements EntityEqualityContract<UUID, Segment>
     @Test
     void identity()
     {
-        final UUID    identity = UUID.randomUUID();
-        final Segment segment  = new Segment(identity,
-                                             "a segment",
-                                             Duration.ofSeconds(2),
-                                             Temperature.celsius(25.0));
         assertThat(segment.getIdentity()).isEqualTo(identity);
     }
 
@@ -43,9 +40,20 @@ class SegmentTest implements EntityEqualityContract<UUID, Segment>
     }
 
     @Test
-    @DisplayName("has completed once setpoint reached")
-    void setpointReached()
+    @DisplayName("has completed once setpoint and duration reached")
+    void setpointReached() throws Exception
     {
+        assertThat(segment.isComplete(Temperature.celsius(25.0))).isFalse();
+        Thread.sleep(1);
+        assertThat(segment.isComplete(Temperature.celsius(25.0))).isTrue();
+    }
+
+    @Test
+    @DisplayName("has completed once setpoint is higher and duration reached")
+    void startTimerForAboveSetpoint() throws Exception
+    {
+        assertThat(segment.isComplete(Temperature.celsius(26.0))).isFalse();
+        Thread.sleep(1);
         assertThat(segment.isComplete(Temperature.celsius(25.0))).isTrue();
     }
 
