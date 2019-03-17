@@ -96,7 +96,7 @@ class PwmTest implements EventPublisher, EntityEqualityContract<UUID, Pwm>
     void trueWhenHeatingIsNeeded() throws Exception
     {
         Thread.sleep(1000);
-        pid.setIntegral(Integral.valueOf(100.01));
+        pid.setIntegral(Integral.valueOf(101));
         assertThat(pwm.update(Temperature.celsius(10), Temperature.celsius(0))).isTrue();
     }
 }

@@ -1,6 +1,6 @@
 package temperature.pid;
 
-import kernel.EqualityContract;
+import test.EqualityContract;
 
 class GainTest implements EqualityContract<Gain>
 {

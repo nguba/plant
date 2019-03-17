@@ -17,22 +17,23 @@
 
 package kernel;
 
-import nl.jqno.equalsverifier.EqualsVerifier;
-
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import test.EventContract;
 
 /**
  * @author <a href="mailto:nguba@mac.com">Nico Guba</a>
  */
-public interface EqualityContract<T>
+public interface DomainEventContract<T> extends EventContract<T>
 {
-    @Test
-    @DisplayName("Equality contract is implemented")
-    default void equalityContract()
+    @Override
+    default String[] mandatoryFields()
     {
-        EqualsVerifier.forClass(getTypeClass()).usingGetClass().verify();
+        return new String[] { "timestamp" };
     }
 
-    Class<T> getTypeClass();
+    T event();
+
+    default T makeInstance()
+    {
+        return event();
+    }
 }

@@ -17,7 +17,7 @@
 
 package equipment.sensor.heater;
 
-import kernel.EqualityContract;
+import kernel.DomainEventContract;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -26,26 +26,18 @@ import org.junit.jupiter.api.Test;
 /**
  * @author <a href="mailto:nguba@mac.com">Nico Guba</a>
  */
-class HeaterSwitchedOffTest implements EqualityContract<HeaterSwitchedOff>
+class HeaterSwitchedOffTest implements DomainEventContract<HeaterSwitchedOff>
 {
-    HeaterSwitchedOff event = HeaterSwitchedOff.with("Mash Tun 1");
 
     @Test
     void accessToLabel()
     {
-        assertThat(event.getLabel()).isEqualTo("Mash Tun 1");
+        assertThat(event().getLabel()).isEqualTo("Mash Tun 1");
     }
 
     @Override
-    public Class<HeaterSwitchedOff> getTypeClass()
+    public HeaterSwitchedOff event()
     {
-        return HeaterSwitchedOff.class;
+        return HeaterSwitchedOff.with("Mash Tun 1");
     }
-
-    @Test
-    void toStringContains()
-    {
-        assertThat(event.toString()).contains("timestamp=", "label=");
-    }
-
 }

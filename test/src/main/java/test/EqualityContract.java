@@ -15,37 +15,24 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-package temperature.pid;
+package test;
 
-import test.EqualityContract;
-
-import static org.assertj.core.api.Assertions.assertThat;
+import nl.jqno.equalsverifier.EqualsVerifier;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 /**
- *
  * @author <a href="mailto:nguba@mac.com">Nico Guba</a>
  */
-class TermTest implements EqualityContract<Term>
+public interface EqualityContract<T>
 {
-    @Override
-    public Class<Term> getTypeClass()
+    @Test
+    @DisplayName("Equality contract is implemented")
+    default void equalityContract()
     {
-        return Term.class;
+        EqualsVerifier.forClass(getTypeClass()).usingGetClass().verify();
     }
 
-    @Test
-    @DisplayName("string representation of value is returned")
-    void toStringHasValueOnly()
-    {
-        assertThat(Term.valueOf(22.3).toString()).isEqualTo("22.3");
-    }
-
-    @Test
-    void zero()
-    {
-        assertThat(Term.zero()).isEqualTo(Term.valueOf(0));
-    }
+    Class<T> getTypeClass();
 }

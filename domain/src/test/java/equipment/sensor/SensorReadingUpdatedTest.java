@@ -17,7 +17,7 @@
 
 package equipment.sensor;
 
-import kernel.EqualityContract;
+import kernel.DomainEventContract;
 import temperature.Temperature;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -27,10 +27,8 @@ import org.junit.jupiter.api.Test;
 /**
  * @author <a href="mailto:nguba@mac.com">Nico Guba</a>
  */
-class SensorReadingUpdatedTest implements EqualityContract<SensorReadingUpdated>
+class SensorReadingUpdatedTest implements DomainEventContract<SensorReadingUpdated>
 {
-    Temperature temperature = Temperature.celsius(55.3);
-
     @Override
     public Class<SensorReadingUpdated> getTypeClass()
     {
@@ -40,15 +38,12 @@ class SensorReadingUpdatedTest implements EqualityContract<SensorReadingUpdated>
     @Test
     void testAccesssToTemperatureValue()
     {
-        assertThat(SensorReadingUpdated.with(temperature).getTemperature())
-                .isEqualTo(Temperature.celsius(55.3));
+        assertThat(event().getTemperature()).isEqualTo(Temperature.celsius(55.3));
     }
 
-    @Test
-    void toStringContainsEssentials()
+    @Override
+    public SensorReadingUpdated event()
     {
-        assertThat(SensorReadingUpdated.with(temperature).toString()).contains("timestamp=",
-                                                                               "temperature=");
+        return SensorReadingUpdated.with(Temperature.celsius(55.3));
     }
-
 }

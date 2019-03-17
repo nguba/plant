@@ -15,37 +15,30 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-package temperature.pid;
-
-import test.EqualityContract;
+package test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.util.LinkedList;
+import java.util.List;
+
 /**
- *
  * @author <a href="mailto:nguba@mac.com">Nico Guba</a>
  */
-class TermTest implements EqualityContract<Term>
+public interface ToStringContract<T>
 {
-    @Override
-    public Class<Term> getTypeClass()
-    {
-        return Term.class;
-    }
+    T makeInstance();
+
+    String[] mandatoryFields();
 
     @Test
-    @DisplayName("string representation of value is returned")
-    void toStringHasValueOnly()
+    default void toStringContainsEssentials()
     {
-        assertThat(Term.valueOf(22.3).toString()).isEqualTo("22.3");
-    }
-
-    @Test
-    void zero()
-    {
-        assertThat(Term.zero()).isEqualTo(Term.valueOf(0));
+        final List<String> tokens = new LinkedList<>();
+        for (final String token : mandatoryFields())
+            tokens.add(token + "=");
+        assertThat(makeInstance().toString()).contains(mandatoryFields());
     }
 }

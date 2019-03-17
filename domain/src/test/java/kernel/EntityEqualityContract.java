@@ -18,6 +18,7 @@
 package kernel;
 
 import nl.jqno.equalsverifier.EqualsVerifier;
+import test.EqualityContract;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

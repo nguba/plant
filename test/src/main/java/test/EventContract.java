@@ -15,37 +15,18 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-package temperature.pid;
-
-import test.EqualityContract;
-
-import static org.assertj.core.api.Assertions.assertThat;
-
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+package test;
 
 /**
- *
  * @author <a href="mailto:nguba@mac.com">Nico Guba</a>
  */
-class TermTest implements EqualityContract<Term>
+public interface EventContract<T> extends ToStringContract<T>, EqualityContract<T>
 {
+
+    @SuppressWarnings("unchecked")
     @Override
-    public Class<Term> getTypeClass()
+    default Class<T> getTypeClass()
     {
-        return Term.class;
-    }
-
-    @Test
-    @DisplayName("string representation of value is returned")
-    void toStringHasValueOnly()
-    {
-        assertThat(Term.valueOf(22.3).toString()).isEqualTo("22.3");
-    }
-
-    @Test
-    void zero()
-    {
-        assertThat(Term.zero()).isEqualTo(Term.valueOf(0));
+        return (Class<T>) makeInstance().getClass();
     }
 }
