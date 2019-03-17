@@ -19,7 +19,7 @@ package temperature.pid;
 
 import kernel.DomainEvent;
 import kernel.EntityEqualityContract;
-import kernel.MessageBus;
+import kernel.EventPublisher;
 import temperature.Temperature;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -33,61 +33,70 @@ import java.util.UUID;
  *
  * @author <a href="mailto:nguba@mac.com">Nico Guba</a>
  */
-class DigitalPidTest implements MessageBus, EntityEqualityContract<UUID, DigitalPid>
+class PwmTest implements EventPublisher, EntityEqualityContract<UUID, Pwm>
 {
     DomainEvent event;
-    DigitalPid  pid = DigitalPid
-            .with(UUID.randomUUID(), AnalogPid.withIdentityOf(UUID.randomUUID()), 1000);
+    final Pid   pid = Pid.withIdentityOf(UUID.randomUUID());
+    Pwm         pwm;
+
+    @Test
+    void falseWhenNoHeatingIsNeeded() throws Exception
+    {
+        Thread.sleep(1000);
+        pid.setIntegral(Integral.valueOf(100.01));
+        assertThat(pwm.update(Temperature.celsius(1), Temperature.celsius(10))).isFalse();
+    }
 
     @Test
     void falseWhenNoHeatingNeeded() throws Exception
     {
-        assertThat(pid.update(Temperature.celsius(10), Temperature.celsius(10.01))).isFalse();
+        assertThat(pwm.update(Temperature.celsius(10), Temperature.celsius(10.01))).isFalse();
+    }
+
+    @Test
+    void falseWhenWindowSizeEqualsPidTerm() throws Exception
+    {
+        Thread.sleep(1000);
+        pid.setIntegral(Integral.valueOf(100));
+        assertThat(pwm.update(Temperature.celsius(10), Temperature.celsius(0))).isFalse();
     }
 
     @Test
     void fireEventOnPidTermChange()
     {
-        pid.setMessageBus(this);
-        pid.update(Temperature.celsius(10), Temperature.celsius(0));
+        pwm.setMessageBus(this);
+        pwm.update(Temperature.celsius(10), Temperature.celsius(0));
         assertThat(event).isInstanceOf(DigitalPidChanged.class);
     }
 
     @Override
-    public Class<DigitalPid> getTypeClass()
+    public Class<Pwm> getTypeClass()
     {
-        return DigitalPid.class;
+        return Pwm.class;
     }
 
     @Override
     public <E extends DomainEvent> void publish(final E event)
     {
         this.event = event;
-        System.out.println(event);
     }
 
     @BeforeEach
     void setUp() throws Exception
     {
-        Thread.sleep(1000);
-        pid.setIntegral(Integral.valueOf(1020));
+
+        pid.setIntegral(Integral.valueOf(1001));
         pid.setProportional(Proportional.zero());
         pid.setDerivative(Derivative.zero());
-    }
 
-    @Override
-    public void subscribe(final Object recipient)
-    {
+        pwm = Pwm.with(UUID.randomUUID(), pid, 1000);
     }
 
     @Test
     void trueWhenHeatingIsNeeded() throws Exception
     {
-        assertThat(pid.update(Temperature.celsius(10), Temperature.celsius(0))).isTrue();
-    }
-
-    @Override
-    public void unsubscribe(final Object recipient)
-    {
+        Thread.sleep(1000);
+        pid.setIntegral(Integral.valueOf(100.01));
+        assertThat(pwm.update(Temperature.celsius(10), Temperature.celsius(0))).isTrue();
     }
 }

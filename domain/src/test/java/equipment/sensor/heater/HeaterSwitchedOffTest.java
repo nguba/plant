@@ -15,7 +15,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-package temperature.controller.event;
+package equipment.sensor.heater;
 
 import kernel.EqualityContract;
 

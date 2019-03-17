@@ -13,14 +13,14 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.UUID;
 
-class AnalogPidTest implements EntityEqualityContract<UUID, AnalogPid>
+class PidTest implements EntityEqualityContract<UUID, Pid>
 {
-    private final AnalogPid pid = AnalogPid.withIdentityOf(UUID.randomUUID());
+    private final Pid pid = Pid.withIdentityOf(UUID.randomUUID());
 
     @Override
-    public Class<AnalogPid> getTypeClass()
+    public Class<Pid> getTypeClass()
     {
-        return AnalogPid.class;
+        return Pid.class;
     }
 
     @Test
@@ -75,7 +75,7 @@ class AnalogPidTest implements EntityEqualityContract<UUID, AnalogPid>
     @Test
     void timeChangeForOneSecond()
     {
-        final Duration duration = pid.timeChange(Instant.ofEpochSecond(1),
+        final Duration duration = Pid.timeChange(Instant.ofEpochSecond(1),
                                                  Instant.ofEpochSecond(2));
         assertThat(duration).isEqualTo(Duration.ofSeconds(1));
     }
@@ -83,7 +83,7 @@ class AnalogPidTest implements EntityEqualityContract<UUID, AnalogPid>
     @Test
     void timeChangeFromNull()
     {
-        final Duration duration = pid.timeChange(null, Instant.now());
+        final Duration duration = Pid.timeChange(null, Instant.now());
         assertThat(duration).isEqualTo(Duration.ZERO);
     }
 
@@ -91,7 +91,7 @@ class AnalogPidTest implements EntityEqualityContract<UUID, AnalogPid>
     @DisplayName("toString() resillience")
     void toStringResillience()
     {
-        AnalogPid.withIdentityOf(null).toString();
+        Pid.withIdentityOf(null).toString();
     }
 
     // @Test

@@ -31,6 +31,13 @@ class NotificationsTest implements EqualityContract<Notifications>
     Notifications notifications = Notifications.empty();
 
     @Test
+    void canIterateThroughFailures()
+    {
+        notifications.add(Failure.from("Failure #1"));
+        assertThat(notifications).contains(Failure.from("Failure #1"));
+    }
+
+    @Test
     void createWithEmptyFailures()
     {
         assertThat(notifications).isEmpty();
@@ -40,29 +47,6 @@ class NotificationsTest implements EqualityContract<Notifications>
     public Class<Notifications> getTypeClass()
     {
         return Notifications.class;
-    }
-
-    @Test
-    void toStringReturnsContatenatedFailures()
-    {
-        notifications.add(Failure.from("Failure #1"));
-        notifications.add(Failure.from("Failure #2"));
-        notifications.add(Failure.from("Failure #3"));
-
-        assertThat(notifications.toString()).isEqualTo("Failure #1, Failure #2, Failure #3");
-    }
-
-    @Test
-    void returnsFalseWhenNotContainsFailure()
-    {
-        assertThat(notifications.has(Failure.from("Failure #1"))).isFalse();
-    }
-
-    @Test
-    void returnsTrueWhenContainsFailure()
-    {
-        notifications.add(Failure.from("Failure #1"));
-        assertThat(notifications.has(Failure.from("Failure #1"))).isTrue();
     }
 
     @Test
@@ -79,9 +63,25 @@ class NotificationsTest implements EqualityContract<Notifications>
     }
 
     @Test
-    void canIterateThroughFailures()
+    void returnsFalseWhenNotContainsFailure()
+    {
+        assertThat(notifications.has(Failure.from("Failure #1"))).isFalse();
+    }
+
+    @Test
+    void returnsTrueWhenContainsFailure()
     {
         notifications.add(Failure.from("Failure #1"));
-        assertThat(notifications).contains(Failure.from("Failure #1"));
+        assertThat(notifications.has(Failure.from("Failure #1"))).isTrue();
+    }
+
+    @Test
+    void toStringReturnsContatenatedFailures()
+    {
+        notifications.add(Failure.from("Failure #1"));
+        notifications.add(Failure.from("Failure #2"));
+        notifications.add(Failure.from("Failure #3"));
+
+        assertThat(notifications.toString()).isEqualTo("Failure #1, Failure #2, Failure #3");
     }
 }

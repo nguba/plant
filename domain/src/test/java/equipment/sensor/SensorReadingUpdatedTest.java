@@ -15,9 +15,10 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-package temperature.controller.event;
+package equipment.sensor;
 
 import kernel.EqualityContract;
+import temperature.Temperature;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -26,26 +27,28 @@ import org.junit.jupiter.api.Test;
 /**
  * @author <a href="mailto:nguba@mac.com">Nico Guba</a>
  */
-class HeaterSwitchedOnTest implements EqualityContract<HeaterSwitchedOn>
+class SensorReadingUpdatedTest implements EqualityContract<SensorReadingUpdated>
 {
-    HeaterSwitchedOn event = HeaterSwitchedOn.with("Mash Tun 1");
-
-    @Test
-    void accessToLabel()
-    {
-        assertThat(event.getLabel()).isEqualTo("Mash Tun 1");
-    }
+    Temperature temperature = Temperature.celsius(55.3);
 
     @Override
-    public Class<HeaterSwitchedOn> getTypeClass()
+    public Class<SensorReadingUpdated> getTypeClass()
     {
-        return HeaterSwitchedOn.class;
+        return SensorReadingUpdated.class;
     }
 
     @Test
-    void toStringContains()
+    void testAccesssToTemperatureValue()
     {
-        assertThat(event.toString()).contains("timestamp=", "label=");
+        assertThat(SensorReadingUpdated.with(temperature).getTemperature())
+                .isEqualTo(Temperature.celsius(55.3));
+    }
+
+    @Test
+    void toStringContainsEssentials()
+    {
+        assertThat(SensorReadingUpdated.with(temperature).toString()).contains("timestamp=",
+                                                                               "temperature=");
     }
 
 }

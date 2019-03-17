@@ -19,30 +19,34 @@ package temperature.pid;
 
 import kernel.DomainEvent;
 import kernel.Entity;
-import kernel.MessageBus;
+import kernel.EventPublisher;
 import temperature.Temperature;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.Objects;
 import java.util.UUID;
 
 /**
  * @author <a href="mailto:nguba@mac.com">Nico Guba</a>
  */
-public final class DigitalPid implements Pid<Boolean>, Entity<UUID>
+public final class Pwm implements Entity<UUID>
 {
-    public static DigitalPid with(final UUID identity,
-                                  final AnalogPid analogPid,
-                                  final int windowSize)
+    private static final Logger LOGGER = LoggerFactory.getLogger(Pwm.class);
+
+    public static Pwm with(final UUID identity, final Pid analogPid, final int windowSize)
     {
-        return new DigitalPid(identity, analogPid, windowSize);
+        return new Pwm(identity, analogPid, windowSize);
     }
 
-    private final AnalogPid delegate;
-    private final UUID      identity;
-    private MessageBus      messageBus;
-    private long            startTime = System.currentTimeMillis();
-    private final long      windowSize;
+    private final Pid      delegate;
+    private final UUID     identity;
+    private EventPublisher messageBus;
+    private long           startTime = System.currentTimeMillis();
+    private final long     windowSize;
 
-    private DigitalPid(final UUID identity, final AnalogPid delegate, final long windowSize)
+    private Pwm(final UUID identity, final Pid delegate, final long windowSize)
     {
         this.identity = identity;
         this.delegate = delegate;
@@ -58,13 +62,8 @@ public final class DigitalPid implements Pid<Boolean>, Entity<UUID>
             return false;
         if (getClass() != obj.getClass())
             return false;
-        final DigitalPid other = (DigitalPid) obj;
-        if (identity == null) {
-            if (other.identity != null)
-                return false;
-        } else if (!identity.equals(other.identity))
-            return false;
-        return true;
+        final Pwm other = (Pwm) obj;
+        return Objects.equals(identity, other.identity);
     }
 
     private void fireEvent(final long window, final Output pidTerm, final Boolean below)
@@ -83,10 +82,7 @@ public final class DigitalPid implements Pid<Boolean>, Entity<UUID>
     @Override
     public int hashCode()
     {
-        final int prime  = 31;
-        int       result = 1;
-        result = prime * result + (identity == null ? 0 : identity.hashCode());
-        return result;
+        return Objects.hash(identity);
     }
 
     private void raise(final DomainEvent event)
@@ -95,27 +91,9 @@ public final class DigitalPid implements Pid<Boolean>, Entity<UUID>
             messageBus.publish(event);
     }
 
-    @Override
-    public void setDerivative(final Derivative derivative)
-    {
-        delegate.setDerivative(derivative);
-    }
-
-    @Override
-    public void setIntegral(final Integral integral)
-    {
-        delegate.setIntegral(integral);
-    }
-
-    public void setMessageBus(final MessageBus messageBus)
+    public void setMessageBus(final EventPublisher messageBus)
     {
         this.messageBus = messageBus;
-    }
-
-    @Override
-    public void setProportional(final Proportional proportional)
-    {
-        delegate.setProportional(proportional);
     }
 
     @Override
@@ -128,7 +106,6 @@ public final class DigitalPid implements Pid<Boolean>, Entity<UUID>
         return builder.toString();
     }
 
-    @Override
     public Boolean update(final Temperature sP, final Temperature pV)
     {
         final long window = System.currentTimeMillis() - startTime;
@@ -137,6 +114,9 @@ public final class DigitalPid implements Pid<Boolean>, Entity<UUID>
 
         final Output  pidTerm = delegate.update(sP, pV);
         final Boolean output  = Output.valueOf(window).isBelow(pidTerm);
+
+        LOGGER.debug("windowSize={}, pidTerm={}, output={}", windowSize, pidTerm, output);
+
         fireEvent(window, pidTerm, output);
         return output;
     }

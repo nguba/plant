@@ -15,29 +15,12 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-package kernel.validation;
-
-import kernel.EqualityContract;
-
-import static org.assertj.core.api.Assertions.assertThat;
-
-import org.junit.jupiter.api.Test;
+package temperature;
 
 /**
  * @author <a href="mailto:nguba@mac.com">Nico Guba</a>
  */
-class FailureTest implements EqualityContract<Failure>
+public final class TemperatureService
 {
-    @Override
-    public Class<Failure> getTypeClass()
-    {
-        return Failure.class;
-    }
-
-    @Test
-    void toStringReturnsValue()
-    {
-        assertThat(Failure.from("blah blah").toString()).isEqualTo("blah blah");
-    }
 
 }

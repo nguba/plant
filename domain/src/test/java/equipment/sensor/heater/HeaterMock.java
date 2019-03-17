@@ -15,14 +15,13 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-package temperature.controller;
+package equipment.sensor.heater;
 
+import equipment.sensor.Sensor;
+import equipment.sensor.SensorReadingUpdated;
 import kernel.DomainEvent;
-import kernel.MessageBus;
+import kernel.EventPublisher;
 import temperature.Temperature;
-import temperature.controller.event.HeaterSwitchedOff;
-import temperature.controller.event.HeaterSwitchedOn;
-import temperature.controller.event.TemperatureUpdated;
 
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -33,19 +32,19 @@ import java.util.concurrent.atomic.AtomicInteger;
 /**
  * @author <a href="mailto:nguba@mac.com">Nico Guba</a>
  */
-public class HeaterMock implements Switch, Sensor
+public class HeaterMock implements Heater, Sensor
 {
-    private final MessageBus bus;
-
     ScheduledExecutorService element = Executors.newScheduledThreadPool(2);
 
     AtomicBoolean heat = new AtomicBoolean();
 
+    private final EventPublisher publisher;
+
     AtomicInteger value = new AtomicInteger();
 
-    public HeaterMock(final MessageBus bus)
+    public HeaterMock(final EventPublisher publisher)
     {
-        this.bus = bus;
+        this.publisher = publisher;
         element.scheduleAtFixedRate(() -> {
             if (heat.get())
                 value.getAndIncrement();
@@ -56,13 +55,13 @@ public class HeaterMock implements Switch, Sensor
     public Temperature currentTemperature()
     {
         final Temperature temperature = Temperature.celsius(value.get() / 100.0);
-        raise(TemperatureUpdated.with(temperature));
+        raise(SensorReadingUpdated.with(temperature));
         return temperature;
     }
 
     private void raise(final DomainEvent event)
     {
-        bus.publish(event);
+        publisher.publish(event);
     }
 
     @Override

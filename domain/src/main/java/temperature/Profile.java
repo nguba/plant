@@ -82,7 +82,7 @@ public final class Profile implements Entity<String>, Iterable<Segment>, Validat
     {
         final int prime  = 31;
         int       result = 1;
-        result = (prime * result) + (identity == null ? 0 : identity.hashCode());
+        result = prime * result + (identity == null ? 0 : identity.hashCode());
         return result;
     }
 
@@ -116,7 +116,6 @@ public final class Profile implements Entity<String>, Iterable<Segment>, Validat
     {
         if (segments.isEmpty())
             notifications.add(Failure
-                    .from("Profile is empty.  You need to define at least one segment for the profile to execute."));
+                    .from("Profile is empty.  You need to define at least one segment."));
     }
-
 }

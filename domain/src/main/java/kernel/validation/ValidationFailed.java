@@ -23,13 +23,13 @@ public final class ValidationFailed extends Exception
 {
     private static final long serialVersionUID = -6165488948892216564L;
 
-    private ValidationFailed(final String message)
-    {
-        super(message);
-    }
-
     public static ValidationFailed with(final Notifications notifications)
     {
         return new ValidationFailed(notifications.toString());
+    }
+
+    private ValidationFailed(final String message)
+    {
+        super(message);
     }
 }

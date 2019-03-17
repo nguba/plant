@@ -1,23 +1,16 @@
-package temperature.controller;
+package equipment.sensor.heater;
 
 import kernel.DomainEvent;
-import kernel.MessageBus;
+import kernel.EventPublisher;
 import temperature.Temperature;
-import temperature.controller.event.GuavaMessageBus;
-
-import com.google.common.eventbus.Subscribe;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-class HeaterMockTest
+class HeaterMockTest implements EventPublisher
 {
-    private static final MessageBus BUS = new GuavaMessageBus();
-
-    final HeaterMock heater = new HeaterMock(BUS);
+    final HeaterMock heater = new HeaterMock(this);
 
     @Test
     void increaseTempeature() throws Exception
@@ -31,17 +24,10 @@ class HeaterMockTest
         assertThat(heater.currentTemperature().isAbove(previous));
     }
 
-    @Subscribe
-    void onEvent(final DomainEvent event)
+    @Override
+    public <E extends DomainEvent> void publish(final E event)
     {
         System.out.println(event);
-    }
-
-    @BeforeEach
-    void setUp() throws Exception
-    {
-        BUS.subscribe(heater);
-        BUS.subscribe(this);
     }
 
     @Test
@@ -57,12 +43,5 @@ class HeaterMockTest
         Thread.sleep(1000);
 
         assertThat(heater.currentTemperature().equals(previous));
-    }
-
-    @AfterEach
-    void tearDown() throws Exception
-    {
-        BUS.unsubscribe(heater);
-        BUS.unsubscribe(this);
     }
 }

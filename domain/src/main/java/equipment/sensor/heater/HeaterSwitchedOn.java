@@ -15,23 +15,23 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-package temperature.controller.event;
+package equipment.sensor.heater;
 
 import kernel.DomainEvent;
 
 /**
  * @author <a href="mailto:nguba@mac.com">Nico Guba</a>
  */
-public final class HeaterSwitchedOff extends DomainEvent
+public final class HeaterSwitchedOn extends DomainEvent
 {
-    public static HeaterSwitchedOff with(final String label)
+    public static HeaterSwitchedOn with(final String label)
     {
-        return new HeaterSwitchedOff(label);
+        return new HeaterSwitchedOn(label);
     }
 
     private final String label;
 
-    private HeaterSwitchedOff(final String label)
+    private HeaterSwitchedOn(final String label)
     {
         this.label = label;
     }
@@ -45,7 +45,7 @@ public final class HeaterSwitchedOff extends DomainEvent
             return false;
         if (getClass() != obj.getClass())
             return false;
-        final HeaterSwitchedOff other = (HeaterSwitchedOff) obj;
+        final HeaterSwitchedOn other = (HeaterSwitchedOn) obj;
         if (label == null) {
             if (other.label != null)
                 return false;
@@ -72,7 +72,7 @@ public final class HeaterSwitchedOff extends DomainEvent
     public String toString()
     {
         final StringBuilder builder = new StringBuilder();
-        builder.append("HeaterSwitchedOff [label=").append(label).append(", timestamp=")
+        builder.append("HeaterSwitchedOn [label=").append(label).append(", timestamp=")
                 .append(timestamp).append("]");
         return builder.toString();
     }

@@ -18,7 +18,6 @@
 package temperature.controller.event;
 
 import kernel.DomainEvent;
-import kernel.MessageBus;
 
 import com.google.common.eventbus.EventBus;
 

@@ -15,29 +15,16 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-package kernel.validation;
+package temperature.controller.event;
 
-import kernel.EqualityContract;
-
-import static org.assertj.core.api.Assertions.assertThat;
-
-import org.junit.jupiter.api.Test;
+import kernel.EventPublisher;
 
 /**
  * @author <a href="mailto:nguba@mac.com">Nico Guba</a>
  */
-class FailureTest implements EqualityContract<Failure>
+public interface MessageBus extends EventPublisher
 {
-    @Override
-    public Class<Failure> getTypeClass()
-    {
-        return Failure.class;
-    }
+    void subscribe(Object recipient);
 
-    @Test
-    void toStringReturnsValue()
-    {
-        assertThat(Failure.from("blah blah").toString()).isEqualTo("blah blah");
-    }
-
+    void unsubscribe(Object recipient);
 }

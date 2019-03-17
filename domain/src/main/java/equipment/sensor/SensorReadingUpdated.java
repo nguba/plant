@@ -15,25 +15,28 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-package temperature.controller.event;
+package equipment.sensor;
 
 import kernel.DomainEvent;
+import temperature.Temperature;
+
+import java.util.Objects;
 
 /**
  * @author <a href="mailto:nguba@mac.com">Nico Guba</a>
  */
-public final class HeaterSwitchedOn extends DomainEvent
+public final class SensorReadingUpdated extends DomainEvent
 {
-    public static HeaterSwitchedOn with(final String label)
+    public static SensorReadingUpdated with(final Temperature temperature)
     {
-        return new HeaterSwitchedOn(label);
+        return new SensorReadingUpdated(temperature);
     }
 
-    private final String label;
+    private final Temperature temperature;
 
-    private HeaterSwitchedOn(final String label)
+    private SensorReadingUpdated(final Temperature temperature)
     {
-        this.label = label;
+        this.temperature = temperature;
     }
 
     @Override
@@ -45,18 +48,13 @@ public final class HeaterSwitchedOn extends DomainEvent
             return false;
         if (getClass() != obj.getClass())
             return false;
-        final HeaterSwitchedOn other = (HeaterSwitchedOn) obj;
-        if (label == null) {
-            if (other.label != null)
-                return false;
-        } else if (!label.equals(other.label))
-            return false;
-        return true;
+        final SensorReadingUpdated other = (SensorReadingUpdated) obj;
+        return Objects.equals(temperature, other.temperature);
     }
 
-    public String getLabel()
+    public Temperature getTemperature()
     {
-        return label;
+        return temperature;
     }
 
     @Override
@@ -64,7 +62,7 @@ public final class HeaterSwitchedOn extends DomainEvent
     {
         final int prime  = 31;
         int       result = super.hashCode();
-        result = prime * result + (label == null ? 0 : label.hashCode());
+        result = (prime * result) + Objects.hash(temperature);
         return result;
     }
 
@@ -72,8 +70,9 @@ public final class HeaterSwitchedOn extends DomainEvent
     public String toString()
     {
         final StringBuilder builder = new StringBuilder();
-        builder.append("HeaterSwitchedOn [label=").append(label).append(", timestamp=")
-                .append(timestamp).append("]");
+        builder.append("SensorReadingUpdated [temperature=").append(temperature)
+                .append(", timestamp=").append(timestamp).append("]");
         return builder.toString();
     }
+
 }

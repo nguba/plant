@@ -1,5 +1,5 @@
 /*
-    Copyright (C) 2019  Nicolai P. Guba
+    Copyright (C) 2018  Nicolai P. Guba
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -14,29 +14,15 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-
-package temperature.controller;
-
-import kernel.Service;
-import kernel.validation.Notifications;
-import kernel.validation.ValidationFailed;
-import temperature.Profile;
+package equipment.sensor.heater;
 
 /**
+ *
  * @author <a href="mailto:nguba@mac.com">Nico Guba</a>
  */
-public final class Controller implements Service
+public interface Heater
 {
-    public Controller()
-    {
-    }
+    void switchOff();
 
-    public void executeProfile(final Sensor sensor, final Switch heater, final Profile profile)
-            throws ValidationFailed
-    {
-        final Notifications notifications = Notifications.empty();
-        profile.validate(notifications);
-        if (notifications.hasErrors())
-            throw ValidationFailed.with(notifications);
-    }
+    void switchOn();
 }

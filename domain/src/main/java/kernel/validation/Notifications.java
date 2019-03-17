@@ -73,19 +73,19 @@ public final class Notifications implements Iterable<Failure>, ValueObject
     {
         final int prime  = 31;
         int       result = 1;
-        result = (prime * result) + (errors == null ? 0 : errors.hashCode());
+        result = prime * result + (errors == null ? 0 : errors.hashCode());
         return result;
-    }
-
-    @Override
-    public String toString()
-    {
-        return errors.stream().map(e -> e.toString()).collect(Collectors.joining(", "));
     }
 
     @Override
     public Iterator<Failure> iterator()
     {
         return errors.iterator();
+    }
+
+    @Override
+    public String toString()
+    {
+        return errors.stream().map(e -> e.toString()).collect(Collectors.joining(", "));
     }
 }
