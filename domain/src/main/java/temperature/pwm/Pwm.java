@@ -15,12 +15,14 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-package temperature.pid;
+package temperature.pwm;
 
 import kernel.DomainEvent;
 import kernel.Entity;
 import kernel.EventPublisher;
 import temperature.Temperature;
+import temperature.pid.Output;
+import temperature.pid.Pid;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -69,8 +71,8 @@ public final class Pwm implements Entity<UUID>
     private void fireEvent(final long window, final Output pidTerm, final Boolean below)
     {
         if (below.booleanValue())
-            raise(DigitalPidChangedToOn.with(pidTerm, window));
-        else raise(DigitalPidChangedToOff.with(pidTerm, window));
+            raise(PwmIsOn.with(pidTerm, window));
+        else raise(PwmIsOff.with(pidTerm, window));
     }
 
     @Override

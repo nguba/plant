@@ -49,12 +49,12 @@ class SegmentTest implements EntityEqualityContract<UUID, Segment>
     }
 
     @Test
-    @DisplayName("has completed once setpoint is higher and duration reached")
+    @DisplayName("does not return false when temp drops below setpoint during timer cycle")
     void startTimerForAboveSetpoint() throws Exception
     {
-        assertThat(segment.isComplete(Temperature.celsius(26.0))).isFalse();
+        assertThat(segment.isComplete(Temperature.celsius(25.0))).isFalse();
         Thread.sleep(1);
-        assertThat(segment.isComplete(Temperature.celsius(25.0))).isTrue();
+        assertThat(segment.isComplete(Temperature.celsius(24.99))).isTrue();
     }
 
     @Test

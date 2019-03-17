@@ -17,7 +17,7 @@
 
 package temperature;
 
-import kernel.Entity;
+import kernel.Aggregate;
 import kernel.validation.Failure;
 import kernel.validation.Notifications;
 import kernel.validation.Validatable;
@@ -30,7 +30,7 @@ import java.util.Objects;
 /**
  * @author <a href="mailto:nguba@mac.com">Nico Guba</a>
  */
-public final class Profile implements Entity<String>, Iterable<Segment>, Validatable
+public final class Profile implements Aggregate<String>, Iterable<Segment>, Validatable
 {
     public static Profile withSegments(final String name, final Segment... segments)
     {

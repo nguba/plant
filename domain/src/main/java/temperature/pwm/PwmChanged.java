@@ -15,19 +15,20 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-package temperature.pid;
+package temperature.pwm;
 
 import kernel.DomainEvent;
+import temperature.pid.Output;
 
 /**
  * @author <a href="mailto:nguba@mac.com">Nico Guba</a>
  */
-public abstract class DigitalPidChanged extends DomainEvent
+public abstract class PwmChanged extends DomainEvent
 {
     protected final Output output;
     protected final long   window;
 
-    protected DigitalPidChanged(final Output output, final long window)
+    protected PwmChanged(final Output output, final long window)
     {
         this.output = output;
         this.window = window;
@@ -42,7 +43,7 @@ public abstract class DigitalPidChanged extends DomainEvent
             return false;
         if (getClass() != obj.getClass())
             return false;
-        final DigitalPidChanged other = (DigitalPidChanged) obj;
+        final PwmChanged other = (PwmChanged) obj;
         if (output == null) {
             if (other.output != null)
                 return false;

@@ -15,30 +15,32 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-package temperature.pid;
+package temperature.pwm;
 
-import kernel.DomainEventContract;
-
-import static org.assertj.core.api.Assertions.assertThat;
-
-import org.junit.jupiter.api.Test;
+import temperature.pid.Output;
 
 /**
- *
  * @author <a href="mailto:nguba@mac.com">Nico Guba</a>
  */
-class DigitalPidChangedToOnTest implements DomainEventContract<DigitalPidChangedToOn>
+public final class PwmIsOn extends PwmChanged
 {
-    @Test
-    void toStringContains()
+    public static PwmIsOn with(final Output pidTerm, final long window)
     {
-        assertThat(event().toString()).contains("timestamp=", "output=", "window=");
+        return new PwmIsOn(pidTerm, window);
+    }
+
+    private PwmIsOn(final Output output, final long window)
+    {
+        super(output, window);
     }
 
     @Override
-    public DigitalPidChangedToOn event()
+    public String toString()
     {
-        return DigitalPidChangedToOn.with(Output.valueOf(2342.22), 5000);
+        final StringBuilder builder = new StringBuilder();
+        builder.append("DigitalPidOn [output=").append(output).append(", window=").append(window)
+                .append(", timestamp=").append(timestamp).append("]");
+        return builder.toString();
     }
 
 }

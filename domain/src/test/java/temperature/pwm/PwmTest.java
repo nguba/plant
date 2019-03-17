@@ -15,12 +15,18 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-package temperature.pid;
+package temperature.pwm;
 
 import kernel.DomainEvent;
 import kernel.EntityEqualityContract;
 import kernel.EventPublisher;
 import temperature.Temperature;
+import temperature.pid.Derivative;
+import temperature.pid.Integral;
+import temperature.pid.Pid;
+import temperature.pid.Proportional;
+import temperature.pwm.Pwm;
+import temperature.pwm.PwmChanged;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -66,7 +72,7 @@ class PwmTest implements EventPublisher, EntityEqualityContract<UUID, Pwm>
     {
         pwm.setMessageBus(this);
         pwm.update(Temperature.celsius(10), Temperature.celsius(0));
-        assertThat(event).isInstanceOf(DigitalPidChanged.class);
+        assertThat(event).isInstanceOf(PwmChanged.class);
     }
 
     @Override

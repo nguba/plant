@@ -21,7 +21,6 @@ package kernel;
  * @author <a href="mailto:nguba@mac.com">Nico Guba</a>
  * @param <I>
  */
-public interface Aggregate<I>
+public interface Aggregate<I> extends Entity<I>
 {
-    Entity<I> getAggregateRoot();
 }
