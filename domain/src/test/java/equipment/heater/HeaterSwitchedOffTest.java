@@ -15,8 +15,9 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-package equipment.sensor.heater;
+package equipment.heater;
 
+import equipment.heater.HeaterSwitchedOff;
 import kernel.DomainEventContract;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -26,8 +27,9 @@ import org.junit.jupiter.api.Test;
 /**
  * @author <a href="mailto:nguba@mac.com">Nico Guba</a>
  */
-class HeaterSwitchedOnTest implements DomainEventContract<HeaterSwitchedOn>
+class HeaterSwitchedOffTest implements DomainEventContract<HeaterSwitchedOff>
 {
+
     @Test
     void accessToLabel()
     {
@@ -35,9 +37,8 @@ class HeaterSwitchedOnTest implements DomainEventContract<HeaterSwitchedOn>
     }
 
     @Override
-    public HeaterSwitchedOn event()
+    public HeaterSwitchedOff event()
     {
-        return HeaterSwitchedOn.with("Mash Tun 1");
+        return HeaterSwitchedOff.with("Mash Tun 1");
     }
-
 }

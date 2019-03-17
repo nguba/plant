@@ -15,8 +15,11 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-package equipment.sensor.heater;
+package equipment.heater;
 
+import equipment.heater.Heater;
+import equipment.heater.HeaterSwitchedOff;
+import equipment.heater.HeaterSwitchedOn;
 import equipment.sensor.Sensor;
 import equipment.sensor.SensorReadingUpdated;
 import kernel.DomainEvent;

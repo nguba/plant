@@ -1,5 +1,5 @@
 /*
-    Copyright (C) 2019  Nicolai P. Guba
+    Copyright (C) 2018  Nicolai P. Guba
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -14,30 +14,15 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-
-package equipment.sensor.heater;
-
-import kernel.DomainEventContract;
-
-import static org.assertj.core.api.Assertions.assertThat;
-
-import org.junit.jupiter.api.Test;
+package equipment.heater;
 
 /**
+ *
  * @author <a href="mailto:nguba@mac.com">Nico Guba</a>
  */
-class HeaterSwitchedOffTest implements DomainEventContract<HeaterSwitchedOff>
+public interface Heater
 {
+    void switchOff();
 
-    @Test
-    void accessToLabel()
-    {
-        assertThat(event().getLabel()).isEqualTo("Mash Tun 1");
-    }
-
-    @Override
-    public HeaterSwitchedOff event()
-    {
-        return HeaterSwitchedOff.with("Mash Tun 1");
-    }
+    void switchOn();
 }

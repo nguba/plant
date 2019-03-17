@@ -1,4 +1,4 @@
-package equipment.sensor.heater;
+package equipment.heater;
 
 import kernel.DomainEvent;
 import kernel.EventPublisher;
